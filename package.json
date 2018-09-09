@@ -4,8 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
+    "start": "node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "Unlicense"
+  "license": "Unlicense",
+  "dependencies": {
+    "typescript": "^3.0.3"
+  }
 }

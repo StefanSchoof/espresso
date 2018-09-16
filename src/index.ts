@@ -10,8 +10,10 @@ function showError(err?: Error | undefined) {
     }
 }
 
+const log = (...args: any[]) => console.log(new Date().toISOString(), ...args)
+
 function execAndResponse(argument: string, description: string, response: DeviceMethodResponse) {
-    console.log(description);
+    log(description);
     exec(`steuerung ${argument}`, (err) => {
         if (err) {
             let msg = `faild to send ${description}. Error: "${err}"`
@@ -29,4 +31,4 @@ function execAndResponse(argument: string, description: string, response: Device
 deviceClient.onDeviceMethod('onSwitchOn', (request, response) => execAndResponse('1', 'power on', response))
 deviceClient.onDeviceMethod('onSwitchOff', (request, response) => execAndResponse('0', 'power off', response))
 
-console.log('Device connect to iot hub')
+log('Device connect to iot hub')

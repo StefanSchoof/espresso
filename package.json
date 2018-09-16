@@ -3,10 +3,24 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  },
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "",
   "license": "Unlicense",
@@ -15,5 +29,10 @@
     "azure-iot-device": "^1.7.3",
     "azure-iot-device-mqtt": "^1.7.3",
     "typescript": "^3.0.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.2",
+    "jest": "^23.6.0",
+    "ts-jest": "^23.1.4"
   }
 }

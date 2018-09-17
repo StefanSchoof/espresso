@@ -25,9 +25,9 @@
   "author": "",
   "license": "Unlicense",
   "dependencies": {
-    "@types/node": "^10.9.4",
-    "azure-iot-device": "^1.7.3",
-    "azure-iot-device-mqtt": "^1.7.3"
+    "@types/node": "^10.10.0",
+    "azure-iot-device": "^1.7.4",
+    "azure-iot-device-mqtt": "^1.7.4"
   },
   "devDependencies": {
     "@types/jest": "^23.3.2",

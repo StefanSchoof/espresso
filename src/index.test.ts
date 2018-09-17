@@ -1,7 +1,7 @@
 import { Client } from "azure-iot-device"
 import { exec } from "child_process"
 
-const mockDeviceMethods = {}
+const mockDeviceMethods: {[id: string]: Function} = {}
 
 jest.mock("child_process", () => ({exec: jest.fn()}))
 jest.mock("azure-iot-device", () => ({

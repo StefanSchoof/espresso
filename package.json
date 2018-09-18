@@ -20,7 +20,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "test": "jest"
+    "test": "jest",
+    "lint": "tslint -c tslint.json 'src/**/*.ts'"
   },
   "author": "",
   "license": "Unlicense",
@@ -31,8 +32,10 @@
   },
   "devDependencies": {
     "@types/jest": "^23.3.2",
+    "backend-tslint-rules": "^1.4.0",
     "jest": "^23.6.0",
     "ts-jest": "^23.1.4",
+    "tslint": "^5.11.0",
     "typescript": "^3.0.3"
   }
 }

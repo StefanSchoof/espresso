@@ -34,7 +34,8 @@ COPY . .
 COPY --from=cppbuilder /usr/src/app/steuerung /usr/local/bin
 
 RUN npm run build \
- && npm run test
+ && npm run test \
+ && npm run lint
 
 FROM node as runner
 

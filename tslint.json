@@ -1,0 +1,7 @@
+{
+  "extends": ["backend-tslint-rules"],
+  "rules": {
+    "curly": true,
+    "no-console": false
+  }
+}

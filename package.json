@@ -2,7 +2,6 @@
   "name": "espresso",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "jest": {
     "transform": {
       "^.+\\.tsx?$": "ts-jest"

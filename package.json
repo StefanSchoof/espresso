@@ -1,8 +1,7 @@
 {
   "name": "espresso",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A project to control my espresso machine with a raspberry pi",
   "jest": {
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
@@ -23,10 +22,14 @@
     "test": "jest",
     "lint": "tslint -c tslint.json 'src/**/*.ts'"
   },
-  "author": "",
+  "author": "Stefan Schoof",
   "license": "Unlicense",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/StefanSchoof/espresso.git"
+  },
   "dependencies": {
-    "@types/node": "^10.10.0",
+    "@types/node": "^10.10.3",
     "azure-iot-device": "^1.7.4",
     "azure-iot-device-mqtt": "^1.7.4"
   },
@@ -34,7 +37,7 @@
     "@types/jest": "^23.3.2",
     "backend-tslint-rules": "^1.4.0",
     "jest": "^23.6.0",
-    "ts-jest": "^23.1.4",
+    "ts-jest": "^23.10.1",
     "tslint": "^5.11.0",
     "typescript": "^3.0.3"
   }

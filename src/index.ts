@@ -1,32 +1,38 @@
 import { Client, DeviceMethodResponse } from 'azure-iot-device';
 import { Mqtt } from 'azure-iot-device-mqtt';
 import { exec } from 'child_process';
+import { promisify } from 'util';
 
-// tslint:disable-next-line:no-non-null-assertion
-const deviceClient: Client = Client.fromConnectionString(process.env['ConnectionString']!, Mqtt);
+const log = (...args: Array<any>) => console.log(new Date().toISOString(), ...args);
+const execAsync = promisify(exec);
 
-function showError(err?: Error | undefined): void {
-    if (err) {
-        console.error(`Error sending response: ${err}`);
+async function execAndResponse(argument: string, description: string, response: DeviceMethodResponse): Promise<void> {
+    log(description);
+    let msg: string;
+    let code: number;
+    try {
+        await execAsync(`steuerung ${argument}`);
+        msg = `send ${description} to the plug socket`;
+        code = 200;
+    } catch (e) {
+        msg = `failed to send ${description}. Error: "${e}"`;
+        code = 500;
+        console.error(msg);
+    }
+    try {
+        await promisify(response.send)(code, msg);
+    } catch (e) {
+        console.error(`Error sending response: ${e}`);
     }
 }
 
-const log = (...args: Array<any>) => console.log(new Date().toISOString(), ...args);
+export function init(connectionString?: string): void {
+    if (connectionString === undefined) {
+        throw new Error('connectionString needs a value');
+    }
+    const deviceClient: Client = Client.fromConnectionString(connectionString, Mqtt);
+    deviceClient.onDeviceMethod('onSwitchOn', (request, response) => execAndResponse('1', 'power on', response));
+    deviceClient.onDeviceMethod('onSwitchOff', (request, response) => execAndResponse('0', 'power off', response));
 
-function execAndResponse(argument: string, description: string, response: DeviceMethodResponse): void {
-    log(description);
-    exec(`steuerung ${argument}`, err => {
-        if (err) {
-            const msg = `faild to send ${description}. Error: "${err}"`;
-            console.error(msg);
-            response.send(500, msg, showError);
-        } else {
-            response.send(200, `send ${description} to the plug socket`, showError);
-        }
-    });
+    log('Device connect to iot hub');
 }
-
-deviceClient.onDeviceMethod('onSwitchOn', (request, response) => execAndResponse('1', 'power on', response));
-deviceClient.onDeviceMethod('onSwitchOff', (request, response) => execAndResponse('0', 'power off', response));
-
-log('Device connect to iot hub');

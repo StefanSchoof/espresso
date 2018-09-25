@@ -50,6 +50,6 @@ COPY --from=cppbuilder /usr/src/app/steuerung /usr/local/bin/
 COPY package*.json ./
 
 RUN npm install --production
-COPY --from=builder /usr/src/app/dist/index.js /usr/src/app/dist/
+COPY --from=builder /usr/src/app/dist/*.js /usr/src/app/dist/
 
 CMD [ "npm", "start" ]

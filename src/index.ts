@@ -20,9 +20,10 @@ async function execAndResponse(argument: string, description: string, response: 
         console.error(msg);
     }
     try {
-        await promisify(response.send)(code, msg);
+        await promisify((cb: (err?: Error) => void) => response.send(code, msg, cb))();
     } catch (e) {
         console.error(`Error sending response: ${e}`);
+        throw e;
     }
 }
 

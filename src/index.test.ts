@@ -67,13 +67,33 @@ test('return an error if exec fails', async () => {
 });
 
 test('write an error if response fails', async () => {
+  const e = new Error('Send response failed');
   const response = {
-    send: jest.fn((code, payload, done) => done(new Error('Send response failed')))
+    send: jest.fn((code, payload, done) => done(e))
   };
   jest.spyOn(global.console, 'error');
 
-  await mockDeviceMethods.onSwitchOff({}, response);
+  await expect(mockDeviceMethods.onSwitchOff({}, response))
+    .rejects
+    .toBe(e);
 
   expect(console.error)
     .toHaveBeenLastCalledWith('Error sending response: Error: Send response failed');
+});
+
+test('does not destroy context in response send', async () => {
+  const response = {
+    isResponseComplete: false,
+    send: jest.fn(function(this: any, code: any, payload: any, done: any): void {
+      if (!this.isResponseComplete) {
+        done();
+      }
+    })
+  };
+
+  await expect(mockDeviceMethods.onSwitchOff({}, response))
+    .resolves
+    .toBe(undefined);
+    // .not
+    // .toThrow();
 });

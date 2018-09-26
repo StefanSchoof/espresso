@@ -1,5 +1,5 @@
 cd $(dirname "$0")
-/usr/local/bin/docker-compose pull > /dev/null 2>&1
+/usr/local/bin/docker-compose pull --quiet
 config=$(/usr/local/bin/docker-compose config)
 container=$(echo -e "$config" | sed -n "s/    container_name: \(.*\)/\1/p")
 image=$(echo -e "$config" | sed -n "s/    image: \(.*\)/\1/p")

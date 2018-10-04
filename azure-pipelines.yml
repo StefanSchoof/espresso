@@ -10,6 +10,7 @@ variables:
   imageName: 'stefanschoof/espresso:$(build.buildId)'
 
 steps:
+- script: cd node
 - script: docker run --rm --privileged multiarch/qemu-user-static:register --reset
 - script: docker build -f Dockerfile -t $(imageName) .
   displayName: 'docker build'

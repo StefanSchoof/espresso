@@ -3,6 +3,7 @@ services:
 - docker
 language: bash
 script:
+  - cd node
   - docker run --rm --privileged multiarch/qemu-user-static:register --reset
   - docker-compose build
   - >

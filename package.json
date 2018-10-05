@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@types/node": "^10.10.3",
+    "applicationinsights": "^1.0.5",
     "azure-iot-device": "^1.7.4",
     "azure-iot-device-mqtt": "^1.7.4"
   },

@@ -1,5 +1,6 @@
 import { Client } from 'azure-iot-device';
 import { exec } from 'child_process';
+import * as appInsights from 'applicationinsights';
 
 const mockDeviceMethods: {[id: string]: Function} = {};
 
@@ -64,21 +65,23 @@ test('return an error if exec fails', async () => {
 
   expect(response.send)
     .toHaveBeenLastCalledWith(500, expect.anything(), expect.anything());
+  expect(appInsights.defaultClient.trackException)
+    .toHaveBeenLastCalledWith({exception: new Error('Command failed')});
 });
 
-test('write an error if response fails', async () => {
+test('log an error if response fails', async () => {
   const e = new Error('Send response failed');
   const response = {
     send: jest.fn((code, payload, done) => done(e))
   };
-  jest.spyOn(global.console, 'error');
+//  jest.spyOn(global.console, 'error');
 
-  await expect(mockDeviceMethods.onSwitchOff({}, response))
-    .rejects
-    .toBe(e);
+  await mockDeviceMethods.onSwitchOff({}, response);
 
-  expect(console.error)
-    .toHaveBeenLastCalledWith('Error sending response: Error: Send response failed');
+//  expect(console.error)
+//    .toHaveBeenLastCalledWith('Error sending response: Error: Send response failed');
+  expect(appInsights.defaultClient.trackException)
+     .toHaveBeenLastCalledWith({exception: new Error('Send response failed')});
 });
 
 test('does not destroy context in response send', async () => {

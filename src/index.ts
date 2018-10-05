@@ -2,28 +2,41 @@ import { Client, DeviceMethodResponse } from 'azure-iot-device';
 import { Mqtt } from 'azure-iot-device-mqtt';
 import { exec } from 'child_process';
 import { promisify } from 'util';
+import * as appInsights from 'applicationinsights';
 
-const log = (...args: Array<any>) => console.log(new Date().toISOString(), ...args);
+const log = (...args: Array<any>) => {
+    appInsights.defaultClient.trackTrace({message: args[0]});
+    console.log(new Date().toISOString(), ...args);
+};
+
 const execAsync = promisify(exec);
 
 async function execAndResponse(argument: string, description: string, response: DeviceMethodResponse): Promise<void> {
+    const startTime = Date.now();
     log(description);
     let msg: string;
-    let code: number;
+    let resultCode: number;
     try {
         await execAsync(`steuerung ${argument}`);
         msg = `send ${description} to the plug socket`;
-        code = 200;
+        resultCode = 200;
     } catch (e) {
+        appInsights.defaultClient.trackException({exception: e});
         msg = `failed to send ${description}. Error: "${e}"`;
-        code = 500;
+        resultCode = 500;
         console.error(msg);
     }
     try {
-        await promisify((cb: (err?: Error) => void) => response.send(code, msg, cb))();
+        await promisify((cb: (err?: Error) => void) => response.send(resultCode, msg, cb))();
+        const duration = Date.now() - startTime;
+        appInsights.defaultClient.trackRequest(
+            {url: `mqtts://espresso/${argument}`,
+            name: `steuerung ${argument}`,
+            duration,
+            resultCode,
+            success: resultCode === 200});
     } catch (e) {
-        console.error(`Error sending response: ${e}`);
-        throw e;
+        appInsights.defaultClient.trackException({exception: e});
     }
 }
 

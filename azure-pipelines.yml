@@ -1,0 +1,23 @@
+phases:
+- phase: Phase_1
+  displayName: Node
+  queue:
+    name: Hosted Ubuntu 1604
+
+  steps:
+  - bash: 'docker run --rm --privileged multiarch/qemu-user-static:register --reset'
+    displayName: 'docker run multiarch/qemu-user-static:register'
+
+  - task: Docker@0
+    displayName: 'Build an image'
+    inputs:
+      containerregistrytype: 'Container Registry'
+      dockerRegistryConnection: 'docker hub sschoof'
+
+  - task: Docker@0
+    displayName: 'Push an image'
+    inputs:
+      containerregistrytype: 'Container Registry'
+      dockerRegistryConnection: 'docker hub sschoof'
+      action: 'Push an image'
+

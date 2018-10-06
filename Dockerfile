@@ -2,7 +2,7 @@ FROM resin/rpi-raspbian as node
 
 ENV NODE_VERSION 8.12.0
 
-RUN curl curl -fsSL --compressed "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-armv6l.tar.xz" | \
+RUN curl -sSL --compressed "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-armv6l.tar.xz" | \
     tar -xf - --directory /usr/local --xz --strip 1 --exclude CHANGELOG.md --exclude README.md --exclude LICENSE
 
 FROM resin/rpi-raspbian as cppbuilder
@@ -30,8 +30,6 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
-
-COPY --from=cppbuilder /usr/src/app/steuerung /usr/local/bin
 
 RUN npm run build \
  && npm run test \

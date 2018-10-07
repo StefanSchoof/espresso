@@ -5,7 +5,8 @@
   "scripts": {
     "test": "jest",
     "build": "webpack",
-    "start": "webpack --mode development && cd dist && func start"
+    "start": "webpack --mode development && cd dist && func start",
+    "lint": "tslint -c tslint.json 'src/**/*.ts'"
   },
   "author": "Stefan Schoof",
   "license": "Unlicense",
@@ -36,6 +37,7 @@
     "copy-webpack-plugin": "^4.5.2",
     "jest": "^23.6.0",
     "ts-jest": "^23.10.3",
+    "tslint": "^5.11.0",
     "typescript": "^3.1.1",
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.2"

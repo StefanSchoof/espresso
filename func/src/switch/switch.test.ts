@@ -6,5 +6,9 @@ test('returns Hello World', async () => {
 
     await run(context, {method: HttpMethod.Get});
 
-    expect(context.res!.body).toBe('Hello World');
+    expect(context.res)
+      .not
+      .toBeNull();
+    expect(context.res!.body)
+      .toBe('Hello World');
   });

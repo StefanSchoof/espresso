@@ -22,7 +22,7 @@ phases:
       containerregistrytype: 'Container Registry'
       dockerRegistryConnection: 'docker hub sschoof'
       action: 'Push an image'
-      imageName: 'stefanschoof/espresso:$(branch)'
+      imageName: 'stefanschoof/espresso:$(branchname)'
 
   - task: Docker@0
     displayName: 'Push image cache node'

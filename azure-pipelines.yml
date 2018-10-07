@@ -14,7 +14,7 @@ phases:
       containerregistrytype: 'Container Registry'
       dockerRegistryConnection: 'docker hub sschoof'
       action: 'Push an image'
-      image: 'stefanschoof/espresso:build$(Build.BuildId)'
+      imageName: 'stefanschoof/espresso:build$(Build.BuildId)'
 
   - task: Docker@0
     displayName: 'Push image branch'
@@ -22,7 +22,7 @@ phases:
       containerregistrytype: 'Container Registry'
       dockerRegistryConnection: 'docker hub sschoof'
       action: 'Push an image'
-      image: 'stefanschoof/espresso:build$(branch)'
+      imageName: 'stefanschoof/espresso:$(branch)'
 
   - task: Docker@0
     displayName: 'Push image cache node'
@@ -30,7 +30,7 @@ phases:
       containerregistrytype: 'Container Registry'
       dockerRegistryConnection: 'docker hub sschoof'
       action: 'Push an image'
-      image: 'stefanschoof/espresso:build-cache-node'
+      imageName: 'stefanschoof/espresso:build-cache-node'
 
   - task: Docker@0
     displayName: 'Push image cache cppbuilder'
@@ -38,7 +38,7 @@ phases:
       containerregistrytype: 'Container Registry'
       dockerRegistryConnection: 'docker hub sschoof'
       action: 'Push an image'
-      image: 'stefanschoof/espresso:build-cache-cppbuilder'
+      imageName: 'stefanschoof/espresso:build-cache-cppbuilder'
 
   - task: Docker@0
     displayName: 'Push image cache builder'
@@ -46,4 +46,4 @@ phases:
       containerregistrytype: 'Container Registry'
       dockerRegistryConnection: 'docker hub sschoof'
       action: 'Push an image'
-      image: 'stefanschoof/espresso:build-cache-builder'
+      imageName: 'stefanschoof/espresso:build-cache-builder'

@@ -5,7 +5,7 @@ phases:
     name: Hosted Ubuntu 1604
 
   steps:
-  - bash: ./ 'dockerbuild.sh'
+  - bash: ./dockerbuild.sh
     displayName: 'docker build'
 
   - task: Docker@0

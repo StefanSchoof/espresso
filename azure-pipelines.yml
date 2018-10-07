@@ -23,6 +23,7 @@ phases:
       dockerRegistryConnection: 'docker hub sschoof'
       action: 'Push an image'
       imageName: 'stefanschoof/espresso:$(branchname)'
+    enabled: false
 
   - task: Docker@0
     displayName: 'Push image cache node'

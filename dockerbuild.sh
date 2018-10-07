@@ -1,4 +1,4 @@
-branch=${BUILD_SOURCEBRANCH:-$(git rev-parse --abbrev-ref HEAD)}
+branch=$(basename ${BUILD_SOURCEBRANCH:-$(git rev-parse --abbrev-ref HEAD)})
 echo "##vso[task.setvariable variable=branchname]$branch"
 targets=( node cppbuilder builder )
 image="stefanschoof/espresso"

@@ -5,19 +5,45 @@ phases:
     name: Hosted Ubuntu 1604
 
   steps:
-  - bash: 'docker run --rm --privileged multiarch/qemu-user-static:register --reset'
-    displayName: 'docker run multiarch/qemu-user-static:register'
+  - bash: ./dockerbuild.sh
+    displayName: 'docker build'
 
   - task: Docker@0
-    displayName: 'Build an image'
-    inputs:
-      containerregistrytype: 'Container Registry'
-      dockerRegistryConnection: 'docker hub sschoof'
-
-  - task: Docker@0
-    displayName: 'Push an image'
+    displayName: 'Push image build'
     inputs:
       containerregistrytype: 'Container Registry'
       dockerRegistryConnection: 'docker hub sschoof'
       action: 'Push an image'
+      imageName: 'stefanschoof/espresso:build$(Build.BuildId)'
 
+  - task: Docker@0
+    displayName: 'Push image branch'
+    inputs:
+      containerregistrytype: 'Container Registry'
+      dockerRegistryConnection: 'docker hub sschoof'
+      action: 'Push an image'
+      imageName: 'stefanschoof/espresso:$(branchname)'
+
+  - task: Docker@0
+    displayName: 'Push image cache node'
+    inputs:
+      containerregistrytype: 'Container Registry'
+      dockerRegistryConnection: 'docker hub sschoof'
+      action: 'Push an image'
+      imageName: 'stefanschoof/espresso:build-cache-node'
+
+  - task: Docker@0
+    displayName: 'Push image cache cppbuilder'
+    inputs:
+      containerregistrytype: 'Container Registry'
+      dockerRegistryConnection: 'docker hub sschoof'
+      action: 'Push an image'
+      imageName: 'stefanschoof/espresso:build-cache-cppbuilder'
+
+  - task: Docker@0
+    displayName: 'Push image cache builder'
+    inputs:
+      containerregistrytype: 'Container Registry'
+      dockerRegistryConnection: 'docker hub sschoof'
+      action: 'Push an image'
+      imageName: 'stefanschoof/espresso:build-cache-builder'

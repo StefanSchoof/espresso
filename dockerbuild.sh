@@ -20,7 +20,8 @@ then
   buildtag="-t $image:build$BUILD_BUILDID "
 fi
 
-docker build $cachefrom \
-  --cache-from $image:$branch \
+docker pull $image:$branch
+docker build --cache-from $image:$branch \
+  $cachefrom \
   $buildtag \
   -t $image:$branch .

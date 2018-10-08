@@ -1,12 +1,11 @@
-FROM resin/rpi-raspbian:jessie-20180815 as node
-# latest has pull problems on rpi1, see https://github.com/resin-io-library/resin-rpi-raspbian/issues/82
+FROM resin/rpi-raspbian as node
 
 ENV NODE_VERSION 8.12.0
 
 RUN curl -sSL --compressed "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-armv6l.tar.xz" | \
     tar -xf - --directory /usr/local --xz --strip 1 --exclude CHANGELOG.md --exclude README.md --exclude LICENSE
 
-FROM resin/rpi-raspbian:jessie-20180815 as cppbuilder
+FROM resin/rpi-raspbian as cppbuilder
 
 WORKDIR /usr/src/app
 

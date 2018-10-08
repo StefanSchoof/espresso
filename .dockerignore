@@ -4,3 +4,5 @@ docker-compose.yml
 .gitignore
 dist
 Dockerfile
+dockerbuild.sh
+azure-pipelines.yml

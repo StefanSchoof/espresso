@@ -74,12 +74,9 @@ test('log an error if response fails', async () => {
   const response = {
     send: jest.fn((code, payload, done) => done(e))
   };
-//  jest.spyOn(global.console, 'error');
 
   await mockDeviceMethods.onSwitchOff({}, response);
 
-//  expect(console.error)
-//    .toHaveBeenLastCalledWith('Error sending response: Error: Send response failed');
   expect(appInsights.defaultClient.trackException)
      .toHaveBeenLastCalledWith({exception: new Error('Send response failed')});
 });
@@ -97,6 +94,4 @@ test('does not destroy context in response send', async () => {
   await expect(mockDeviceMethods.onSwitchOff({}, response))
     .resolves
     .toBe(undefined);
-    // .not
-    // .toThrow();
 });

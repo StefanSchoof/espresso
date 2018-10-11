@@ -111,8 +111,8 @@ describe('index', () => {
 
     expect(appInsights.defaultClient.trackRequest)
       .toHaveBeenLastCalledWith({
-        url: `mqtts://espresso/0`,
-        name: `steuerung 0`,
+        url: 'mqtts://espresso/0',
+        name: 'steuerung 0',
         duration: expect.anything(),
         resultCode: 200,
         success: true});

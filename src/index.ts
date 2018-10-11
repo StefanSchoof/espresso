@@ -28,16 +28,16 @@ async function execAndResponse(argument: string, description: string, response: 
     }
     try {
         await promisify((cb: (err?: Error) => void) => response.send(resultCode, msg, cb))();
-        const duration = Date.now() - startTime;
-        appInsights.defaultClient.trackRequest(
-            {url: `mqtts://espresso/${argument}`,
-            name: `steuerung ${argument}`,
-            duration,
-            resultCode,
-            success: resultCode === 200});
     } catch (e) {
         appInsights.defaultClient.trackException({exception: e});
     }
+    const duration = Date.now() - startTime;
+    appInsights.defaultClient.trackRequest(
+        {url: `mqtts://espresso/${argument}`,
+        name: `steuerung ${argument}`,
+        duration,
+        resultCode,
+        success: resultCode === 200});
 }
 
 export function init(connectionString?: string): void {

@@ -48,3 +48,23 @@ phases:
       dockerRegistryConnection: 'docker hub sschoof'
       action: 'Push an image'
       imageName: 'stefanschoof/espresso:build-cache-builder'
+
+- phase: Phase_2
+  displayName: function
+  queue:
+    name: Hosted Ubuntu 1604
+
+  steps:
+  - bash: |
+     npm install
+     npm test
+     npm build
+    workingDirectory: func
+    displayName: 'Build'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: func'
+    inputs:
+      PathtoPublish: func/dist
+      ArtifactName: func
+

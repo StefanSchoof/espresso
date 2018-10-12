@@ -5,7 +5,7 @@ phases:
     name: Hosted Ubuntu 1604
 
   steps:
-  - bash: ./node/dockerbuild.sh
+  - bash: ./dockerbuild.sh
     workingDirectory: node
     displayName: 'docker build'
 

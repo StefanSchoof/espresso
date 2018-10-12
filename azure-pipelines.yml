@@ -58,7 +58,7 @@ phases:
   - bash: |
      npm install
      npm test
-     npm build
+     npm run build
     workingDirectory: func
     displayName: 'Build'
 

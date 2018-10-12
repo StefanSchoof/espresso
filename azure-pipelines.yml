@@ -6,6 +6,7 @@ phases:
 
   steps:
   - bash: ./node/dockerbuild.sh
+    workingDirectory: node
     displayName: 'docker build'
 
   - task: Docker@0

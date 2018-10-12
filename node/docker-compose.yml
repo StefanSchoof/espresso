@@ -11,3 +11,5 @@ services:
       - /dev/mem
     environment:
       - ConnectionString=${ConnectionString}
+      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
+

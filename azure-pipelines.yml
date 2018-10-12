@@ -1,16 +1,49 @@
-# Docker image
-# Build a Docker image to run, deploy, or push to a container registry.
-# Add steps that use Docker Compose, tag images, push to a registry, run an image, and more:
-# https://docs.microsoft.com/vsts/pipelines/languages/docker
+phases:
+- phase: Phase_1
+  displayName: Node
+  queue:
+    name: Hosted Ubuntu 1604
 
-pool:
-  vmImage: 'Ubuntu 16.04'
+  steps:
+  - bash: ./node/dockerbuild.sh
+    displayName: 'docker build'
 
-variables:
-  imageName: 'stefanschoof/espresso:$(build.buildId)'
+  - task: Docker@0
+    displayName: 'Push image build'
+    inputs:
+      containerregistrytype: 'Container Registry'
+      dockerRegistryConnection: 'docker hub sschoof'
+      action: 'Push an image'
+      imageName: 'stefanschoof/espresso:build$(Build.BuildId)'
 
-steps:
-- script: cd node
-- script: docker run --rm --privileged multiarch/qemu-user-static:register --reset
-- script: docker build -f Dockerfile -t $(imageName) .
-  displayName: 'docker build'
+  - task: Docker@0
+    displayName: 'Push image branch'
+    inputs:
+      containerregistrytype: 'Container Registry'
+      dockerRegistryConnection: 'docker hub sschoof'
+      action: 'Push an image'
+      imageName: 'stefanschoof/espresso:$(branchname)'
+
+  - task: Docker@0
+    displayName: 'Push image cache node'
+    inputs:
+      containerregistrytype: 'Container Registry'
+      dockerRegistryConnection: 'docker hub sschoof'
+      action: 'Push an image'
+      imageName: 'stefanschoof/espresso:build-cache-node'
+
+  - task: Docker@0
+    displayName: 'Push image cache cppbuilder'
+    inputs:
+      containerregistrytype: 'Container Registry'
+      dockerRegistryConnection: 'docker hub sschoof'
+      action: 'Push an image'
+      imageName: 'stefanschoof/espresso:build-cache-cppbuilder'
+
+  - task: Docker@0
+    displayName: 'Push image cache builder'
+    inputs:
+      containerregistrytype: 'Container Registry'
+      dockerRegistryConnection: 'docker hub sschoof'
+      action: 'Push an image'
+      imageName: 'stefanschoof/espresso:build-cache-builder'

@@ -59,6 +59,7 @@ phases:
      npm install
      npm test
      npm run build
+     npm run lint
     workingDirectory: func
     displayName: 'Build'
 

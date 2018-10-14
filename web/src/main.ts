@@ -29,11 +29,17 @@ function createButton(arg: 'on' | 'off', title: string): HTMLButtonElement {
 }
 
 async function warmUp(): Promise<void> {
-    
+    const status = document.getElementById("status")!;
+    status.textContent = "Aufwärmen...";
+    try {
+        await fetch(`${serviceUrl}api/switch`);
+        status.textContent = "Aufgewärmt";
+    } catch {
+        status.textContent = "Fehler beim Aufwärmen";
+    }
 }
 
 function component() {
-    warmUp()
     const div = document.createElement('div');
     div.appendChild(createButton('on', 'An'));
     div.appendChild(document.createElement('br'));
@@ -48,4 +54,5 @@ function component() {
 
 export function init() {
     document.body.appendChild(component());
+    warmUp();
 }

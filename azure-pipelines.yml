@@ -81,6 +81,8 @@ phases:
      npm run build
     workingDirectory: web
     displayName: 'Build'
+    env:
+      FUNCTIONS_CODE: $(functions.code)
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: web'

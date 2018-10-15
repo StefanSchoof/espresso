@@ -1,11 +1,12 @@
 declare var process: {
     env: {
-        NODE_ENV: string
+        NODE_ENV: string;
+        FUNCTIONS_CODE: string;
     }
 }
 
 const serviceUrl = process.env.NODE_ENV === 'development' ? '/' : 'https://espressopi.azurewebsites.net/';
-const code = 'D5yBJ8nLAyDxRYmVS2ABS4tpEfaeaXaUDWoQPzqA3Z0Jo5xVGLGANA==';
+const code = process.env.FUNCTIONS_CODE;
 
 function createButton(arg: 'on' | 'off', title: string): HTMLButtonElement {
     let button = document.createElement('button');

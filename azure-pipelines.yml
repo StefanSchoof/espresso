@@ -59,6 +59,7 @@ phases:
      npm install
      npm test
      npm run build
+     npm run lint
     workingDirectory: func
     displayName: 'Build'
 
@@ -67,7 +68,6 @@ phases:
     inputs:
       PathtoPublish: func/dist
       ArtifactName: func
-
 
 - phase: Phase_3
   displayName: web

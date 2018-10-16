@@ -69,3 +69,25 @@ phases:
       PathtoPublish: func/dist
       ArtifactName: func
 
+- phase: Phase_3
+  displayName: web
+  queue:
+    name: Hosted Ubuntu 1604
+
+  steps:
+  - bash: |
+     npm install
+     npm test
+     npm run build
+     npm run lint
+    workingDirectory: web
+    displayName: 'Build'
+    env:
+      FUNCTIONS_CODE: $(functions.code)
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: web'
+    inputs:
+      PathtoPublish: web/dist
+      ArtifactName: web
+

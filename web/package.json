@@ -1,0 +1,44 @@
+{
+  "name": "espresso-web",
+  "version": "1.0.0",
+  "description": "A project to control my espresso machine with a raspberry pi. This is the static webpage",
+  "scripts": {
+    "test": "jest",
+    "start": "webpack-dev-server",
+    "build": "webpack --mode production",
+    "lint": "tslint -c tslint.json 'src/**/*.ts'"
+  },
+  "author": "Stefan Schoof",
+  "license": "Unlicense",
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  },
+  "dependencies": {
+    "application-insights-fetch-monitor": "^1.1.0",
+    "applicationinsights-js": "^1.0.20"
+  },
+  "devDependencies": {
+    "@types/applicationinsights-js": "^1.0.7",
+    "@types/jest": "^23.3.5",
+    "awesome-typescript-loader": "^5.2.1",
+    "html-webpack-plugin": "^3.2.0",
+    "jest": "^23.6.0",
+    "ts-jest": "^23.10.4",
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.3",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.9"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "name": "espresso-func",
+  "version": "1.0.0",
+  "description": "A project to control my espresso machine with a raspberry pi",
+  "scripts": {
+    "test": "jest",
+    "build": "webpack",
+    "start": "webpack --mode development && cd dist && func start",
+    "lint": "tslint -c tslint.json 'src/**/*.ts'"
+  },
+  "author": "Stefan Schoof",
+  "license": "Unlicense",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/StefanSchoof/espresso.git"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.3",
+    "@types/node": "^8.10.36",
+    "awesome-typescript-loader": "^5.2.1",
+    "azure-functions-typescript": "github:christopheranderson/azure-functions-typescript",
+    "azure-iothub": "^1.7.4",
+    "azure-keyvault": "^3.0.4",
+    "backend-tslint-rules": "^1.4.0",
+    "copy-webpack-plugin": "^4.5.2",
+    "jest": "^23.6.0",
+    "ms-rest-azure": "^2.5.9",
+    "ts-jest": "^23.10.3",
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.1",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2"
+  }
+}

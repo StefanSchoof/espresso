@@ -1,0 +1,9 @@
+{
+  "extends": ["backend-tslint-rules"],
+  "rules": {
+    "curly": true,
+    "no-console": false,
+    "no-implicit-dependencies": false,
+    "no-non-null-assertion":false
+  }
+}

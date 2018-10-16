@@ -1,87 +1,92 @@
-import { init } from './main';
+import { init } from "./main";
 
 declare function setImmediate(cb: () => void): void;
-const immediate = () => new Promise(resolve => setImmediate(resolve));
+const immediate = () => new Promise((resolve) => setImmediate(resolve));
 
-describe('main', ()=> {
+describe("main", () => {
     beforeAll(() => {
         window.fetch = jest.fn(() => Promise.resolve({ok: true}));
     });
 
-    describe('click', () => {
+    describe("click", () => {
         let on: HTMLButtonElement;
         let off: HTMLButtonElement;
 
         beforeEach(() => {
             if (document.body.firstChild !== null) {
-                document.body.removeChild(document.body.firstChild)
+                document.body.removeChild(document.body.firstChild);
             }
             jest.clearAllMocks();
             init();
-            on = Array.from(document.body.querySelectorAll('button') as NodeListOf<HTMLButtonElement>).find((e) => e.textContent === "An")!;
-            off = Array.from(document.body.querySelectorAll('button') as NodeListOf<HTMLButtonElement>).find((e) => e.textContent === "Aus")!;
+            const buttons = Array.from(document.body.querySelectorAll("button") as NodeListOf<HTMLButtonElement>);
+            on = buttons.find((e) => e.textContent === "An")!;
+            off = buttons.find((e) => e.textContent === "Aus")!;
         });
 
-        test('renders two buttons', () => {
-            expect(document.body.querySelectorAll('button')).toHaveLength(2);
+        test("renders two buttons", () => {
+            expect(document.body.querySelectorAll("button")).toHaveLength(2);
         });
-    
-        test('send request after on click', async () => {
+
+        test("send request after on click", async () => {
             on.click();
             expect((document.getElementById("status") as HTMLSpanElement).textContent).toBe("Schalte Maschine an");
             await immediate();
 
-            expect(window.fetch).toHaveBeenCalledWith(expect.stringContaining("azurewebsites.net/api/switch?on"), {method: "POST"});
+            expect(window.fetch)
+                .toHaveBeenCalledWith(expect.stringContaining("azurewebsites.net/api/switch?on"), {method: "POST"});
             expect((document.getElementById("status") as HTMLSpanElement).textContent).toBe("Maschine an");
         });
 
-        test('send request after off click', async () => {
+        test("send request after off click", async () => {
             off.click();
             expect((document.getElementById("status") as HTMLSpanElement).textContent).toBe("Schalte Maschine aus");
             await immediate();
 
-            expect(window.fetch).toHaveBeenCalledWith(expect.stringContaining("azurewebsites.net/api/switch?off"), {method: "POST"});
+            expect(window.fetch)
+                .toHaveBeenCalledWith(expect.stringContaining("azurewebsites.net/api/switch?off"), {method: "POST"});
             expect((document.getElementById("status") as HTMLSpanElement).textContent).toBe("Maschine aus");
         });
 
-        test('show error if request after on click fails on network error', async () => {
-            window.fetch = jest.fn(() => { throw new Error("fetch faild") });
+        test("show error if request after on click fails on network error", async () => {
+            window.fetch = jest.fn(() => { throw new Error("fetch faild"); });
 
             on.click();
             await immediate();
 
-            expect((document.getElementById("status") as HTMLSpanElement).textContent).toBe(`Netzwerkfehler: fetch faild`);
+            expect((document.getElementById("status") as HTMLSpanElement).textContent)
+                .toBe(`Netzwerkfehler: fetch faild`);
         });
 
-        test('show error if request after on click is not ok', async () => {
+        test("show error if request after on click is not ok", async () => {
             window.fetch = jest.fn(() => Promise.resolve({ok: false, text: () => Promise.resolve("Not working")}));
 
             on.click();
             await immediate();
 
-            expect((document.getElementById("status") as HTMLSpanElement).textContent).toBe("Fehler vom Service: Not working");
+            expect((document.getElementById("status") as HTMLSpanElement).textContent)
+                .toBe("Fehler vom Service: Not working");
         });
     });
 
-    describe('warmup', () => {
-        test('warms the function app on page load', async () => {
+    describe("warmup", () => {
+        test("warms the function app on page load", async () => {
             init();
-            expect(window.fetch).toHaveBeenCalledWith(expect.stringMatching('.azurewebsites.net/api/switch*$'));
-            expect((document.getElementById("status") as HTMLSpanElement).textContent).toBe("Aufwärmen...")
+            expect(window.fetch).toHaveBeenCalledWith(expect.stringMatching(".azurewebsites.net/api/switch*$"));
+            expect((document.getElementById("status") as HTMLSpanElement).textContent).toBe("Aufwärmen...");
 
             await immediate();
 
-            expect((document.getElementById("status") as HTMLSpanElement).textContent).toBe("Aufgewärmt")
+            expect((document.getElementById("status") as HTMLSpanElement).textContent).toBe("Aufgewärmt");
         });
 
-        test('shows an error if warm up fails', async () => {
-            window.fetch = jest.fn(() => { throw new Error("fetch faild") });
+        test("shows an error if warm up fails", async () => {
+            window.fetch = jest.fn(() => { throw new Error("fetch faild"); });
 
             init();
 
             await immediate();
 
-            expect((document.getElementById("status") as HTMLSpanElement).textContent).toBe("Fehler beim Aufwärmen")
+            expect((document.getElementById("status") as HTMLSpanElement).textContent).toBe("Fehler beim Aufwärmen");
         });
     });
 });

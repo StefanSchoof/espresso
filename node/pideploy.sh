@@ -1,0 +1,6 @@
+cat > .env << EOF
+CONNECTION_STRING=$1
+APPINSIGHTS_INSTRUMENTATIONKEY=$2
+TAG=build$BUILD_BUILDID
+EOF
+docker-compose up -d

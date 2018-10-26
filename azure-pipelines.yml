@@ -52,7 +52,10 @@ phases:
   - task: CopyFiles@2
     displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
     inputs:
-      Contents: 'node/docker-compose.yml'
+      SourceFolder: '$(system.defaultworkingdirectory)/node'
+      Contents: |
+        docker-compose.yml
+        pideploy.sh
       TargetFolder: '$(build.artifactstagingdirectory)'
 
   - task: PublishBuildArtifacts@1

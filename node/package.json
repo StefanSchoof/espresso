@@ -31,12 +31,12 @@
   "greenkeeper": {
     "ignore": [
       "@types/node"
-     ]
+    ]
   },
   "dependencies": {
     "applicationinsights": "^1.0.5",
-    "azure-iot-device": "^1.7.4",
-    "azure-iot-device-mqtt": "^1.7.4"
+    "azure-iot-device": "^1.8.1",
+    "azure-iot-device-mqtt": "^1.8.1"
   },
   "devDependencies": {
     "@types/jest": "^23.3.3",

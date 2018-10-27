@@ -50,9 +50,9 @@ phases:
       imageName: 'stefanschoof/espresso:build-cache-builder'
 
   - task: CopyFiles@2
-    displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+    displayName: 'Copy Files to staging'
     inputs:
-      SourceFolder: '$(system.defaultworkingdirectory)/node'
+      SourceFolder: 'node'
       Contents: |
         docker-compose.yml
         pideploy.sh

@@ -27,7 +27,7 @@ async function execAndResponse(argument: string, description: string, response: 
         console.error(msg);
     }
     try {
-        await promisify((cb: (err?: Error) => void) => response.send(resultCode, msg, cb))();
+        await response.send(resultCode, msg);
     } catch (e) {
         appInsights.defaultClient.trackException({exception: e});
     }
@@ -45,8 +45,11 @@ export function init(connectionString?: string): void {
         throw new Error('connectionString needs a value');
     }
     const deviceClient: Client = Client.fromConnectionString(connectionString, Mqtt);
-    deviceClient.onDeviceMethod('onSwitchOn', (request, response) => execAndResponse('1', 'power on', response));
-    deviceClient.onDeviceMethod('onSwitchOff', (request, response) => execAndResponse('0', 'power off', response));
+    // tslint ignore until https://github.com/Azure/azure-iot-sdk-node/issues/404 is resolved
+    // tslint:disable-next-line
+    deviceClient.onDeviceMethod('onSwitchOn', (request, response) => execAndResponse('1', 'power on', response!));
+    // tslint:disable-next-line
+    deviceClient.onDeviceMethod('onSwitchOff', (request, response) => execAndResponse('0', 'power off', response!));
 
     log('Device connect to iot hub');
 }

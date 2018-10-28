@@ -1,8 +1,8 @@
 cd espresso
+# put secure varibales into env file
 cat > .env << EOF
 CONNECTION_STRING=$1
 APPINSIGHTS_INSTRUMENTATIONKEY=$2
-TAG=build$3
 EOF
 # docker compose use stderr for normal mesages and devops does not like that
-docker-compose --no-ansi up -d 2>&1
+TAG=build$3 docker-compose --no-ansi up -d 2>&1

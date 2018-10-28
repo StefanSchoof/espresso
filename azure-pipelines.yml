@@ -49,6 +49,21 @@ phases:
       action: 'Push an image'
       imageName: 'stefanschoof/espresso:build-cache-builder'
 
+  - task: CopyFiles@2
+    displayName: 'Copy Files to staging'
+    inputs:
+      SourceFolder: 'node'
+      Contents: |
+        docker-compose.yml
+        pideploy.sh
+      TargetFolder: '$(build.artifactstagingdirectory)'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: drop'
+    inputs:
+      PathtoPublish: '$(build.artifactstagingdirectory)'
+      ArtifactName: node
+
 - phase: Phase_2
   displayName: function
   queue:
@@ -90,4 +105,3 @@ phases:
     inputs:
       PathtoPublish: web/dist
       ArtifactName: web
-

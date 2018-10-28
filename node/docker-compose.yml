@@ -1,15 +1,14 @@
 version: '3'
 services:
   espresso:
-    image: stefanschoof/espresso
+    image: stefanschoof/espresso:${TAG:-latest}
     restart: unless-stopped
     container_name: espresso
-    build: .
     cap_add: 
       - SYS_RAWIO
     devices: 
       - /dev/mem
     environment:
-      - ConnectionString=${ConnectionString}
+      - ConnectionString=${CONNECTION_STRING}
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
 

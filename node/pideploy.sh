@@ -5,4 +5,4 @@ APPINSIGHTS_INSTRUMENTATIONKEY=$2
 TAG=build$3
 EOF
 # docker compose use stderr for normal mesages and devops does not like that
-docker-compose --no-ansi up -d 2>&1
+docker-compose up -d 2>&1

@@ -17,10 +17,10 @@ echo "websiteUrl: $websiteUrl"
 iothub=$(terraform output iothub)
 deviceId="espressoPi"
 az extension add --name azure-cli-iot-ext
-if ! az iot hub device-identity show --hub-name $iothub --device-id $deviceId > /dev/null
+if ! az iot hub device-identity show --hub-name $iothub --device-id $deviceId &> /dev/null
 then
     echo "Add $deviceId to iot hub"
-    az iot hub device-identity create --hub-name $iothub --device-id $deviceId
+    az iot hub device-identity create --hub-name $iothub --device-id $deviceId > /dev/null
 fi
 deviceConnectionString=$(az iot hub device-identity show-connection-string --hub-name $iothub --device-id $deviceId --output tsv)
 

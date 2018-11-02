@@ -34,17 +34,17 @@
     ]
   },
   "dependencies": {
-    "applicationinsights": "^1.0.5",
+    "applicationinsights": "^1.0.6",
     "azure-iot-device": "^1.8.1",
     "azure-iot-device-mqtt": "^1.8.1"
   },
   "devDependencies": {
-    "@types/jest": "^23.3.3",
-    "@types/node": "^8.10.34",
+    "@types/jest": "^23.3.9",
+    "@types/node": "^8.10.37",
     "backend-tslint-rules": "^1.4.0",
     "jest": "^23.6.0",
     "ts-jest": "^23.10.4",
     "tslint": "^5.11.0",
-    "typescript": "^3.1.1"
+    "typescript": "^3.1.6"
   }
 }

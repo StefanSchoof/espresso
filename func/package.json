@@ -34,20 +34,20 @@
     ]
   },
   "devDependencies": {
-    "@types/jest": "^23.3.3",
-    "@types/node": "^8.10.36",
+    "@types/jest": "^23.3.9",
+    "@types/node": "^8.10.37",
     "awesome-typescript-loader": "^5.2.1",
     "azure-functions-typescript": "github:christopheranderson/azure-functions-typescript",
     "azure-iothub": "^1.7.4",
     "azure-keyvault": "^3.0.4",
     "backend-tslint-rules": "^1.4.0",
-    "copy-webpack-plugin": "^4.5.2",
+    "copy-webpack-plugin": "^4.6.0",
     "jest": "^23.6.0",
     "ms-rest-azure": "^2.5.9",
-    "ts-jest": "^23.10.3",
+    "ts-jest": "^23.10.4",
     "tslint": "^5.11.0",
-    "typescript": "^3.1.1",
-    "webpack": "^4.20.2",
+    "typescript": "^3.1.6",
+    "webpack": "^4.23.1",
     "webpack-cli": "^3.1.2"
   }
 }

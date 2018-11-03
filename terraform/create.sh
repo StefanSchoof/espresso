@@ -1,5 +1,10 @@
 #!/bin/bash -e
-terraform apply
+. terraformfunctions.sh
+
+terraform init -backend-config=backend.conf -input=false
+terraform workspace select test
+terraform plan -out=tfplan -input=false
+terraform apply -input=false tfplan
 resource_group=$(terraform output resource_group)
 storage_account=$(terraform output storage_account)
 

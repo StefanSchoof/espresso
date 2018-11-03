@@ -1,3 +1,6 @@
 .terraform
 terraform.tfstate*
 variables.tf
+azurerm.env
+backend.conf
+tfplan

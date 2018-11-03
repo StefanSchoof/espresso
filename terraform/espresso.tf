@@ -1,15 +1,10 @@
 # Configure the Azure Provider
 provider "azurerm" {
     version =  "~> 1.15"
- }
-
-variable "env" {
-  type = "string"
-  default = "test"
 }
 
 locals {
-  stage = "${var.env == "production" ? "" : "${var.env}" }"
+  stage = "${terraform.workspace == "prod" ? "" : "${terraform.workspace}" }"
 }
 
 data "azurerm_client_config" "current" {}
@@ -33,8 +28,8 @@ resource "azurerm_iothub" "espresso" {
   resource_group_name = "${azurerm_resource_group.espresso.name}"
   location            = "${azurerm_resource_group.espresso.location}"
   sku {
-    name = "${var.env == "production" ? "F1" : "S1"}"
-    tier = "${var.env == "production" ? "Free" : "Standard"}"
+    name = "${terraform.workspace == "prod" ? "F1" : "S1"}"
+    tier = "${terraform.workspace == "prod" ? "Free" : "Standard"}"
     capacity = "1"
   }
 }
@@ -95,7 +90,7 @@ resource "azurerm_key_vault" "keyvault" {
 
   access_policy {
     tenant_id = "${data.azurerm_client_config.current.tenant_id}"
-    object_id = "${var.aad_user_id}"
+    object_id = "${data.azurerm_client_config.current.service_principal_object_id}"
 
     key_permissions = [
     ]

@@ -126,6 +126,7 @@ jobs:
       Contents: |
         *.tf
         *.sh
+        !plan.sh
       TargetFolder: '$(build.artifactstagingdirectory)/terraform'
 
   - task: PublishBuildArtifacts@1

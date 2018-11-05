@@ -2,6 +2,8 @@
 . terraformfunctions.sh
 
 echo $DOWNLOADSECUREFILE1_SECUREFILEPATH
+echo $AGENT_TEMPDIRECTORY
+printenv
 
 terraform init -backend-config=${AGENT_TEMPDIRECTORY:-.}/backend.conf -input=false
 terraform --version

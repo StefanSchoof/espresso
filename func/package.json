@@ -38,7 +38,7 @@
     "@types/node": "^8.10.37",
     "awesome-typescript-loader": "^5.2.1",
     "azure-functions-typescript": "github:christopheranderson/azure-functions-typescript",
-    "azure-iothub": "^1.7.4",
+    "azure-iothub": "^1.7.5",
     "azure-keyvault": "^3.0.4",
     "backend-tslint-rules": "^1.4.0",
     "copy-webpack-plugin": "^4.6.0",

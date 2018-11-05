@@ -1,8 +1,6 @@
-phases:
-- phase: Phase_1
-  displayName: Node
-  queue:
-    name: Hosted Ubuntu 1604
+pipeline:
+- job: node
+  pool: Hosted Ubuntu 1604
 
   steps:
   - bash: ./dockerbuild.sh
@@ -56,18 +54,17 @@ phases:
       Contents: |
         docker-compose.yml
         pideploy.sh
-      TargetFolder: '$(build.artifactstagingdirectory)'
+      TargetFolder: '$(build.artifactstagingdirectory)/node'
 
   - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: drop'
+    displayName: 'Publish Artifact: node'
     inputs:
-      PathtoPublish: '$(build.artifactstagingdirectory)'
+      PathtoPublish: '$(build.artifactstagingdirectory)/node'
       ArtifactName: node
 
-- phase: Phase_2
+- job: function
   displayName: function
-  queue:
-    name: Hosted Ubuntu 1604
+  pool: Hosted Ubuntu 1604
 
   steps:
   - bash: |
@@ -84,10 +81,8 @@ phases:
       PathtoPublish: func/dist
       ArtifactName: func
 
-- phase: Phase_3
-  displayName: web
-  queue:
-    name: Hosted Ubuntu 1604
+- job: web
+  pool: Hosted Ubuntu 1604
 
   steps:
   - bash: |
@@ -105,3 +100,36 @@ phases:
     inputs:
       PathtoPublish: web/dist
       ArtifactName: web
+
+- job: iac
+  pool: Hosted Ubuntu 1604
+
+  steps:
+  - task: DownloadSecureFile@1
+    displayName: 'Download secure file'
+    inputs:
+      secureFile: 'df843c96-fc0e-409f-b3fd-f5a318bee16b'
+
+  - task: DownloadSecureFile@1
+    displayName: 'Download secure file'
+    inputs:
+      secureFile: 'c93bf295-33c5-4902-bab1-0f0e9f2b5b11'
+
+  - bash: ./build.sh
+    workingDirectory: terraform
+    displayName: 'Build'
+
+  - task: CopyFiles@2
+    displayName: 'Copy Files to staging'
+    inputs:
+      SourceFolder: 'terraform'
+      Contents: |
+        *.tf
+        *.sh
+      TargetFolder: '$(build.artifactstagingdirectory)/terraform'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: terraform'
+    inputs:
+      PathtoPublish: '$(build.artifactstagingdirectory)/terraform'
+      ArtifactName: terraform

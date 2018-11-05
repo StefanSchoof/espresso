@@ -1,4 +1,4 @@
-pipeline:
+jobs:
 - job: node
   pool: Hosted Ubuntu 1604
 

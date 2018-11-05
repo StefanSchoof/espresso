@@ -115,9 +115,9 @@ jobs:
     inputs:
       secureFile: 'c93bf295-33c5-4902-bab1-0f0e9f2b5b11'
 
-  - bash: ./build.sh
+  - bash: ./plan.sh
     workingDirectory: terraform
-    displayName: 'Build'
+    displayName: 'Plan'
 
   - task: CopyFiles@2
     displayName: 'Copy Files to staging'

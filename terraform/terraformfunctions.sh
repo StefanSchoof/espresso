@@ -6,6 +6,7 @@ function terraform {
     -e TF_IN_AUTOMATION=true \
     -e TF_WORKSPACE \
     -v $(pwd):/app/ \
+    -v ${AGENT_TEMPDIRECTORY:-$PWD}:/temp/ \
     -w /app/ \
     hashicorp/terraform $@
 }

@@ -136,19 +136,3 @@ resource "azurerm_application_insights" "function" {
   resource_group_name = "${azurerm_resource_group.group.name}"
   application_type    = "web"
 }
-
-output "resource_group" {
-  value = "${azurerm_resource_group.group.name}"
-}
-
-output "storage_account" {
-  value = "${azurerm_storage_account.storage.name}"
-}
-
-output "iothub" {
-  value = "${azurerm_iothub.iothub.name}"
-}
-
-output "function_app" {
-  value = "${azurerm_function_app.function.name}"
-}

@@ -1,4 +1,3 @@
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -22,8 +21,14 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'Espresso'
+            inject: false,
+            template: require('html-webpack-template'),
+            title: 'Espresso',
+            window: {
+                instrumentationKey: '<%INSTRUMENTATION_KEY%>',
+                functionsCode: '<%FUNCTIONS_CODE%>',
+                functionsHostname: '<%FUNCTIONS_HOSTNAME%>'
+            }
         }),
-        new webpack.EnvironmentPlugin(['FUNCTIONS_CODE'])
     ]
 };

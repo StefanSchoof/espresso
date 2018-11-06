@@ -1,12 +1,13 @@
 declare var process: {
     env: {
         NODE_ENV: string;
-        FUNCTIONS_CODE: string;
     },
 };
 
-const serviceUrl = process.env.NODE_ENV === "development" ? "/" : "https://espressopi.azurewebsites.net/";
-const code = process.env.FUNCTIONS_CODE;
+declare const functionsCode: string;
+declare const functionsHostname: string;
+
+const serviceUrl = process.env.NODE_ENV === "development" ? "/" : `https://${functionsHostname}/`;
 
 function createButton(arg: "on" | "off", title: string): HTMLButtonElement {
     const button = document.createElement("button");
@@ -18,7 +19,7 @@ function createButton(arg: "on" | "off", title: string): HTMLButtonElement {
         const status = document.getElementById("status") as HTMLSpanElement;
         status.textContent = `Schalte Maschine ${title.toLocaleLowerCase()}`;
         try {
-            const res = await fetch(`${serviceUrl}api/switch?${arg}&code=${code}`, {method: "POST"});
+            const res = await fetch(`${serviceUrl}api/switch?${arg}&code=${functionsCode}`, {method: "POST"});
             status.textContent = res.ok ?
                 `Maschine ${title.toLocaleLowerCase()}` :
                 `Fehler vom Service: ${await res.text()}`;

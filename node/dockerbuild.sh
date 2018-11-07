@@ -1,3 +1,4 @@
+#!/bin/bash
 # in azure pipeline git is in detached head so git does not know it brach and we take the env var. But these are in the format /ref/head/master, so we take the basename
 branch=$(basename ${BUILD_SOURCEBRANCH:-$(git rev-parse --abbrev-ref HEAD)})
 echo "##vso[task.setvariable variable=branchname]$branch"

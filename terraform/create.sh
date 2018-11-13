@@ -29,5 +29,6 @@ then
 fi
 deviceConnectionString=$(az iot hub device-identity show-connection-string --hub-name $iothub --device-id $deviceId --output tsv)
 
+# currently not supported in terraform, see https://github.com/terraform-providers/terraform-provider-azurerm/issues/1374
 function_app=$(terraform output function_app)
-echo "../depoly.sh -s $storage_account -f $function_app"
+az functionapp cors add -g $resource_group -n $function_app --allowed-origins ${websiteUrl%/}

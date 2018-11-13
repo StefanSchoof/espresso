@@ -17,3 +17,8 @@ output "function_app" {
 output "function_app_hostname" {
   value = "${azurerm_function_app.function.default_hostname}"
 }
+
+output "azurerm_application_insights_web" {
+  value = "${azurerm_application_insights.web.instrumentation_key}"
+  sensitive = true
+}

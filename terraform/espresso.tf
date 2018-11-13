@@ -63,6 +63,7 @@ resource "azurerm_function_app" "function" {
     WEBSITE_RUN_FROM_PACKAGE = "1"
     WEBSITE_NODE_DEFAULT_VERSION = "8.11.1"
     APPINSIGHTS_INSTRUMENTATIONKEY = "${azurerm_application_insights.function.instrumentation_key}"
+    KEYVAULT_URI = "${azurerm_key_vault.keyvault.vault_uri}"
   }
   lifecycle {
     ignore_changes = [
@@ -79,7 +80,15 @@ resource "azurerm_key_vault" "keyvault" {
   resource_group_name         = "${azurerm_resource_group.group.name}"
   tenant_id                   = "${data.azurerm_client_config.current.tenant_id}"
 
-   access_policy {
+  sku {
+    name = "standard"
+  }
+}
+
+resource "azurerm_key_vault_access_policy" "app" {
+   vault_name = "${azurerm_key_vault.keyvault.name}"
+   resource_group_name = "${azurerm_key_vault.keyvault.resource_group_name}"
+
     tenant_id = "${azurerm_function_app.function.identity.0.tenant_id}"
     object_id = "${azurerm_function_app.function.identity.0.principal_id}"
 
@@ -91,7 +100,10 @@ resource "azurerm_key_vault" "keyvault" {
     ]
   }
 
-  access_policy {
+resource "azurerm_key_vault_access_policy" "service" {
+    vault_name = "${azurerm_key_vault.keyvault.name}"
+    resource_group_name = "${azurerm_key_vault.keyvault.resource_group_name}"
+
     tenant_id = "${data.azurerm_client_config.current.tenant_id}"
     object_id = "${data.azurerm_client_config.current.service_principal_object_id}"
 
@@ -104,11 +116,6 @@ resource "azurerm_key_vault" "keyvault" {
       "list",
     ]
   }
-
-  sku {
-    name = "standard"
-  }
-}
 
 resource "azurerm_key_vault_secret" "iotHubConnectionString" {
   name      = "iotHubConnectionString"

@@ -1,5 +1,5 @@
 #!/bin/bash -e
-. terraformfunctions.sh
+. bashfunctions.sh
 
 terraform init -backend-config=/temp/backend.conf -input=false
 terraform --version

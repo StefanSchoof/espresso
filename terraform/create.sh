@@ -1,5 +1,5 @@
 #!/bin/bash -e
-. terraformfunctions.sh
+. bashfunctions.sh
 
 terraform init -backend-config=backend.conf -input=false
 terraform workspace select test

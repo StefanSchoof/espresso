@@ -1,7 +1,7 @@
 #!/bin/bash -e
 . bashfunctions.sh
 
-terraform init -backend-config=backend.conf -input=false
+terraform init -backend-config=/temp/backend.conf -input=false
 terraform workspace select test
 terraform plan -out=tfplan -input=false
 terraform apply -input=false tfplan

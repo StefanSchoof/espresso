@@ -2,7 +2,7 @@
 . ./bashfunctions.sh
 
 function deployFunc {
-  pushd ../func/dist
+  pushd ../func
   res=$(npx -p azure-functions-core-tools \
     func azure functionapp publish $FUNCTION_APP_NAME)
   popd
@@ -20,8 +20,8 @@ function deployWeb {
       -e "s/<%INSTRUMENTATION_KEY%>/${INSTRUMENTATION_KEY}/" \
       -e "s/<%FUNCTIONS_CODE%>/${FUNCTIONS_CODE//\//\\/}/" `#the many / and \ escape possible /` \
       -e "s/<%FUNCTIONS_HOSTNAME%>/${FUNCTIONS_HOSTNAME}/" \
-      ../web/dist/index.html
-  az storage blob upload-batch -s ../web/dist -d '$web' --account-name $STORAGE_ACCOUNT_NAME
+      ../web/index.html
+  az storage blob upload-batch -s ../web -d '$web' --account-name $STORAGE_ACCOUNT_NAME
 }
 
 deployFunc

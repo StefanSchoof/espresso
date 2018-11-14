@@ -2,9 +2,10 @@
 . ./bashfunctions.sh
 
 function deployFunc {
+  functionAppName=$(terraform output function_app)
   pushd ../func
   res=$(npx -p azure-functions-core-tools \
-    func azure functionapp publish $(terraform output function_app))
+    func azure functionapp publish $functionAppName)
   popd
   FUNCTIONS_CODE=$(echo "$res" | sed 's/^.*code=//;t;d')
   # prevent to get the code into the log

@@ -27,8 +27,14 @@ then
     echo "Add $deviceId to iot hub"
     az iot hub device-identity create --hub-name $iothub --device-id $deviceId > /dev/null
 fi
-deviceConnectionString=$(az iot hub device-identity show-connection-string --hub-name $iothub --device-id $deviceId --output tsv)
+writeDevopsVar "deviceConnectionString" "$(az iot hub device-identity show-connection-string --hub-name $iothub --device-id $deviceId --output tsv)" true
 
 # currently not supported in terraform, see https://github.com/terraform-providers/terraform-provider-azurerm/issues/1374
 function_app=$(terraform output function_app)
-az functionapp cors add -g $resource_group -n $function_app --allowed-origins ${websiteUrl%/}
+if ! az functionapp cors show -g $resource_group -n $function_app --query allowedOrigins --out tsv | grep "${websiteUrl%/}" --quiet
+then
+  echo "add cors"
+  az functionapp cors add -g $resource_group -n $function_app --allowed-origins ${websiteUrl%/}
+fi
+
+writeDevopsVar "nodeInstrumentationKey" "$(terraform output azurerm_application_insights_node)" true

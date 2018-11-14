@@ -1,11 +1,15 @@
 #!/bin/bash -e
+. ./bashfunctions.sh
+
 function deployFunc {
   pushd ../func/dist
   res=$(npx -p azure-functions-core-tools \
     func azure functionapp publish $FUNCTION_APP_NAME)
   popd
   FUNCTIONS_CODE=$(echo "$res" | sed 's/^.*code=//;t;d')
-  echo "${res/$FUNCTIONS_CODE/***}"
+  # prevent to get the code into the log
+  writeDevopsVar "FunctionsCode" "$FUNCTIONS_CODE" true
+  echo "$res"
 }
 
 function deployWeb {

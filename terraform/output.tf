@@ -22,3 +22,8 @@ output "azurerm_application_insights_web" {
   value = "${azurerm_application_insights.web.instrumentation_key}"
   sensitive = true
 }
+
+output "azurerm_application_insights_node" {
+  value = "${azurerm_application_insights.node.instrumentation_key}"
+  sensitive = true
+}

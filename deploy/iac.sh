@@ -27,7 +27,6 @@ then
     echo "Add $deviceId to iot hub"
     az iot hub device-identity create --hub-name $iothub --device-id $deviceId > /dev/null
 fi
-writeDevopsVar "deviceConnectionString" "$(az iot hub device-identity show-connection-string --hub-name $iothub --device-id $deviceId --output tsv)" true
 
 # currently not supported in terraform, see https://github.com/terraform-providers/terraform-provider-azurerm/issues/1374
 function_app=$(terraform output function_app)
@@ -37,4 +36,12 @@ then
   az functionapp cors add -g $resource_group -n $function_app --allowed-origins ${websiteUrl%/}
 fi
 
-writeDevopsVar "nodeInstrumentationKey" "$(terraform output azurerm_application_insights_node)" true
+if [ -n "$KEYVAULTNAME" ]
+then
+  deviceConnectionString="$(az iot hub device-identity show-connection-string --hub-name $iothub --device-id $deviceId --output tsv)"
+  writeDevopsVar DeviceConnectionString "$deviceConnctionString" true
+  az keyvault secret set --vault-name "$KEYVAULTNAME" --name 'DeviceConnectionString' --value "$deviceConnectionString"
+  nodeInstrumentationKey="$(terraform output azurerm_application_insights_node)"
+  writeDevopsVar NodeInstrumentationKey "$nodeInstrumentationKey" true
+  az keyvault secret set --vault-name "$KEYVAULTNAME" --name nodeInstrumentationKey --value "$nodeInstrumentationKey"
+fi

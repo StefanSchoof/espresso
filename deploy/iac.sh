@@ -39,7 +39,7 @@ fi
 if [ -n "$KEYVAULTNAME" ]
 then
   deviceConnectionString="$(az iot hub device-identity show-connection-string --hub-name $iothub --device-id $deviceId --output tsv)"
-  writeDevopsVar DeviceConnectionString "$deviceConnctionString" true
+  writeDevopsVar DeviceConnectionString "$deviceConnectionString" true
   az keyvault secret set --vault-name "$KEYVAULTNAME" --name 'DeviceConnectionString' --value "$deviceConnectionString"
   nodeInstrumentationKey="$(terraform output azurerm_application_insights_node)"
   writeDevopsVar NodeInstrumentationKey "$nodeInstrumentationKey" true

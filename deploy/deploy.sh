@@ -1,6 +1,8 @@
 #!/bin/bash -e
 . ./bashfunctions.sh
 
+export TF_WORKSPACE=${RELEASE_ENVIRONMENTNAME:-test}
+
 function deployFunc {
   functionAppName=$(terraform output function_app)
   pushd ../func

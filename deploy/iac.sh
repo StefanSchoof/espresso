@@ -43,5 +43,5 @@ then
   az keyvault secret set --vault-name "$KEYVAULTNAME" --name 'DeviceConnectionString' --value "$deviceConnectionString"
   nodeInstrumentationKey="$(terraform output azurerm_application_insights_node)"
   writeDevopsVar NodeInstrumentationKey "$nodeInstrumentationKey" true
-  az keyvault secret set --vault-name "$KEYVAULTNAME" --name nodeInstrumentationKey --value "$nodeInstrumentationKey"
+  az keyvault secret set --vault-name "$KEYVAULTNAME" --name NodeInstrumentationKey --value "$nodeInstrumentationKey"
 fi

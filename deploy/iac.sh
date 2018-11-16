@@ -1,8 +1,8 @@
 #!/bin/bash -e
 . bashfunctions.sh
 
+export TF_WORKSPACE=${RELEASE_ENVIRONMENTNAME:-test}
 terraform init -backend-config=/temp/backend.conf -input=false
-terraform workspace select test
 terraform plan -out=tfplan -input=false
 terraform apply -input=false tfplan
 resource_group=$(terraform output resource_group)

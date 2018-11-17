@@ -1,3 +1,7 @@
+declare var global: any;
+global.functionsHostname = "func.azurewebsites.net";
+global.functionsCode = "abc";
+
 import { init } from "./main";
 
 declare function setImmediate(cb: () => void): void;

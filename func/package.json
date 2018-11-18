@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@types/jest": "^23.3.9",
-    "@types/node": "^8.10.37",
+    "@types/node": "^10.12.9",
     "awesome-typescript-loader": "^5.2.1",
     "azure-functions-typescript": "github:christopheranderson/azure-functions-typescript",
     "azure-iothub": "^1.7.5",

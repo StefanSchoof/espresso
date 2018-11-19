@@ -1,6 +1,6 @@
 FROM resin/rpi-raspbian as node
 
-ENV NODE_VERSION 8.12.0
+ENV NODE_VERSION 10.13.0
 
 RUN curl -sSL --compressed "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-armv6l.tar.xz" | \
     tar -xf - --directory /usr/local --xz --strip 1 --exclude CHANGELOG.md --exclude README.md --exclude LICENSE

@@ -28,11 +28,6 @@
     "type": "git",
     "url": "https://github.com/StefanSchoof/espresso.git"
   },
-  "greenkeeper": {
-    "ignore": [
-      "@types/node"
-    ]
-  },
   "dependencies": {
     "applicationinsights": "^1.0.6",
     "azure-iot-device": "^1.8.1",

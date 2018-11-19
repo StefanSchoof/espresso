@@ -28,11 +28,6 @@
       "node"
     ]
   },
-  "greenkeeper": {
-    "ignore": [
-      "@types/node"
-    ]
-  },
   "devDependencies": {
     "@types/jest": "^23.3.9",
     "@types/node": "^10.12.9",

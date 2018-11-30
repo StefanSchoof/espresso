@@ -68,7 +68,8 @@ jobs:
 
   steps:
   - bash: |
-     npm install
+     set -e
+     npm ci
      npm test
      npm run build
      npm run lint
@@ -86,7 +87,8 @@ jobs:
 
   steps:
   - bash: |
-     npm install
+     set -e
+     npm ci
      npm test
      npm run build
      npm run lint

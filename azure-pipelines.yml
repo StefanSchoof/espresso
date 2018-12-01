@@ -6,7 +6,7 @@ jobs:
   - task: Docker@1
     inputs:
       containerregistrytype: 'Container Registry'
-      dockerRegistryConnection: 'docker hub sschoof'
+      dockerRegistryEndpoint: 'docker hub sschoof'
       command: login
 
   - bash: ./dockerbuild.sh

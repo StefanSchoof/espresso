@@ -13,8 +13,8 @@ jobs:
     workingDirectory: node
     displayName: 'docker build'
     env:
-     - PUSH: true
-     - USECACHEFROM: true
+      PUSH: true
+      USECACHEFROM: true
 
   - task: CopyFiles@2
     displayName: 'Copy Files to staging'

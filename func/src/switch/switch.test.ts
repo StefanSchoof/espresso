@@ -32,12 +32,13 @@ Client.fromConnectionString = jest.fn(() => ({
 }));
 
 test('get connection string from keyvault', async () => {
+  process.env.KEYVAULT_URI = 'https://somevault.vault.azure.net/';
   await run(context, {method: 'POST', query: {off: ''}} as any);
 
   expect(msRestAzure.interactiveLogin)
     .toHaveBeenCalled();
   expect(getSecret)
-    .toHaveBeenCalledWith('https://espressovault.vault.azure.net/', 'iotHubConnectionString', '');
+    .toHaveBeenCalledWith('https://somevault.vault.azure.net/', 'iotHubConnectionString', '');
 });
 
 test('throws if no keyvault value is found', async () => {

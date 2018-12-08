@@ -10,24 +10,39 @@ then
   docker run --rm --privileged multiarch/qemu-user-static:register --reset
 fi
 
-# cache-from does not work with multistage, see https://github.com/moby/moby/issues/34715
-for target in "${targets[@]}"
-do
-  tag=$image:build-cache-$target
-  docker pull $tag
-  cachefrom+="--cache-from $tag "
-  docker build --target $target \
-    $cachefrom\
-    -t $tag .
-done
+if [[ ! -z "$USECACHEFROM" ]]
+then
+  cachefrom="--cache-from $image:$branch "
+  # cache-from does not work with multistage, see https://github.com/moby/moby/issues/34715
+  for target in "${targets[@]}"
+  do
+    tag=$image:build-cache-$target
+    docker pull $tag
+    cachefrom+="--cache-from $tag "
+    docker build --target $target \
+      $cachefrom\
+      -t $tag .
+    if [[ ! -z "$PUSH" ]]
+    then
+      docker push $tag
+    fi
+  done
 
-docker pull $image:$branch
+  docker pull $image:$branch
+fi
 
 if [[ ! -z "$BUILD_BUILDID" ]]
 then
   buildtag="-t $image:build$BUILD_BUILDID "
 fi
-docker build --cache-from $image:$branch \
+
+docker build \
   $cachefrom \
   $buildtag \
   -t $image:$branch .
+
+if [[ ! -z "$PUSH" ]]
+then
+  docker push $image:${branch}
+  docker push $image:build${BUILD_BUILDID}
+fi

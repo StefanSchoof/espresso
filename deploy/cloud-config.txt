@@ -1,0 +1,9 @@
+groups:
+  - docker
+
+users:
+  - dockeradmin
+    groups: docker
+
+runcmd:
+ - docker run --privileged multiarch/qemu-user-static:register --reset

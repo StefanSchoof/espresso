@@ -97,6 +97,7 @@ jobs:
       Contents: |
         *.tf
         *.sh
+        cloud-config.txt
         !plan.sh
       TargetFolder: '$(build.artifactstagingdirectory)/terraform'
 

@@ -45,7 +45,7 @@ export function init(connectionString?: string, testingCmd?: string): void {
         throw new Error('connectionString needs a value');
     }
     const deviceClient: Client = Client.fromConnectionString(connectionString, Mqtt);
-    const command = testingCmd === undefined ? 'steuerung' : testingCmd;
+    const command = testingCmd ? testingCmd : 'steuerung';
     // tslint ignore until https://github.com/Azure/azure-iot-sdk-node/issues/404 is resolved
     // tslint:disable-next-line
     deviceClient.onDeviceMethod('onSwitchOn', (request, response) => execAndResponse(command, '1', 'power on', response!));

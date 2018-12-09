@@ -3,49 +3,18 @@ jobs:
   pool: Hosted Ubuntu 1604
 
   steps:
+  - task: Docker@1
+    inputs:
+      containerregistrytype: 'Container Registry'
+      dockerRegistryEndpoint: 'docker hub sschoof'
+      command: login
+
   - bash: ./dockerbuild.sh
     workingDirectory: node
     displayName: 'docker build'
-
-  - task: Docker@0
-    displayName: 'Push image build'
-    inputs:
-      containerregistrytype: 'Container Registry'
-      dockerRegistryConnection: 'docker hub sschoof'
-      action: 'Push an image'
-      imageName: 'stefanschoof/espresso:build$(Build.BuildId)'
-
-  - task: Docker@0
-    displayName: 'Push image branch'
-    inputs:
-      containerregistrytype: 'Container Registry'
-      dockerRegistryConnection: 'docker hub sschoof'
-      action: 'Push an image'
-      imageName: 'stefanschoof/espresso:$(branchname)'
-
-  - task: Docker@0
-    displayName: 'Push image cache node'
-    inputs:
-      containerregistrytype: 'Container Registry'
-      dockerRegistryConnection: 'docker hub sschoof'
-      action: 'Push an image'
-      imageName: 'stefanschoof/espresso:build-cache-node'
-
-  - task: Docker@0
-    displayName: 'Push image cache cppbuilder'
-    inputs:
-      containerregistrytype: 'Container Registry'
-      dockerRegistryConnection: 'docker hub sschoof'
-      action: 'Push an image'
-      imageName: 'stefanschoof/espresso:build-cache-cppbuilder'
-
-  - task: Docker@0
-    displayName: 'Push image cache builder'
-    inputs:
-      containerregistrytype: 'Container Registry'
-      dockerRegistryConnection: 'docker hub sschoof'
-      action: 'Push an image'
-      imageName: 'stefanschoof/espresso:build-cache-builder'
+    env:
+      PUSH: true
+      USECACHEFROM: true
 
   - task: CopyFiles@2
     displayName: 'Copy Files to staging'
@@ -128,6 +97,7 @@ jobs:
       Contents: |
         *.tf
         *.sh
+        cloud-config.txt
         !plan.sh
       TargetFolder: '$(build.artifactstagingdirectory)/terraform'
 

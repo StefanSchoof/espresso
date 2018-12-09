@@ -4,4 +4,4 @@ appInsights.setup()
 
 import { init } from './index';
 
-init(process.env['ConnectionString']);
+init(process.env['ConnectionString'], process.env['TestingCommand']);

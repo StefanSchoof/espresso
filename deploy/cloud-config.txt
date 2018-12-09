@@ -1,9 +1,11 @@
 groups:
   - docker
 
-users:
-  - dockeradmin
-    groups: docker
+packages:
+ - python-pip
 
 runcmd:
+ # not use users, to get all other groups
+ - adduser dockeradmin docker
  - docker run --privileged multiarch/qemu-user-static:register --reset
+ - pip install docker-compose

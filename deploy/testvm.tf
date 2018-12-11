@@ -91,6 +91,7 @@ resource "azurerm_virtual_machine" "dockerhost" {
 }
 
 resource "azurerm_virtual_machine_extension" "cloudinitwait" {
+  count = "${terraform.workspace == "prod" ? 0 : 1}"
   name = "cloudinitwait"
   location = "${azurerm_resource_group.group.location}"
   resource_group_name = "${azurerm_resource_group.group.name}"

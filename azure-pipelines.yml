@@ -53,7 +53,7 @@ jobs:
     inputs:
       codeCoverageTool: cobertura
       summaryFileLocation: $(System.DefaultWorkingDirectory)/func/coverage/cobertura-coverage.xml
-      reportDirectory: func/coverage
+      reportDirectory: $(System.DefaultWorkingDirectory)/func/coverage
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: func'

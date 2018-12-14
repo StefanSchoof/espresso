@@ -52,7 +52,7 @@ jobs:
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: cobertura
-      summaryFileLocation: func/coverage/cobertura-coverage.xml
+      summaryFileLocation: $(System.DefaultWorkingDirectory)/func/coverage/cobertura-coverage.xml
       reportDirectory: func/coverage
 
   - task: PublishBuildArtifacts@1

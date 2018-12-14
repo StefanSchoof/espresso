@@ -40,7 +40,7 @@ jobs:
      set -e
      npm install
      npm run build
-     npm test:ci
+     npm run test:ci
      npm run lint
     workingDirectory: func
     displayName: 'Build'

@@ -68,13 +68,21 @@ jobs:
   - bash: |
      set -e
      npm install
-     npm test
      npm run build
+     npm run test:ci
      npm run lint
     workingDirectory: web
     displayName: 'Build'
-    env:
-      FUNCTIONS_CODE: $(functions.code)
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFiles: web/junit.xml
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: cobertura
+      summaryFileLocation: $(System.DefaultWorkingDirectory)/web/coverage/cobertura-coverage.xml
+      reportDirectory: $(System.DefaultWorkingDirectory)/web/coverage
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: web'

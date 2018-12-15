@@ -33,7 +33,9 @@ COPY . .
 
 RUN npm run build \
  && npm run test \
- && npm run lint
+ && npm run lint \
+ && npm prune --production \
+ && mv node_modules dist/
 
 FROM node as runner
 
@@ -44,10 +46,6 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /usr/src/app
 
 COPY --from=cppbuilder /usr/src/app/steuerung /usr/local/bin/
+COPY --from=builder /usr/src/app/dist/ /usr/src/app/
 
-COPY package*.json ./
-
-RUN npm install --production
-COPY --from=builder /usr/src/app/dist/*.js /usr/src/app/dist/
-
-CMD [ "npm", "start" ]
+CMD [ "node", "main.js" ]

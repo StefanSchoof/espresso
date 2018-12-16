@@ -1,4 +1,5 @@
 import { Client, DeviceMethodResponse } from 'azure-iot-device';
+import { results } from 'azure-iot-common';
 import { Mqtt } from 'azure-iot-device-mqtt';
 import { exec } from 'child_process';
 import { promisify } from 'util';
@@ -51,6 +52,10 @@ export function init(connectionString?: string, testingCmd?: string): void {
     deviceClient.onDeviceMethod('onSwitchOn', (request, response) => execAndResponse(command, '1', 'power on', response!));
     // tslint:disable-next-line
     deviceClient.onDeviceMethod('onSwitchOff', (request, response) => execAndResponse(command, '0', 'power off', response!));
+    deviceClient.on('disconnect', (err: results.Disconnected) => {
+        appInsights.defaultClient.trackException({exception: err.transportObj});
+        log('disconnect', JSON.stringify(err));
+    });
 
     log('Device connect to iot hub');
 }

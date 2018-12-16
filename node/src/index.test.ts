@@ -1,14 +1,17 @@
 import { Client } from 'azure-iot-device';
+import { results } from 'azure-iot-common';
 import { exec } from 'child_process';
 import * as appInsights from 'applicationinsights';
 
 const mockDeviceMethods: {[id: string]: Function} = {};
+const mockDeviceEvents: {[id: string]: Function} = {};
 
 jest.mock('child_process', () => ({exec: jest.fn((cmd, cb) => cb())}));
 jest.mock('azure-iot-device', () => ({
   Client: {
     fromConnectionString: jest.fn(() => ({
-      onDeviceMethod: jest.fn((method, cb) => mockDeviceMethods[method] = cb)
+      onDeviceMethod: jest.fn((method, cb) => mockDeviceMethods[method] = cb),
+      on: jest.fn((name, cb) => mockDeviceEvents[name] = cb)
     }))
   }
 }));
@@ -125,5 +128,12 @@ describe('index', () => {
         duration: expect.anything(),
         resultCode: 200,
         success: true});
+  });
+
+  test('log on disconnect', async () => {
+    mockDeviceEvents.disconnect(new results.Disconnected(new Error('disconnect')));
+
+    expect(appInsights.defaultClient.trackException)
+      .toHaveBeenLastCalledWith({exception: new Error('disconnect')});
   });
 });

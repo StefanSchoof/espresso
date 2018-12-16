@@ -1,19 +1,8 @@
-FROM resin/rpi-raspbian as node
-
-ENV NODE_VERSION 10.13.0
-
-RUN curl -sSL --compressed "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-armv6l.tar.xz" | \
-    tar -xf - --directory /usr/local --xz --strip 1 --exclude CHANGELOG.md --exclude README.md --exclude LICENSE
-
-FROM resin/rpi-raspbian as cppbuilder
+FROM alpine as cppbuilder
 
 WORKDIR /usr/src/app
-
-RUN apt-get update && apt-get install -y \
-    git \
-    wiringpi \
-    g++ \
- && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache --repository http://dl-4.alpinelinux.org/alpine/edge/community wiringpi-dev \
+ && apk add --no-cache g++ git
 
 RUN git clone --recursive https://github.com/ninjablocks/433Utils.git
 
@@ -21,7 +10,7 @@ COPY steuerung.cpp .
 
 RUN g++ -DRPI 433Utils/rc-switch/RCSwitch.cpp steuerung.cpp -o steuerung -lwiringPi
 
-FROM node as builder
+FROM node:10-alpine as builder
 
 WORKDIR /usr/src/app
 
@@ -35,11 +24,9 @@ RUN npm run build \
  && npm run test \
  && npm run lint
 
-FROM node as runner
+FROM node:10-alpine as runner
 
-RUN apt-get update && apt-get install -y \
-    wiringpi \
- && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache --repository http://dl-4.alpinelinux.org/alpine/edge/community wiringpi
 
 WORKDIR /usr/src/app
 

@@ -62,6 +62,30 @@ describe('index', () => {
       .toHaveBeenLastCalledWith(200, expect.anything());
   });
 
+  test('use testing cmd if given', async () => {
+    const response = {
+      send: jest.fn((code, payload) => Promise.resolve())
+    };
+    init('abc', 'echo');
+
+    await mockDeviceMethods.onSwitchOff({}, response);
+
+    expect(exec)
+      .toHaveBeenCalledWith('echo 0', expect.any(Function));
+  });
+
+  test('use normal cmd if empty testingcmd is given', async () => {
+    const response = {
+      send: jest.fn((code, payload) => Promise.resolve())
+    };
+    init('abc', '');
+
+    await mockDeviceMethods.onSwitchOff({}, response);
+
+    expect(exec)
+      .toHaveBeenCalledWith('steuerung 0', expect.any(Function));
+  });
+
   test('return an error if exec fails', async () => {
     const response = {
       send: jest.fn((code, payload) => Promise.resolve())

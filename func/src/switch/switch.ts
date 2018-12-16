@@ -12,7 +12,7 @@ async function getConnectionString(): Promise<string> {
         msRestAzure.loginWithAppServiceMSI({resource: 'https://vault.azure.net'} as msRestAzure.MSIAppServiceOptions) :
         msRestAzure.interactiveLogin();
     const client = new KeyVaultClient(await cred);
-    const secret = await client.getSecret('https://espressovault.vault.azure.net/', 'iotHubConnectionString', '');
+    const secret = await client.getSecret(process.env.KEYVAULT_URI!, 'iotHubConnectionString', '');
     if (secret.value === undefined) {
         throw new Error('Found no connection string in key vault');
     } else {

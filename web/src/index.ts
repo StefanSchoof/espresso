@@ -1,10 +1,12 @@
 import { AppInsights } from "applicationinsights-js";
 
+declare const instrumentationKey: string;
+
 AppInsights.downloadAndSetup!({
     // Currently defaults to true, see https://github.com/Microsoft/ApplicationInsights-JS/issues/395
     disableCorrelationHeaders: false,
     enableCorsCorrelation: true,
-    instrumentationKey: "9e4a7c64-7254-48a4-98e1-9879dad52f11",
+    instrumentationKey,
 });
 
 // add support for fetch, see https://github.com/Microsoft/ApplicationInsights-JS/issues/625

@@ -125,7 +125,7 @@ jobs:
     inputs:
       SourceFolder: 'e2etest'
       Contents: |
-        node_modules/**
+        package.json
         src/test.js
       TargetFolder: '$(build.artifactstagingdirectory)/e2etest'
 

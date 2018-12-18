@@ -116,7 +116,6 @@ jobs:
      npm install
      npm run build
      npm run lint
-     npm prune --production
     workingDirectory: e2etest
     displayName: 'Build'
 

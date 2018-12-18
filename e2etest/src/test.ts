@@ -1,5 +1,5 @@
 import { Builder, By, until } from 'selenium-webdriver';
-import { Options } from 'selenium-webdriver/firefox';
+import { Options, ServiceBuilder } from 'selenium-webdriver/firefox';
 
 jest.setTimeout(50000);
 
@@ -7,9 +7,11 @@ describe('e2etest', () => {
     test('switch on', async () => {
         const options = new Options();
         options.headless();
+        const serviceBuilder = new ServiceBuilder(process.env.GeckoWebDriver);
         const driver = await new Builder()
             .forBrowser('firefox')
             .setFirefoxOptions(options)
+            .setFirefoxService(serviceBuilder)
             .build();
         try {
             const testUrl = process.env.testurl ? process.env.testurl : 'https://espressopitest.z6.web.core.windows.net/';

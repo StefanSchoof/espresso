@@ -7,7 +7,7 @@ describe('e2etest', () => {
     test('switch on', async () => {
         const options = new Options();
         options.headless();
-        const serviceBuilder = new ServiceBuilder(process.env.GeckoWebDriver && process.env.GeckoWebDriver + "geckodriver.exe");
+        const serviceBuilder = new ServiceBuilder(process.env.GeckoWebDriver && `${process.env.GeckoWebDriver}\geckodriver.exe`);
         const driver = await new Builder()
             .forBrowser('firefox')
             .setFirefoxOptions(options)

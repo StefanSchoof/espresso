@@ -1,7 +1,7 @@
 import { Builder, By, until } from 'selenium-webdriver';
 import { Options, ServiceBuilder } from 'selenium-webdriver/firefox';
 
-jest.setTimeout(50000);
+jest.setTimeout(100000);
 
 describe('e2etest', () => {
     test('switch on', async () => {

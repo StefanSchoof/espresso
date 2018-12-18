@@ -1,0 +1,29 @@
+{
+  "name": "e2etest",
+  "version": "1.0.0",
+  "author": "Stefan Schoof",
+  "description": "A project to control my espresso machine with a raspberry pi",
+  "license": "Unlicense",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/StefanSchoof/espresso.git"
+  },
+  "dependencies": {
+    "jest": "^23.6.0",
+    "selenium-webdriver": "^4.0.0-alpha.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.10",
+    "@types/node": "^10.12.12",
+    "@types/selenium-webdriver": "^3.0.13",
+    "backend-tslint-rules": "^1.4.0",
+    "tslint": "^5.11.0",
+    "typescript": "^3.2.2"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "npm run build & jest",
+    "lint": "tslint -c tslint.json 'src/**/*.ts'",
+    "start": "jest"
+  }
+}

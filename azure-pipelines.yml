@@ -106,3 +106,30 @@ jobs:
     inputs:
       PathtoPublish: '$(build.artifactstagingdirectory)/terraform'
       ArtifactName: deploy
+
+- job: e2etest
+  pool: Hosted Ubuntu 1604
+
+  steps:
+  - bash: |
+     set -e
+     npm install
+     npm run build
+     npm run lint
+    workingDirectory: e2etest
+    displayName: 'Build'
+
+  - task: CopyFiles@2
+    displayName: 'Copy Files to staging'
+    inputs:
+      SourceFolder: 'e2etest'
+      Contents: |
+        package.json
+        src/test.js
+      TargetFolder: '$(build.artifactstagingdirectory)/e2etest'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: e2etest'
+    inputs:
+      PathtoPublish: '$(build.artifactstagingdirectory)/e2etest'
+      ArtifactName: e2etest

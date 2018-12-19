@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "jest": "^23.6.0",
+    "jest-junit": "^5.2.0",
     "selenium-webdriver": "^4.0.0-alpha.1"
   },
   "devDependencies": {
@@ -24,6 +25,6 @@
     "build": "tsc",
     "test": "npm run build & jest",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
-    "start": "jest"
+    "start": "jest --ci --reporters=default --reporters=jest-junit"
   }
 }

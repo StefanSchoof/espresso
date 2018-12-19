@@ -1,4 +1,5 @@
-#!/bin/bash -e
+#!/bin/bash
+set -e
 . bashfunctions.sh
 
 export TF_WORKSPACE=${RELEASE_ENVIRONMENTNAME:-test}

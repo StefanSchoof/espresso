@@ -1,3 +1,4 @@
+set -e
 cd espresso
 # put secure varibales into env file
 cat > .env << EOF

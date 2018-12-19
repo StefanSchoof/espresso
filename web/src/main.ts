@@ -19,7 +19,7 @@ function createButton(arg: "on" | "off", title: string): HTMLButtonElement {
         const status = document.getElementById("status") as HTMLSpanElement;
         status.textContent = `Schalte Maschine ${title.toLocaleLowerCase()}`;
         try {
-            const res = await fetch(`${serviceUrl}api/switch?${arg}&code=${functionsCode}`, {method: "POST"});
+            const res = await fetch(`${serviceUrl}api/switch?${arg}=1&code=${functionsCode}`, {method: "POST"});
             status.textContent = res.ok ?
                 `Maschine ${title.toLocaleLowerCase()}` :
                 `Fehler vom Service: ${await res.text()}`;

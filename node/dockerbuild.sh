@@ -29,7 +29,7 @@ then
     fi
   done
 
-  docker pull $image:$branch
+  docker pull $image:$branch || true
 fi
 
 if [[ ! -z "$BUILD_BUILDID" ]]

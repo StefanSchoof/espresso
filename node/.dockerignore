@@ -1,8 +1,10 @@
 node_modules
 npm-debug.log
 docker-compose.yml
-.gitignore
 dist
 Dockerfile
 dockerbuild.sh
 azure-pipelines.yml
+junit.xml
+coverage/
+.dockerignore

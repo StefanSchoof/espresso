@@ -1,0 +1,6 @@
+node_modules/
+dist/
+junit.xml
+coverage/
+e2etest/src/test.js
+node/.env

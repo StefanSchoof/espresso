@@ -32,7 +32,7 @@ RUN npm install
 COPY . .
 
 RUN npm run build \
- && npm run test \
+ && npm run test:ci \
  && npm run lint \
  && npm prune --production \
  && mv node_modules dist/

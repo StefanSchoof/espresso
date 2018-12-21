@@ -1,6 +1,10 @@
 # Configure the Azure Provider
 provider "azurerm" {
-    version =  "~> 1.15"
+    version =  "~> 1.20"
+}
+
+provider "template" {
+    version = "~> 1.0"
 }
 
 locals {
@@ -128,7 +132,7 @@ resource "azurerm_application_insights" "node" {
   name                = "espresso${local.stage}-node"
   location            = "${azurerm_resource_group.group.location}"
   resource_group_name = "${azurerm_resource_group.group.name}"
-  application_type    = "other" # "Node.JS" # See https://github.com/terraform-providers/terraform-provider-azurerm/issues/2179
+  application_type    = "Node.JS"
 }
 
 resource "azurerm_application_insights" "web" {

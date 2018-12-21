@@ -14,12 +14,17 @@
       "jsx",
       "json",
       "node"
+    ],
+    "coverageReporters": [
+      "cobertura",
+      "html"
     ]
   },
   "scripts": {
     "build": "tsc",
     "start": "node dist/main.js",
     "test": "jest",
+    "test:ci": "jest --ci --reporters=default --reporters=jest-junit --coverage",
     "lint": "tslint -c tslint.json 'src/**/*.ts'"
   },
   "author": "Stefan Schoof",
@@ -30,8 +35,10 @@
   },
   "dependencies": {
     "applicationinsights": "^1.0.7",
+    "azure-iot-common": "^1.8.2",
     "azure-iot-device": "^1.8.2",
-    "azure-iot-device-mqtt": "^1.8.2"
+    "azure-iot-device-mqtt": "^1.8.2",
+    "jest-junit": "^5.2.0"
   },
   "devDependencies": {
     "@types/jest": "^23.3.10",

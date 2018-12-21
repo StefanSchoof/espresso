@@ -90,6 +90,23 @@ resource "azurerm_virtual_machine" "dockerhost" {
   }
 }
 
+resource "azurerm_virtual_machine_extension" "cloudinitwait" {
+  count = "${terraform.workspace == "prod" ? 0 : 1}"
+  name = "cloudinitwait"
+  location = "${azurerm_resource_group.group.location}"
+  resource_group_name = "${azurerm_resource_group.group.name}"
+  virtual_machine_name = "${azurerm_virtual_machine.dockerhost.name}"
+  publisher = "Microsoft.Azure.Extensions"
+  type = "CustomScript"
+  type_handler_version = "2.0"
+
+  settings = <<SETTINGS
+    {
+        "commandToExecute": "cloud-init status --wait"
+    }
+SETTINGS
+}
+
 output "public_fqdn_address" {
   value = "${azurerm_public_ip.ip.*.fqdn}"
 }

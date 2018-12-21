@@ -21,8 +21,10 @@ RUN npm install
 COPY . .
 
 RUN npm run build \
- && npm run test \
- && npm run lint
+ && npm run test:ci \
+ && npm run lint \
+ && npm prune --production \
+ && mv node_modules dist/
 
 FROM node:10-alpine as runner
 
@@ -31,10 +33,6 @@ RUN apk add --no-cache --repository http://dl-4.alpinelinux.org/alpine/edge/comm
 WORKDIR /usr/src/app
 
 COPY --from=cppbuilder /usr/src/app/steuerung /usr/local/bin/
+COPY --from=builder /usr/src/app/dist/ /usr/src/app/
 
-COPY package*.json ./
-
-RUN npm install --production
-COPY --from=builder /usr/src/app/dist/*.js /usr/src/app/dist/
-
-CMD [ "npm", "start" ]
+CMD [ "node", "main.js" ]

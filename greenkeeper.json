@@ -4,7 +4,8 @@
       "packages": [
         "func/package.json",
         "node/package.json",
-        "web/package.json"
+        "web/package.json",
+        "e2etest/package.json"
       ]
     }
   }

@@ -16,6 +16,17 @@ jobs:
       PUSH: true
       USECACHEFROM: true
 
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFiles: node/junit.xml
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: cobertura
+      summaryFileLocation: $(System.DefaultWorkingDirectory)/node/coverage/cobertura-coverage.xml
+      reportDirectory: $(System.DefaultWorkingDirectory)/node/coverage
+
   - task: CopyFiles@2
     displayName: 'Copy Files to staging'
     inputs:
@@ -39,11 +50,22 @@ jobs:
   - bash: |
      set -e
      npm install
-     npm test
      npm run build
+     npm run test:ci
      npm run lint
     workingDirectory: func
     displayName: 'Build'
+
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFiles: func/junit.xml
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: cobertura
+      summaryFileLocation: $(System.DefaultWorkingDirectory)/func/coverage/cobertura-coverage.xml
+      reportDirectory: $(System.DefaultWorkingDirectory)/func/coverage
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: func'
@@ -58,13 +80,22 @@ jobs:
   - bash: |
      set -e
      npm install
-     npm test
      npm run build
+     npm run test:ci
      npm run lint
     workingDirectory: web
     displayName: 'Build'
-    env:
-      FUNCTIONS_CODE: $(functions.code)
+
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFiles: web/junit.xml
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: cobertura
+      summaryFileLocation: $(System.DefaultWorkingDirectory)/web/coverage/cobertura-coverage.xml
+      reportDirectory: $(System.DefaultWorkingDirectory)/web/coverage
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: web'
@@ -106,3 +137,30 @@ jobs:
     inputs:
       PathtoPublish: '$(build.artifactstagingdirectory)/terraform'
       ArtifactName: deploy
+
+- job: e2etest
+  pool: Hosted Ubuntu 1604
+
+  steps:
+  - bash: |
+     set -e
+     npm install
+     npm run build
+     npm run lint
+    workingDirectory: e2etest
+    displayName: 'Build'
+
+  - task: CopyFiles@2
+    displayName: 'Copy Files to staging'
+    inputs:
+      SourceFolder: 'e2etest'
+      Contents: |
+        package.json
+        src/test.js
+      TargetFolder: '$(build.artifactstagingdirectory)/e2etest'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: e2etest'
+    inputs:
+      PathtoPublish: '$(build.artifactstagingdirectory)/e2etest'
+      ArtifactName: e2etest

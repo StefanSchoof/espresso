@@ -9,6 +9,17 @@ image="stefanschoof/espresso"
 if [[ ! $(uname -m) == arm* ]]
 then
   docker run --rm --privileged multiarch/qemu-user-static:register --reset
+  qemuimage=$(docker build --quiet --file Dockerfile_qemu .)
+  qemucontainer=$(docker create $qemuimage)
+  docker cp $qemucontainer:/usr/bin/qemu-arm-static .
+  docker rm $qemucontainer
+  export DOCKER_CLI_EXPERIMENTAL="enabled"
+  alpinedigest=$(docker manifest inspect alpine | jq --raw-output '.manifests[] | select(.platform.architecture == "arm").digest')
+  docker pull alpine@$alpinedigest
+  docker tag alpine@$alpinedigest alpine
+  alpinedigest=$(docker manifest inspect node:10-alpine | jq --raw-output '.manifests[] | select(.platform.architecture == "arm").digest')
+  docker pull node@$alpinedigest
+  docker tag node@$alpinedigest node:10-alpine
 fi
 
 # cache-from does not work with multistage, see https://github.com/moby/moby/issues/34715

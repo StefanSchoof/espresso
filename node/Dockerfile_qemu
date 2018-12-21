@@ -1,0 +1,5 @@
+FROM debian
+
+RUN apt-get update && apt-get install -y \
+    qemu-user-static \
+ && rm -rf /var/lib/apt/lists/*

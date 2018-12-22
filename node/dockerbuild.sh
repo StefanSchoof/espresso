@@ -20,6 +20,7 @@ then
   alpinedigest=$(docker manifest inspect node:10-alpine | jq --raw-output '.manifests[] | select(.platform.architecture == "arm").digest')
   docker pull node@$alpinedigest
   docker tag node@$alpinedigest node:10-alpine
+  sed --in-place 's/#x86only //' Dockerfile
 fi
 
 # cache-from does not work with multistage, see https://github.com/moby/moby/issues/34715

@@ -1,6 +1,6 @@
 FROM alpine as cppbuilder
 
-COPY qemu-arm-static /usr/bin
+#x86only COPY qemu-arm-static /usr/bin
 
 WORKDIR /usr/src/app
 RUN apk add --no-cache --repository http://dl-4.alpinelinux.org/alpine/edge/community wiringpi-dev \
@@ -14,7 +14,7 @@ RUN g++ -DRPI 433Utils/rc-switch/RCSwitch.cpp steuerung.cpp -o steuerung -lwirin
 
 FROM node:10-alpine as builder
 
-COPY qemu-arm-static /usr/bin
+#x86only COPY qemu-arm-static /usr/bin
 
 WORKDIR /usr/src/app
 
@@ -32,7 +32,7 @@ RUN npm run build \
 
 FROM node:10-alpine as runner
 
-COPY qemu-arm-static /usr/bin
+#x86only COPY qemu-arm-static /usr/bin
 
 RUN apk add --no-cache --repository http://dl-4.alpinelinux.org/alpine/edge/community wiringpi
 

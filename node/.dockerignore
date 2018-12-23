@@ -2,7 +2,7 @@ node_modules
 npm-debug.log
 docker-compose.yml
 dist
-Dockerfile
+Dockerfile*
 dockerbuild.sh
 azure-pipelines.yml
 junit.xml

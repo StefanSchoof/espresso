@@ -32,10 +32,10 @@ RUN npm run build \
 
 FROM node:10-alpine as runner
 
-WORKDIR /usr/src/app
+WORKDIR /usr/app
 
 COPY --from=cppbuilder /usr/lib/libwiringPi.so.* /usr/lib/
 COPY --from=cppbuilder /usr/src/app/steuerung /usr/local/bin/
-COPY --from=builder /usr/src/app/dist/ /usr/src/app/
+COPY --from=builder /usr/src/app/dist/ .
 
 CMD [ "node", "main.js" ]

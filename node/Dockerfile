@@ -32,12 +32,9 @@ RUN npm run build \
 
 FROM node:10-alpine as runner
 
-#x86only COPY qemu-arm-static /usr/bin
-
-RUN apk add --no-cache --repository http://dl-4.alpinelinux.org/alpine/edge/community wiringpi
-
 WORKDIR /usr/src/app
 
+COPY --from=cppbuilder /usr/lib/libwiringPi.so.* /usr/lib/
 COPY --from=cppbuilder /usr/src/app/steuerung /usr/local/bin/
 COPY --from=builder /usr/src/app/dist/ /usr/src/app/
 

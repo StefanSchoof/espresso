@@ -12,4 +12,6 @@ services:
       - ConnectionString=${CONNECTION_STRING}
       - TestingCommand=${TestingCommand}
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
+#x86only    volumes:
+#x86only      - ./qemu-arm-static:/usr/bin/qemu-arm-static
 

@@ -1,5 +1,13 @@
 #!/bin/bash
 set -e
+function pullarmimage {
+  # since the platform arg needs experimental daemon and there is no way do activate experimental daemon on azure pipeline => a hack...
+  tag=${2:+:$2}
+  digest=$(DOCKER_CLI_EXPERIMENTAL="enabled" docker manifest inspect $1$tag | jq --raw-output '.manifests[] | select(.platform.architecture == "arm").digest')
+  docker pull $1@$digest
+  docker tag $1@$digest $1$tag
+}
+
 # in azure pipeline git is in detached head so git does not know it brach and we take the env var. But these are in the format /ref/head/master, so we take the basename
 branch=$(basename ${BUILD_SOURCEBRANCH:-$(git rev-parse --abbrev-ref HEAD)})
 echo "##vso[task.setvariable variable=branchname]$branch"
@@ -13,13 +21,8 @@ then
   qemucontainer=$(docker create $qemuimage)
   docker cp $qemucontainer:/usr/bin/qemu-arm-static .
   docker rm $qemucontainer
-  export DOCKER_CLI_EXPERIMENTAL="enabled"
-  alpinedigest=$(docker manifest inspect alpine | jq --raw-output '.manifests[] | select(.platform.architecture == "arm").digest')
-  docker pull alpine@$alpinedigest
-  docker tag alpine@$alpinedigest alpine
-  alpinedigest=$(docker manifest inspect node:10-alpine | jq --raw-output '.manifests[] | select(.platform.architecture == "arm").digest')
-  docker pull node@$alpinedigest
-  docker tag node@$alpinedigest node:10-alpine
+  pullarmimage alpine
+  pullarmimage node 10-alpine
   sed --in-place 's/#x86only //' Dockerfile
 fi
 

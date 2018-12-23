@@ -17,10 +17,13 @@ image="stefanschoof/espresso"
 if [[ ! $(uname -m) == arm* ]]
 then
   docker run --rm --privileged multiarch/qemu-user-static:register --reset
-  qemuimage=$(docker build --quiet --file Dockerfile_qemu .)
-  qemucontainer=$(docker create $qemuimage)
-  docker cp $qemucontainer:/usr/bin/qemu-arm-static .
-  docker rm $qemucontainer
+  if [[ ! -f "qemu-arm-static" ]]
+  then
+    qemuimage=$(docker build --quiet --file Dockerfile_qemu .)
+    qemucontainer=$(docker create $qemuimage)
+    docker cp $qemucontainer:/usr/bin/qemu-arm-static .
+    docker rm $qemucontainer
+  fi
   pullarmimage alpine
   pullarmimage node 10-alpine
   dockerfilearg="-f Dockerfile_x86"

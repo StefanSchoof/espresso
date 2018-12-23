@@ -23,7 +23,8 @@ then
   docker rm $qemucontainer
   pullarmimage alpine
   pullarmimage node 10-alpine
-  sed --in-place 's/#x86only //' Dockerfile
+  dockerfilearg="-f Dockerfile_x86"
+  sed 's/#x86only //' Dockerfile > Dockerfile_x86
 fi
 
 # cache-from does not work with multistage, see https://github.com/moby/moby/issues/34715
@@ -36,7 +37,8 @@ do
     docker pull $tag
   fi
   docker build --target $target \
-    $cachefrom\
+    $cachefrom \
+    $dockerfilearg \
     -t $tag .
   if [[ ! -z "$PUSH" ]]
   then
@@ -62,6 +64,7 @@ fi
 
 docker build \
   $cachefrom \
+  $dockerfilearg \
   $buildtag \
   -t $image:$branch .
 

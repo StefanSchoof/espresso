@@ -33,7 +33,7 @@ do
   if [[ ! -z "$USECACHEFROM" ]]
   then
     cachefrom+="--cache-from $tag "
-    docker pull $tag
+    docker pull $tag || true
   fi
   docker build --target $target \
     $cachefrom \

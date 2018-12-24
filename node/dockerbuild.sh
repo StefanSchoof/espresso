@@ -2,10 +2,10 @@
 set -e
 function pullarmimage {
   # since the platform arg needs experimental daemon and there is no way do activate experimental daemon on azure pipeline => a hack...
-  tag=${2:+:$2}
-  digest=$(DOCKER_CLI_EXPERIMENTAL="enabled" docker manifest inspect $1$tag | jq --raw-output '.manifests[] | select(.platform.architecture == "arm").digest')
-  docker pull $1@$digest
-  docker tag $1@$digest $1$tag
+  image=${1%:*}
+  digest=$(DOCKER_CLI_EXPERIMENTAL="enabled" docker manifest inspect $1 | jq --raw-output '.manifests[] | select(.platform.architecture == "arm").digest')
+  docker pull $image@$digest
+  docker tag $image@$digest $1
 }
 
 # in azure pipeline git is in detached head so git does not know it brach and we take the env var. But these are in the format /ref/head/master, so we take the basename
@@ -17,8 +17,10 @@ image="stefanschoof/espresso"
 if [[ ! $(uname -m) == arm* ]]
 then
   docker run --rm --privileged multiarch/qemu-user-static:register --reset
-  pullarmimage alpine
-  pullarmimage node 10-alpine
+  for image in $(sed -n 's/^FROM \([^ ]*\) .*/\1/p' Dockerfile | sort --uniq)
+  do
+    pullarmimage $image
+  done
   targets=( qemu ${targets[@]} )
   dockerfilearg="-f Dockerfile_x86"
   sed 's/#x86only //' Dockerfile > Dockerfile_x86

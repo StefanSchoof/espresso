@@ -1,8 +1,8 @@
+
 node_modules/
 dist/
 junit.xml
 coverage/
 e2etest/src/test.js
 node/.env
-qemu-arm-static
 Dockerfile_x86

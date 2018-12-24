@@ -34,7 +34,6 @@ jobs:
       Contents: |
         docker-compose.yml
         pideploy.sh
-        qemu-arm-static
       TargetFolder: '$(build.artifactstagingdirectory)/node'
 
   - task: PublishBuildArtifacts@1

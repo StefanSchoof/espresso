@@ -5,7 +5,7 @@ module.exports = {
     mode: 'production',
     target: 'node',
     entry: {
-        'switch': './src/switch/switch.ts'
+        'switch': './src/switch/switch.js'
     },
     output: {
         path: path.resolve(__dirname, 'dist'),

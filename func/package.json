@@ -15,7 +15,7 @@
     "azure-iothub": "^1.8.2",
     "azure-keyvault": "^3.0.4",
     "ms-rest-azure": "^2.5.9",
-    "terser": "^3.12.0",
+    "terser": "^3.13.1",
     "terser-webpack-plugin": "^1.2.1",
     "webpack": "^4.27.1",
     "webpack-cli": "^3.1.2"

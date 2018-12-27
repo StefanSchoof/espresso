@@ -51,8 +51,6 @@ jobs:
      set -e
      npm install
      npm run build
-     npm run test:ci
-     npm run lint
     workingDirectory: func
     displayName: 'Build'
 

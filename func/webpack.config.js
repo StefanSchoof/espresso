@@ -1,8 +1,12 @@
 const path = require('path');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
     mode: 'production',
     target: 'node',
+    optimization: {
+        minimizer: [new TerserPlugin({ cache: false, parallel: false })],
+    },
     entry: {
         'switch': './src/switch/switch.js'
     },

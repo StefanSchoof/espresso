@@ -12,7 +12,8 @@ const appInsights = new ApplicationInsights({
     queue: [],
 });
 
-appInsights.trackPageView({name: "index"});
+// Gives an error => need to investigate
+// appInsights.trackPageView({name: "index"});
 
 import { init } from "./main";
 init();

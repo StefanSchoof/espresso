@@ -1,19 +1,18 @@
-import { AppInsights } from "applicationinsights-js";
+import { ApplicationInsights } from "@microsoft/applicationinsights-web";
 
 declare const instrumentationKey: string;
 
-AppInsights.downloadAndSetup!({
-    // Currently defaults to true, see https://github.com/Microsoft/ApplicationInsights-JS/issues/395
-    disableCorrelationHeaders: false,
-    enableCorsCorrelation: true,
-    instrumentationKey,
+const appInsights = new ApplicationInsights({
+    config: {
+       disableFetchTracking: false,
+       enableCorsCorrelation: true,
+       instrumentationKey,
+    },
+    // needed for beta8, see https://github.com/Microsoft/ApplicationInsights-JS/issues/741
+    queue: [],
 });
 
-// add support for fetch, see https://github.com/Microsoft/ApplicationInsights-JS/issues/625
-import { initAppInsightsFetchMonitor } from "application-insights-fetch-monitor";
-initAppInsightsFetchMonitor();
-
-AppInsights.trackPageView();
+appInsights.trackPageView({name: "index"});
 
 import { init } from "./main";
 init();

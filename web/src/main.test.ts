@@ -1,7 +1,3 @@
-declare var global: any;
-global.functionsHostname = "func.azurewebsites.net";
-global.functionsCode = "abc";
-
 import { init } from "./main";
 
 declare function setImmediate(cb: () => void): void;
@@ -21,7 +17,7 @@ describe("main", () => {
                 document.body.removeChild(document.body.firstChild);
             }
             jest.clearAllMocks();
-            init();
+            init("func.azurewebsites.net", "abc", "key");
             const buttons = Array.from(document.body.querySelectorAll("button") as NodeListOf<HTMLButtonElement>);
             on = buttons.find((e) => e.textContent === "An")!;
             off = buttons.find((e) => e.textContent === "Aus")!;
@@ -74,7 +70,7 @@ describe("main", () => {
 
     describe("warmup", () => {
         test("warms the function app on page load", async () => {
-            init();
+            init("func.azurewebsites.net", "abc", "key");
             expect(window.fetch).toHaveBeenCalledWith(expect.stringMatching(".azurewebsites.net/api/switch*$"));
             expect((document.getElementById("status") as HTMLSpanElement).textContent).toBe("Aufwärmen...");
 
@@ -86,7 +82,7 @@ describe("main", () => {
         test("shows an error if warm up fails", async () => {
             window.fetch = jest.fn(() => { throw new Error("fetch faild"); });
 
-            init();
+            init("func.azurewebsites.net", "abc", "key");
 
             await immediate();
 

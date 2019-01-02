@@ -12,9 +12,7 @@ export function init(functionsHostname: string, functionsCode: string, instrumen
            disableFetchTracking: false,
            enableCorsCorrelation: true,
            instrumentationKey,
-        },
-        // needed for beta8, see https://github.com/Microsoft/ApplicationInsights-JS/issues/741
-        queue: [],
+        }
     });
 
     const serviceUrl = process.env.NODE_ENV === "development" ? "/" : `https://${functionsHostname}/`;
@@ -64,8 +62,7 @@ export function init(functionsHostname: string, functionsCode: string, instrumen
         return div;
     }
 
-    // Gives an error => need to investigate
-    // appInsights.trackPageView({name: "index"});
+    appInsights.trackPageView({name: "index"});
 
     document.body.appendChild(component());
     warmUp();

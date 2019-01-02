@@ -30,7 +30,7 @@
     ]
   },
   "dependencies": {
-    "@microsoft/applicationinsights-web": "^1.0.0-beta.8"
+    "@microsoft/applicationinsights-web": "^1.0.0-beta.9"
   },
   "devDependencies": {
     "@types/jest": "^23.3.10",

@@ -25,7 +25,7 @@
     "start": "node dist/main.js",
     "test": "jest",
     "test:ci": "jest --ci --reporters=default --reporters=jest-junit --coverage",
-    "lint": "tslint -c tslint.json 'src/**/*.ts'"
+    "lint": "tslint --project . --config tslint.json"
   },
   "author": "Stefan Schoof",
   "license": "Unlicense",
@@ -43,10 +43,9 @@
   "devDependencies": {
     "@types/jest": "^23.3.10",
     "@types/node": "^10.12.12",
-    "backend-tslint-rules": "^1.4.0",
     "jest": "^23.6.0",
     "ts-jest": "^23.10.5",
-    "tslint": "^5.11.0",
+    "tslint": "^5.12.0",
     "typescript": "^3.2.2"
   }
 }

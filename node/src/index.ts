@@ -12,7 +12,9 @@ const log = (...args: any[]) => {
 
 const execAsync = promisify(exec);
 
-async function execAndResponse(command: string, argument: string, description: string, response: DeviceMethodResponse): Promise<void> {
+async function execAndResponse(
+    command: string, argument: string, description: string,
+    response: DeviceMethodResponse): Promise<void> {
     const startTime = Date.now();
     log(description);
     let msg: string;
@@ -33,12 +35,13 @@ async function execAndResponse(command: string, argument: string, description: s
         appInsights.defaultClient.trackException({exception: e});
     }
     const duration = Date.now() - startTime;
-    appInsights.defaultClient.trackRequest(
-        {url: `mqtts://espresso/${argument}`,
-        name: `steuerung ${argument}`,
+    appInsights.defaultClient.trackRequest({
         duration,
+        name: `steuerung ${argument}`,
         resultCode,
-        success: resultCode === 200});
+        success: resultCode === 200,
+        url: `mqtts://espresso/${argument}`,
+    });
 }
 
 export function init(connectionString?: string, testingCmd?: string): void {
@@ -47,11 +50,10 @@ export function init(connectionString?: string, testingCmd?: string): void {
     }
     const deviceClient: Client = Client.fromConnectionString(connectionString, Mqtt);
     const command = testingCmd ? testingCmd : "steuerung";
-    // tslint ignore until https://github.com/Azure/azure-iot-sdk-node/issues/404 is resolved
-    // tslint:disable-next-line
-    deviceClient.onDeviceMethod('onSwitchOn', (request, response) => execAndResponse(command, '1', 'power on', response!));
-    // tslint:disable-next-line
-    deviceClient.onDeviceMethod('onSwitchOff', (request, response) => execAndResponse(command, '0', 'power off', response!));
+    deviceClient.onDeviceMethod("onSwitchOn",
+        (request, response) => execAndResponse(command, "1", "power on", response!));
+    deviceClient.onDeviceMethod("onSwitchOff",
+        (request, response) => execAndResponse(command, "0", "power off", response!));
     deviceClient.on("disconnect", (err: results.Disconnected) => {
         appInsights.defaultClient.trackException({exception: err.transportObj});
         log("disconnect", JSON.stringify(err));

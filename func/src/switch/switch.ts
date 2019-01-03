@@ -8,7 +8,8 @@ const deviceId = "espressoPi";
 
 async function getConnectionString(): Promise<string> {
     const cred = process.env.APPSETTING_WEBSITE_SITE_NAME ?
-        // cast currently needed, remove after fix for https://github.com/Azure/azure-sdk-for-node/issues/3778 is released
+        // cast currently needed, remove after fix for https://github.com/Azure/azure-sdk-for-node/issues/3778
+        // is released
         msRestAzure.loginWithAppServiceMSI({resource: "https://vault.azure.net"} as msRestAzure.MSIAppServiceOptions) :
         msRestAzure.interactiveLogin();
     const client = new KeyVaultClient(await cred);
@@ -23,8 +24,8 @@ async function getConnectionString(): Promise<string> {
 export async function run(context: HttpContext, req: IFunctionRequest): Promise<void> {
     if (req.query.on === undefined && req.query.off === undefined) {
         context.res = {
-            status: 404,
             body: "missing on or off query string",
+            status: 404,
         };
 
         return;
@@ -45,14 +46,14 @@ export async function run(context: HttpContext, req: IFunctionRequest): Promise<
         const result = await invokeDeviceMethod(deviceId, methodParams);
 
         context.res = {
-            status: result.status,
             body: result.payload,
+            status: result.status,
         };
     } catch (err) {
         context.log.error(`Failed to invoke method "${methodParams.methodName}" with error: "${err.message}"`, err);
         context.res = {
-            status: 500,
             body: "Failed to invoke method",
+            status: 500,
         };
     }
   }

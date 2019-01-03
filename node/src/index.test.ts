@@ -3,15 +3,15 @@ import { results } from "azure-iot-common";
 import { Client } from "azure-iot-device";
 import { exec } from "child_process";
 
-const mockDeviceMethods: {[id: string]: Function} = {};
-const mockDeviceEvents: {[id: string]: Function} = {};
+const mockDeviceMethods: {[id: string]: (request: any, response: any) => void} = {};
+const mockDeviceEvents: {[id: string]: (listener: any) => void} = {};
 
 jest.mock("child_process", () => ({exec: jest.fn((cmd, cb) => cb())}));
 jest.mock("azure-iot-device", () => ({
   Client: {
     fromConnectionString: jest.fn(() => ({
-      onDeviceMethod: jest.fn((method, cb) => mockDeviceMethods[method] = cb),
       on: jest.fn((name, cb) => mockDeviceEvents[name] = cb),
+      onDeviceMethod: jest.fn((method, cb) => mockDeviceMethods[method] = cb),
     })),
   },
 }));
@@ -122,12 +122,13 @@ describe("index", () => {
     await mockDeviceMethods.onSwitchOff({}, response);
 
     expect(appInsights.defaultClient.trackRequest)
-      .toHaveBeenLastCalledWith({
-        url: "mqtts://espresso/0",
-        name: "steuerung 0",
+    .toHaveBeenLastCalledWith({
         duration: expect.anything(),
+        name: "steuerung 0",
         resultCode: 200,
-        success: true});
+        success: true,
+        url: "mqtts://espresso/0",
+      });
   });
 
   test("log on disconnect", async () => {

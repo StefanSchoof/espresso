@@ -19,7 +19,14 @@ namespace log {
   export let verbose = jest.fn();
 }
 
-const context: HttpContext = {res: {status: 0, body: ""}, invocationId: "id", log, bindingData: {}, bindings: {}, done: jest.fn()};
+const context: HttpContext = {
+  bindingData: {},
+  bindings: {},
+  done: jest.fn(),
+  invocationId: "id",
+  log,
+  res: {status: 0, body: ""},
+};
 
 const getSecret = jest.fn(() => Promise.resolve({value: "abc"}));
 (KeyVaultClient as jest.Mock<KeyVaultClient>).mockImplementation(() => ({
@@ -79,7 +86,8 @@ test("log error invokation error", async () => {
   await run(context, {method: "POST", query: {off: ""} } as any);
 
   expect(context.log.error)
-    .toHaveBeenCalledWith('Failed to invoke method "onSwitchOff" with error: "Some Invokation Error"', expect.anything());
+    .toHaveBeenCalledWith(
+      'Failed to invoke method "onSwitchOff" with error: "Some Invokation Error"', expect.anything());
 });
 
 test("returns error on Invokation Error", async () => {

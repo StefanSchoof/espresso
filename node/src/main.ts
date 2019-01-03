@@ -1,7 +1,7 @@
-import * as appInsights from 'applicationinsights';
+import * as appInsights from "applicationinsights";
 appInsights.setup()
   .start();
 
-import { init } from './index';
+import { init } from "./index";
 
-init(process.env['ConnectionString'], process.env['TestingCommand']);
+init(process.env.ConnectionString, process.env.TestingCommand);

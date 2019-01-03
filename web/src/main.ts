@@ -12,8 +12,9 @@ export function init(functionsHostname: string, functionsCode: string, instrumen
            disableFetchTracking: false,
            enableCorsCorrelation: true,
            instrumentationKey,
-        }
+        },
     });
+    appInsights.loadAppInsights();
 
     const serviceUrl = process.env.NODE_ENV === "development" ? "/" : `https://${functionsHostname}/`;
 

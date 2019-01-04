@@ -1,6 +1,4 @@
-# want qemu 3.1, other logs some error. currently only in sid
-# see https://tracker.debian.org/pkg/qemu
-#x86only FROM debian:unstable as qemu
+#x86only FROM debian:testing as qemu
 
 #x86only RUN apt-get update && apt-get install -y \
 #x86only     qemu-user-static \

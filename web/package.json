@@ -11,24 +11,6 @@
   },
   "author": "Stefan Schoof",
   "license": "Unlicense",
-  "jest": {
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ],
-    "coverageReporters": [
-      "cobertura",
-      "html"
-    ]
-  },
   "dependencies": {
     "application-insights-fetch-monitor": "^1.1.0",
     "applicationinsights-js": "^1.0.20"

@@ -1,17 +1,15 @@
+import { KeyVaultClient } from "@azure/keyvault";
+import { interactiveLogin, loginWithAppServiceMSI } from "@azure/ms-rest-nodeauth";
 import { HttpContext, IFunctionRequest } from "azure-functions-typescript";
 import { Client, DeviceMethodParams } from "azure-iothub";
-import { KeyVaultClient } from "azure-keyvault";
-import * as msRestAzure from "ms-rest-azure";
 import { promisify } from "util";
 
 const deviceId = "espressoPi";
 
 async function getConnectionString(): Promise<string> {
     const cred = process.env.APPSETTING_WEBSITE_SITE_NAME ?
-        // cast currently needed, remove after fix for https://github.com/Azure/azure-sdk-for-node/issues/3778
-        // is released
-        msRestAzure.loginWithAppServiceMSI({resource: "https://vault.azure.net"} as msRestAzure.MSIAppServiceOptions) :
-        msRestAzure.interactiveLogin();
+        loginWithAppServiceMSI({resource: "https://vault.azure.net"}) :
+        interactiveLogin();
     const client = new KeyVaultClient(await cred);
     const secret = await client.getSecret(process.env.KEYVAULT_URI!, "iotHubConnectionString", "");
     if (secret.value === undefined) {

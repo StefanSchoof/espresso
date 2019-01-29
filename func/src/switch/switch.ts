@@ -1,16 +1,13 @@
 import { HttpContext, IFunctionRequest } from "azure-functions-typescript";
-import { Client, DeviceMethodParams } from "azure-iothub";
+import { Client } from "azure-iothub";
 import { KeyVaultClient } from "azure-keyvault";
 import * as msRestAzure from "ms-rest-azure";
-import { promisify } from "util";
 
 const deviceId = "espressoPi";
 
 async function getConnectionString(): Promise<string> {
     const cred = process.env.APPSETTING_WEBSITE_SITE_NAME ?
-        // cast currently needed, remove after fix for https://github.com/Azure/azure-sdk-for-node/issues/3778
-        // is released
-        msRestAzure.loginWithAppServiceMSI({resource: "https://vault.azure.net"} as msRestAzure.MSIAppServiceOptions) :
+        msRestAzure.loginWithAppServiceMSI({resource: "https://vault.azure.net"}) :
         msRestAzure.interactiveLogin();
     const client = new KeyVaultClient(await cred);
     const secret = await client.getSecret(process.env.KEYVAULT_URI!, "iotHubConnectionString", "");
@@ -33,17 +30,11 @@ export async function run(context: HttpContext, req: IFunctionRequest): Promise<
     const connectionString = await getConnectionString();
     const client = Client.fromConnectionString(connectionString);
 
-    // remove promisify, after https://github.com/Azure/azure-sdk-for-node/issues/3369
-    // and https://github.com/Azure/azure-iot-sdk-node/issues/362 are solved
-    // (planed by 22102018 (https://github.com/Azure/azure-sdk-for-node/milestone/35)
-    const invokeDeviceMethod = promisify<string, DeviceMethodParams, any>((d, p, cb: any) =>
-        client.invokeDeviceMethod(d, p, cb));
-
     const methodParams = {
         methodName: req.query.off !== undefined ? "onSwitchOff" : "onSwitchOn",
     };
     try {
-        const result = await invokeDeviceMethod(deviceId, methodParams);
+        const result = (await client.invokeDeviceMethod(deviceId, methodParams)).result;
 
         context.res = {
             body: result.payload,

@@ -7,9 +7,9 @@ import { promisify } from "util";
 const deviceId = "espressoPi";
 
 async function getConnectionString(): Promise<string> {
-    const cred = process.env.APPSETTING_WEBSITE_SITE_NAME ?
-        loginWithAppServiceMSI({resource: "https://vault.azure.net"}) :
-        interactiveLogin();
+    const cred = process.env.NODE_ENV === "development" ?
+        interactiveLogin() :
+        loginWithAppServiceMSI({resource: "https://vault.azure.net"});
     const client = new KeyVaultClient(await cred);
     const secret = await client.getSecret(process.env.KEYVAULT_URI!, "iotHubConnectionString", "");
     if (secret.value === undefined) {

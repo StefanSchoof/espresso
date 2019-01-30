@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@azure/keyvault": "^0.1.0",
-    "@azure/ms-rest-nodeauth": "^0.8.4",
+    "@azure/ms-rest-nodeauth": "^0.9.1",
     "@types/jest": "^23.3.11",
     "@types/node": "^10.12.18",
     "awesome-typescript-loader": "^5.2.1",

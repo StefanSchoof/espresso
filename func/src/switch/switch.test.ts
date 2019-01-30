@@ -42,7 +42,7 @@ test("get connection string from keyvault", async () => {
   process.env.KEYVAULT_URI = "https://somevault.vault.azure.net/";
   await run(context, {method: "POST", query: {off: ""}} as any);
 
-  expect(msRestAzure.interactiveLogin)
+  expect(msRestAzure.loginWithAppServiceMSI)
     .toHaveBeenCalled();
   expect(getSecret)
     .toHaveBeenCalledWith("https://somevault.vault.azure.net/", "iotHubConnectionString", "");

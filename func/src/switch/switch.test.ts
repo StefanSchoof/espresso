@@ -33,7 +33,7 @@ const getSecret = jest.fn(() => Promise.resolve({value: "abc"}));
   getSecret,
 }));
 
-const invokeDeviceMethod = jest.fn(() => ({result: {status: 200, paylod: "Hello"}}));
+const invokeDeviceMethod = jest.fn((a, b, cb) => cb(undefined, {status: 200, paylod: "Hello"}));
 Client.fromConnectionString = jest.fn(() => ({
   invokeDeviceMethod,
 }));
@@ -59,7 +59,7 @@ test("send off to function switches device off", async () => {
   await run(context, {method: "POST", query: {off: ""} } as any);
 
   expect(invokeDeviceMethod)
-    .toHaveBeenCalledWith("espressoPi", {methodName: "onSwitchOff"});
+    .toHaveBeenCalledWith("espressoPi", {methodName: "onSwitchOff"}, expect.anything());
   expect(context.res.status)
     .toBe(200);
 });
@@ -68,7 +68,7 @@ test("send on to function switches device on", async () => {
   await run(context, {method: "POST", query: {on: ""} } as any);
 
   expect(invokeDeviceMethod)
-    .toHaveBeenCalledWith("espressoPi", {methodName: "onSwitchOn"});
+    .toHaveBeenCalledWith("espressoPi", {methodName: "onSwitchOn"}, expect.anything());
   expect(context.res.status)
     .toBe(200);
 });
@@ -81,7 +81,7 @@ test("send no parameter returns error", async () => {
 });
 
 test("log error invokation error", async () => {
-  invokeDeviceMethod.mockImplementationOnce(() => {throw new Error("Some Invokation Error"); });
+  invokeDeviceMethod.mockImplementationOnce((a, b, cb) => cb(new Error("Some Invokation Error")));
 
   await run(context, {method: "POST", query: {off: ""} } as any);
 
@@ -91,7 +91,7 @@ test("log error invokation error", async () => {
 });
 
 test("returns error on Invokation Error", async () => {
-  invokeDeviceMethod.mockImplementationOnce(() => {throw new Error("Some Invokation Error"); });
+  invokeDeviceMethod.mockImplementationOnce((a, b, cb) => cb(new Error("Some Invokation Error")));
 
   await run(context, {method: "POST", query: {off: ""} } as any);
 

@@ -1,11 +1,11 @@
+import { KeyVaultClient } from "@azure/keyvault";
+import * as msRestAzure from "@azure/ms-rest-nodeauth";
 import { HttpContext, IFunctionRequest } from "azure-functions-typescript";
 import { Client } from "azure-iothub";
-import { KeyVaultClient } from "azure-keyvault";
-import * as msRestAzure from "ms-rest-azure";
 import { run } from "./switch";
 
-jest.mock("azure-keyvault");
-jest.mock("ms-rest-azure");
+jest.mock("@azure/keyvault");
+jest.mock("@azure/ms-rest-nodeauth");
 jest.mock("azure-iothub");
 
 // tslint:disable-next-line:no-empty
@@ -42,7 +42,7 @@ test("get connection string from keyvault", async () => {
   process.env.KEYVAULT_URI = "https://somevault.vault.azure.net/";
   await run(context, {method: "POST", query: {off: ""}} as any);
 
-  expect(msRestAzure.interactiveLogin)
+  expect(msRestAzure.loginWithAppServiceMSI)
     .toHaveBeenCalled();
   expect(getSecret)
     .toHaveBeenCalledWith("https://somevault.vault.azure.net/", "iotHubConnectionString", "");

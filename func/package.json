@@ -16,16 +16,16 @@
     "url": "https://github.com/StefanSchoof/espresso.git"
   },
   "devDependencies": {
+    "@azure/keyvault": "^0.1.0",
+    "@azure/ms-rest-nodeauth": "^0.9.1",
     "@types/jest": "^23.3.13",
     "@types/node": "^10.12.18",
     "awesome-typescript-loader": "^5.2.1",
     "azure-functions-typescript": "github:christopheranderson/azure-functions-typescript",
     "azure-iothub": "^1.9.2",
-    "azure-keyvault": "^3.0.4",
     "copy-webpack-plugin": "^4.6.0",
     "jest": "^23.6.0",
     "jest-junit": "^6.2.0",
-    "ms-rest-azure": "^2.6.0",
     "ts-jest": "^23.10.5",
     "tslint": "^5.12.1",
     "typescript": "^3.2.4",

@@ -2,24 +2,6 @@
   "name": "espresso",
   "version": "1.0.0",
   "description": "A project to control my espresso machine with a raspberry pi",
-  "jest": {
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ],
-    "coverageReporters": [
-      "cobertura",
-      "html"
-    ]
-  },
   "scripts": {
     "build": "tsc",
     "start": "node dist/main.js",
@@ -35,17 +17,17 @@
   },
   "dependencies": {
     "applicationinsights": "^1.0.8",
-    "azure-iot-common": "^1.8.3",
-    "azure-iot-device": "^1.8.3",
-    "azure-iot-device-mqtt": "^1.8.3",
-    "jest-junit": "^5.2.0"
+    "azure-iot-common": "^1.9.2",
+    "azure-iot-device": "^1.9.2",
+    "azure-iot-device-mqtt": "^1.9.2",
+    "jest-junit": "^6.2.0"
   },
   "devDependencies": {
-    "@types/jest": "^23.3.11",
+    "@types/jest": "^23.3.13",
     "@types/node": "^10.12.18",
     "jest": "^23.6.0",
     "ts-jest": "^23.10.5",
-    "tslint": "^5.12.0",
-    "typescript": "^3.2.2"
+    "tslint": "^5.12.1",
+    "typescript": "^3.2.4"
   }
 }

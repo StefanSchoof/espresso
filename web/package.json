@@ -12,11 +12,9 @@
   "author": "Stefan Schoof",
   "license": "Unlicense",
   "dependencies": {
-    "application-insights-fetch-monitor": "^1.1.0",
-    "applicationinsights-js": "^1.0.20"
+    "@microsoft/applicationinsights-web": "^1.0.0-beta.11"
   },
   "devDependencies": {
-    "@types/applicationinsights-js": "^1.0.9",
     "@types/jest": "^23.3.13",
     "awesome-typescript-loader": "^5.2.1",
     "html-webpack-plugin": "^3.2.0",

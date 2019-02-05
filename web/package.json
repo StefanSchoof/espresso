@@ -15,7 +15,7 @@
     "@microsoft/applicationinsights-web": "^1.0.0-beta.11"
   },
   "devDependencies": {
-    "@types/jest": "^23.3.13",
+    "@types/jest": "^24.0.0",
     "awesome-typescript-loader": "^5.2.1",
     "html-webpack-plugin": "^3.2.0",
     "html-webpack-template": "^6.2.0",

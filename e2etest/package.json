@@ -9,12 +9,15 @@
     "url": "https://github.com/StefanSchoof/espresso.git"
   },
   "dependencies": {
-    "jest": "^23.6.0",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-typescript": "^7.1.0",
+    "babel-jest": "^24.1.0",
+    "jest": "^24.1.0",
     "jest-junit": "^6.2.0",
     "selenium-webdriver": "^4.0.0-alpha.1"
   },
   "devDependencies": {
-    "@types/jest": "^23.3.13",
+    "@types/jest": "^24.0.0",
     "@types/node": "^10.12.18",
     "@types/selenium-webdriver": "^3.0.14",
     "tslint": "^5.12.1",
@@ -22,7 +25,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "npm run build & jest",
+    "test": "jest",
     "lint": "tslint --project . --config tslint.json",
     "start": "jest --ci --reporters=default --reporters=jest-junit"
   }

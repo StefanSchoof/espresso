@@ -8,16 +8,20 @@ jest.mock("@azure/keyvault");
 jest.mock("@azure/ms-rest-nodeauth");
 jest.mock("azure-iothub");
 
+interface ILog {
+  (...text: string[]): void;
+  warn: (...text: string[]) => void;
+  error: (...text: string[]) => void;
+  info: (...text: string[]) => void;
+  verbose: (...text: string[]) => void;
+}
+
 // tslint:disable-next-line:no-empty
-function log(...args: any[]): void {
-}
-// tslint:disable-next-line:no-namespace
-namespace log {
-  export let warn = jest.fn();
-  export let error = jest.fn();
-  export let info = jest.fn();
-  export let verbose = jest.fn();
-}
+const log = ((...text) => {}) as ILog;
+log.warn = jest.fn();
+log.error = jest.fn();
+log.info = jest.fn();
+log.verbose = jest.fn();
 
 const context: HttpContext = {
   bindingData: {},

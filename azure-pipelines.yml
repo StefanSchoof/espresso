@@ -155,8 +155,9 @@ jobs:
     inputs:
       SourceFolder: 'e2etest'
       Contents: |
-        package.json
+        package*.json
         src/test.ts
+        .babelrc.js
       TargetFolder: '$(build.artifactstagingdirectory)/e2etest'
 
   - task: PublishBuildArtifacts@1

@@ -156,7 +156,7 @@ jobs:
       SourceFolder: 'e2etest'
       Contents: |
         package.json
-        src/test.js
+        src/test.ts
       TargetFolder: '$(build.artifactstagingdirectory)/e2etest'
 
   - task: PublishBuildArtifacts@1

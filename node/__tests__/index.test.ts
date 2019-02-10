@@ -16,7 +16,7 @@ jest.mock("azure-iot-device", () => ({
   },
 }));
 
-import { init } from "./index";
+import { init } from "../src/index";
 init("");
 
 describe("index", () => {

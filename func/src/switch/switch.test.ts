@@ -8,16 +8,11 @@ jest.mock("@azure/keyvault");
 jest.mock("@azure/ms-rest-nodeauth");
 jest.mock("azure-iothub");
 
-// tslint:disable-next-line:no-empty
-function log(...args: any[]): void {
-}
-// tslint:disable-next-line:no-namespace
-namespace log {
-  export let warn = jest.fn();
-  export let error = jest.fn();
-  export let info = jest.fn();
-  export let verbose = jest.fn();
-}
+const log = jest.fn() as unknown as HttpContext["log"];
+log.warn = jest.fn();
+log.error = jest.fn();
+log.info = jest.fn();
+log.verbose = jest.fn();
 
 const context: HttpContext = {
   bindingData: {},
@@ -28,15 +23,15 @@ const context: HttpContext = {
   res: {status: 0, body: ""},
 };
 
-const getSecret = jest.fn(() => Promise.resolve({value: "abc"}));
-(KeyVaultClient as jest.Mock<KeyVaultClient>).mockImplementation(() => ({
+const getSecret: jest.Mock<Promise<{value?: string}>> = jest.fn(() => Promise.resolve({value: "abc"}));
+(KeyVaultClient as any).mockImplementation(() => ({
   getSecret,
 }));
 
 const invokeDeviceMethod = jest.fn((a, b, cb) => cb(undefined, {status: 200, paylod: "Hello"}));
 Client.fromConnectionString = jest.fn(() => ({
   invokeDeviceMethod,
-}));
+} as any));
 
 test("get connection string from keyvault", async () => {
   process.env.KEYVAULT_URI = "https://somevault.vault.azure.net/";

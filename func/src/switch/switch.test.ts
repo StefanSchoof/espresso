@@ -23,15 +23,15 @@ const context: HttpContext = {
   res: {status: 0, body: ""},
 };
 
-const getSecret = jest.fn(() => Promise.resolve({value: "abc"}));
-(KeyVaultClient as jest.Mock<KeyVaultClient>).mockImplementation(() => ({
+const getSecret: jest.Mock<Promise<{value?: string}>> = jest.fn(() => Promise.resolve({value: "abc"}));
+(KeyVaultClient as any).mockImplementation(() => ({
   getSecret,
 }));
 
 const invokeDeviceMethod = jest.fn((a, b, cb) => cb(undefined, {status: 200, paylod: "Hello"}));
 Client.fromConnectionString = jest.fn(() => ({
   invokeDeviceMethod,
-}));
+} as any));
 
 test("get connection string from keyvault", async () => {
   process.env.KEYVAULT_URI = "https://somevault.vault.azure.net/";

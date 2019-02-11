@@ -16,8 +16,6 @@
     "url": "https://github.com/StefanSchoof/espresso.git"
   },
   "devDependencies": {
-    "@azure/keyvault": "^0.1.0",
-    "@azure/ms-rest-nodeauth": "^0.9.1",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-typescript": "^7.1.0",
     "@types/jest": "^24.0.0",

@@ -21,7 +21,7 @@
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-typescript": "^7.1.0",
     "@types/jest": "^24.0.0",
-    "@types/node": "^10.12.18",
+    "@types/node": "^11.9.0",
     "awesome-typescript-loader": "^5.2.1",
     "azure-functions-typescript": "github:christopheranderson/azure-functions-typescript",
     "azure-iothub": "^1.9.2",

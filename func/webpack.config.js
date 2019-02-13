@@ -30,15 +30,15 @@ module.exports = {
     },
     plugins: [
         new copyWebpackPlugin([
-          {
-            from: 'src/host.json',
-            to: 'host.json'
-          },
-          {
-            context: 'src',
-            from: '**/function.json',
-            to: ''
-          }
+            {
+                from: 'src/host.json',
+                to: 'host.json'
+            },
+            {
+                context: 'src',
+                from: '**/function.json',
+                to: ''
+            }
         ])
     ],
 }

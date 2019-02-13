@@ -41,4 +41,4 @@ export async function run(context: HttpContext, req: IFunctionRequest): Promise<
             status: 500,
         };
     }
-  }
+}

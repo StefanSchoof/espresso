@@ -67,7 +67,7 @@ resource "azurerm_function_app" "function" {
     WEBSITE_RUN_FROM_PACKAGE = "1"
     WEBSITE_NODE_DEFAULT_VERSION = "10.6.0"
     APPINSIGHTS_INSTRUMENTATIONKEY = "${azurerm_application_insights.function.instrumentation_key}"
-    KEYVAULT_URI = "${azurerm_key_vault.keyvault.vault_uri}"
+    IOTHUB_CONNECTION_STRING = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.iotHubConnectionString.id})"
   }
   lifecycle {
     ignore_changes = [

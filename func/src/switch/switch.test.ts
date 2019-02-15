@@ -1,11 +1,7 @@
-import { KeyVaultClient } from "@azure/keyvault";
-import * as msRestAzure from "@azure/ms-rest-nodeauth";
 import { HttpContext, IFunctionRequest } from "azure-functions-typescript";
 import { Client } from "azure-iothub";
 import { run } from "./switch";
 
-jest.mock("@azure/keyvault");
-jest.mock("@azure/ms-rest-nodeauth");
 jest.mock("azure-iothub");
 
 const log = jest.fn() as unknown as HttpContext["log"];
@@ -23,28 +19,17 @@ const context: HttpContext = {
   res: {status: 0, body: ""},
 };
 
-const getSecret: jest.Mock<Promise<{value?: string}>> = jest.fn(() => Promise.resolve({value: "abc"}));
-(KeyVaultClient as any).mockImplementation(() => ({
-  getSecret,
-}));
-
 const invokeDeviceMethod = jest.fn((a, b, cb) => cb(undefined, {status: 200, paylod: "Hello"}));
 Client.fromConnectionString = jest.fn(() => ({
   invokeDeviceMethod,
 } as any));
 
-test("get connection string from keyvault", async () => {
-  process.env.KEYVAULT_URI = "https://somevault.vault.azure.net/";
-  await run(context, {method: "POST", query: {off: ""}} as any);
-
-  expect(msRestAzure.loginWithAppServiceMSI)
-    .toHaveBeenCalled();
-  expect(getSecret)
-    .toHaveBeenCalledWith("https://somevault.vault.azure.net/", "iotHubConnectionString", "");
+beforeEach(() => {
+  process.env.APPSETTING_IOTHUB_CONNECTION_STRING = "https://myvault.x/a/123";
 });
 
-test("throws if no keyvault value is found", async () => {
-  getSecret.mockImplementationOnce(async () => ({}));
+test("throws if no iothub connection string is found", async () => {
+  delete process.env.APPSETTING_IOTHUB_CONNECTION_STRING;
 
   await expect(run(context, {method: "POST", query: {off: ""}} as any)).rejects
     .toEqual(new Error("Found no connection string in key vault"));

@@ -6,7 +6,7 @@ declare var process: {
     };
 };
 
-export function init(functionsHostname: string, functionsCode: string, instrumentationKey: string) {
+export function init(functionsHostname: string, functionsCode: string, instrumentationKey: string): void {
     const appInsights = new ApplicationInsights({
         config: {
             disableFetchTracking: false,
@@ -25,7 +25,10 @@ export function init(functionsHostname: string, functionsCode: string, instrumen
         button.style.fontSize = "60px";
         button.textContent = title;
         button.addEventListener("click", async () => {
-            const status = document.getElementById("status") as HTMLSpanElement;
+            const status = document.getElementById("status");
+            if (!status) {
+                throw "Could not find status";
+            }
             status.textContent = `Schalte Maschine ${title.toLocaleLowerCase()}`;
             try {
                 const res = await fetch(`${serviceUrl}api/switch?${arg}=1&code=${functionsCode}`, {method: "POST"});
@@ -40,7 +43,10 @@ export function init(functionsHostname: string, functionsCode: string, instrumen
     }
 
     async function warmUp(): Promise<void> {
-        const status = document.getElementById("status")!;
+        const status = document.getElementById("status");
+        if (!status) {
+            throw "Could not find status";
+        }
         status.textContent = "Aufwärmen...";
         try {
             await fetch(`${serviceUrl}api/switch`);
@@ -50,7 +56,7 @@ export function init(functionsHostname: string, functionsCode: string, instrumen
         }
     }
 
-    function component() {
+    function component(): HTMLDivElement {
         const div = document.createElement("div");
         div.appendChild(createButton("on", "An"));
         div.appendChild(document.createElement("br"));

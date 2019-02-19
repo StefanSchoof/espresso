@@ -1,4 +1,4 @@
-import { HttpContext, IFunctionRequest } from "azure-functions-typescript";
+import { HttpContext } from "azure-functions-typescript";
 import { Client } from "azure-iothub";
 import { run } from "./switch";
 

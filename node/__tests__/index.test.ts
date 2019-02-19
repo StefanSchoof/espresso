@@ -38,7 +38,7 @@ describe("index", () => {
 
     test("on switch on the on cmd is called", async () => {
         const response = {
-            send: jest.fn((code, payload) => Promise.resolve()),
+            send: jest.fn(() => Promise.resolve()),
         };
 
         await mockDeviceMethods.onSwitchOff({}, response);
@@ -51,7 +51,7 @@ describe("index", () => {
 
     test("on switch off the on cmd is called", async () => {
         const response = {
-            send: jest.fn((code, payload) => Promise.resolve()),
+            send: jest.fn(() => Promise.resolve()),
         };
 
         await mockDeviceMethods.onSwitchOn({}, response);
@@ -64,7 +64,7 @@ describe("index", () => {
 
     test("use testing cmd if given", async () => {
         const response = {
-            send: jest.fn((code, payload) => Promise.resolve()),
+            send: jest.fn(() => Promise.resolve()),
         };
         init("abc", "echo");
 
@@ -76,7 +76,7 @@ describe("index", () => {
 
     test("use normal cmd if empty testingcmd is given", async () => {
         const response = {
-            send: jest.fn((code, payload) => Promise.resolve()),
+            send: jest.fn(() => Promise.resolve()),
         };
         init("abc", "");
 
@@ -88,7 +88,7 @@ describe("index", () => {
 
     test("return an error if exec fails", async () => {
         const response = {
-            send: jest.fn((code, payload) => Promise.resolve()),
+            send: jest.fn(() => Promise.resolve()),
         };
         (exec as any as jest.Mock<any>)
             .mockImplementationOnce((cmd, cb) => cb(new Error("Command failed")));
@@ -104,7 +104,7 @@ describe("index", () => {
     test("log an error if response fails", async () => {
         const e = new Error("Send response failed");
         const response = {
-            send: jest.fn((code, payload) => Promise.reject(e)),
+            send: jest.fn(() => Promise.reject(e)),
         };
 
         await mockDeviceMethods.onSwitchOff({}, response);
@@ -116,7 +116,7 @@ describe("index", () => {
     test("track request on respose error", async () => {
         const e = new Error("Send response failed");
         const response = {
-            send: jest.fn((code, payload) => Promise.reject(e)),
+            send: jest.fn(() => Promise.reject(e)),
         };
 
         await mockDeviceMethods.onSwitchOff({}, response);

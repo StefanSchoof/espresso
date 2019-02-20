@@ -1,6 +1,6 @@
 module.exports = {
-  coverageReporters: [
-    "cobertura",
-    "html",
-  ],
+    coverageReporters: [
+        "cobertura",
+        "html",
+    ],
 };

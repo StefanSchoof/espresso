@@ -5,7 +5,7 @@ import { Mqtt } from "azure-iot-device-mqtt";
 import { exec } from "child_process";
 import { promisify } from "util";
 
-const log = (...args: any[]) => {
+const log = (...args: string[]): void => {
     appInsights.defaultClient.trackTrace({message: args[0]});
     console.log(new Date().toISOString(), ...args);
 };
@@ -51,9 +51,9 @@ export function init(connectionString?: string, testingCmd?: string): void {
     const deviceClient: Client = Client.fromConnectionString(connectionString, Mqtt);
     const command = testingCmd ? testingCmd : "steuerung";
     deviceClient.onDeviceMethod("onSwitchOn",
-        (request, response) => execAndResponse(command, "1", "power on", response!));
+        (request, response) => execAndResponse(command, "1", "power on", response));
     deviceClient.onDeviceMethod("onSwitchOff",
-        (request, response) => execAndResponse(command, "0", "power off", response!));
+        (request, response) => execAndResponse(command, "0", "power off", response));
     deviceClient.on("disconnect", (err: results.Disconnected) => {
         appInsights.defaultClient.trackException({exception: err.transportObj});
         log("disconnect", JSON.stringify(err));

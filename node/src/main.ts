@@ -1,6 +1,6 @@
 import * as appInsights from "applicationinsights";
 appInsights.setup()
-  .start();
+    .start();
 
 import { init } from "./index";
 

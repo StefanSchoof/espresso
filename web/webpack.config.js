@@ -4,7 +4,7 @@ module.exports = {
     mode: 'development',
     devServer: {
         proxy: {
-          '/api': 'http://localhost:7071/'
+            '/api': 'http://localhost:7071/'
         }
     },
     module: {

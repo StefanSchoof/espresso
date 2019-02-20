@@ -1,7 +1,7 @@
 module.exports = {
-  testEnvironment: 'node',
-  coverageReporters: [
-    "cobertura",
-    "html",
-  ],
+    testEnvironment: 'node',
+    coverageReporters: [
+        "cobertura",
+        "html",
+    ],
 };

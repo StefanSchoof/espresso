@@ -14,7 +14,7 @@ function getButton(name: string, buttons: HTMLButtonElement[]): HTMLButtonElemen
 
 describe("main", () => {
     beforeAll(() => {
-        window.fetch = jest.fn(() => Promise.resolve({ok: true}));
+        window.fetch = jest.fn(() => Promise.resolve({ok: true})) as any;
     });
 
     describe("click", () => {
@@ -67,7 +67,7 @@ describe("main", () => {
         });
 
         test("show error if request after on click is not ok", async () => {
-            window.fetch = jest.fn(() => Promise.resolve({ok: false, text: () => Promise.resolve("Not working")}));
+            window.fetch = jest.fn(() => Promise.resolve({ok: false, text: () => Promise.resolve("Not working")})) as any;
 
             on.click();
             await immediate();

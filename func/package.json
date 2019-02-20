@@ -26,7 +26,7 @@
     "azure-functions-typescript": "github:christopheranderson/azure-functions-typescript",
     "azure-iothub": "^1.9.2",
     "babel-jest": "^24.1.0",
-    "copy-webpack-plugin": "^4.6.0",
+    "copy-webpack-plugin": "^5.0.0",
     "eslint": "^5.13.0",
     "jest": "^24.1.0",
     "jest-junit": "^6.2.0",

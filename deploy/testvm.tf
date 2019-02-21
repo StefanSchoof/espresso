@@ -19,7 +19,7 @@ resource "azurerm_public_ip" "ip" {
   name                         = "dockerhost-ip"
   location                     = "${azurerm_resource_group.group.location}"
   resource_group_name          = "${azurerm_resource_group.group.name}"
-  public_ip_address_allocation = "dynamic"
+  allocation_method            = "Dynamic"
   idle_timeout_in_minutes      = 30
   domain_name_label            = "espresso"
 }

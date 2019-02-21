@@ -1,10 +1,10 @@
 # Configure the Azure Provider
 provider "azurerm" {
-    version =  "~> 1.20"
+  version =  "~> 1.22.1"
 }
 
 provider "template" {
-    version = "~> 1.0"
+  version = "~> 1.0"
 }
 
 locals {
@@ -90,8 +90,7 @@ resource "azurerm_key_vault" "keyvault" {
 }
 
 resource "azurerm_key_vault_access_policy" "app" {
-   vault_name = "${azurerm_key_vault.keyvault.name}"
-   resource_group_name = "${azurerm_key_vault.keyvault.resource_group_name}"
+    key_vault_id = "${azurerm_key_vault.keyvault.id}"
 
     tenant_id = "${azurerm_function_app.function.identity.0.tenant_id}"
     object_id = "${azurerm_function_app.function.identity.0.principal_id}"
@@ -105,8 +104,7 @@ resource "azurerm_key_vault_access_policy" "app" {
   }
 
 resource "azurerm_key_vault_access_policy" "service" {
-    vault_name = "${azurerm_key_vault.keyvault.name}"
-    resource_group_name = "${azurerm_key_vault.keyvault.resource_group_name}"
+    key_vault_id = "${azurerm_key_vault.keyvault.id}"
 
     tenant_id = "${data.azurerm_client_config.current.tenant_id}"
     object_id = "${data.azurerm_client_config.current.service_principal_object_id}"
@@ -123,9 +121,11 @@ resource "azurerm_key_vault_access_policy" "service" {
   }
 
 resource "azurerm_key_vault_secret" "iotHubConnectionString" {
-  name      = "iotHubConnectionString"
-  value     = "HostName=${azurerm_iothub.iothub.hostname};SharedAccessKeyName=${azurerm_iothub.iothub.shared_access_policy.0.key_name};SharedAccessKey=${azurerm_iothub.iothub.shared_access_policy.0.primary_key}"
-  vault_uri = "${azurerm_key_vault.keyvault.vault_uri}"
+  name  = "iotHubConnectionString"
+  value = "HostName=${azurerm_iothub.iothub.hostname};SharedAccessKeyName=${azurerm_iothub.iothub.shared_access_policy.0.key_name};SharedAccessKey=${azurerm_iothub.iothub.shared_access_policy.0.primary_key}"
+  key_vault_id = "${azurerm_key_vault.keyvault.id}"
+
+  depends_on = ["azurerm_key_vault_access_policy.service"]
 }
 
 resource "azurerm_application_insights" "node" {

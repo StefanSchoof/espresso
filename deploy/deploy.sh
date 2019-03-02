@@ -11,6 +11,7 @@ function deployFunc {
     func azure functionapp publish $functionAppName)
   popd
   FUNCTIONS_CODE=$(echo "$res" | sed 's/^.*code=//;t;d')
+  [[ -z "$FUNCTIONS_CODE" ]] && >&2 echo "found no functionscode" && exit 1
   # prevent to get the code into the log
   writeDevopsVar "FunctionsCode" "$FUNCTIONS_CODE" true
   echo "$res"

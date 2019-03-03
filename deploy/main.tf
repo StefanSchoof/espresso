@@ -54,7 +54,7 @@ resource "azurerm_app_service_plan" "WestEuropePlan" {
 }
 
 resource "azurerm_function_app" "function" {
-  name                      = "espressoPi${local.stage}"
+  name                      = "espressopifunc${local.stage}"
   location                  = "${azurerm_resource_group.group.location}"
   resource_group_name       = "${azurerm_resource_group.group.name}"
   app_service_plan_id       = "${azurerm_app_service_plan.WestEuropePlan.id}"
@@ -64,6 +64,7 @@ resource "azurerm_function_app" "function" {
   }
 
   app_settings {
+    FUNCTIONS_WORKER_RUNTIME = "node"
     WEBSITE_RUN_FROM_PACKAGE = "1"
     WEBSITE_NODE_DEFAULT_VERSION = "10.14.1"
     APPINSIGHTS_INSTRUMENTATIONKEY = "${azurerm_application_insights.function.instrumentation_key}"
@@ -71,8 +72,7 @@ resource "azurerm_function_app" "function" {
   }
   lifecycle {
     ignore_changes = [
-      "app_settings.%",
-      "app_settings.WEBSITE_RUN_FROM_ZIP", # Done by the function depolyment
+      "app_settings.WEBSITE_RUN_FROM_PACKAGE", # Done by the function depolyment
     ]
   }
   version = "~2"

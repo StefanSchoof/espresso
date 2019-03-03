@@ -38,6 +38,11 @@ module.exports = {
                 context: 'src',
                 from: '**/function.json',
                 to: ''
+            },
+            {
+                context: 'src',
+                from: '**/local.settings.json',
+                to: ''
             }
         ])
     ],

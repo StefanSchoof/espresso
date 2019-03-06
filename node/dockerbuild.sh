@@ -4,6 +4,7 @@ function pullarmimage {
   # since the platform arg needs experimental daemon and there is no way do activate experimental daemon on azure pipeline => a hack...
   imagename=${1%:*}
   digest=$(DOCKER_CLI_EXPERIMENTAL="enabled" docker manifest inspect $1 | jq --raw-output '.manifests[] | select(.platform.architecture == "arm").digest')
+  [[ -z "$digest" ]] && >&2 echo "found no arm image" && exit 1
   docker pull $imagename@$digest
   docker tag $imagename@$digest $1
 }

@@ -1,5 +1,5 @@
 import { Builder, By, until } from "selenium-webdriver";
-import { Options, ServiceBuilder } from "selenium-webdriver/firefox";
+import { Options, ServiceBuilder } from "selenium-webdriver/chrome";
 
 jest.setTimeout(100000);
 
@@ -7,12 +7,12 @@ describe("e2etest", () => {
     test("switch on", async () => {
         const options = new Options();
         options.headless();
-        const driverPath = process.env.GeckoWebDriver && `${process.env.GeckoWebDriver}\\geckodriver.exe`;
+        const driverPath = process.env.ChromeWebDriver && `${process.env.ChromeWebDriver}\\chromedriver.exe`;
         const serviceBuilder = new ServiceBuilder(driverPath);
         const driver = await new Builder()
-            .forBrowser("firefox")
-            .setFirefoxOptions(options)
-            .setFirefoxService(serviceBuilder)
+            .forBrowser("chrome")
+            .setChromeOptions(options)
+            .setChromeService(serviceBuilder)
             .build();
         try {
             const testUrl = process.env.testurl ?

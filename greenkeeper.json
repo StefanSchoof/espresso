@@ -8,5 +8,6 @@
         "e2etest/package.json"
       ]
     }
-  }
+  },
+  "ignore": ["@types/node"]
 }

@@ -4,13 +4,14 @@
 #x86only     qemu-user-static \
 #x86only  && rm -rf /var/lib/apt/lists/*
 
+#x86only CMD update-binfmts --enable
+
 FROM alpine as cppbuilder
 
 #x86only COPY --from=qemu /usr/bin/qemu-arm-static /usr/bin
 
 WORKDIR /usr/src/app
-RUN apk add --no-cache --repository http://dl-4.alpinelinux.org/alpine/edge/community wiringpi-dev \
- && apk add --no-cache g++ git
+RUN apk add --no-cache wiringpi-dev g++ git
 
 RUN git clone --recursive https://github.com/ninjablocks/433Utils.git
 

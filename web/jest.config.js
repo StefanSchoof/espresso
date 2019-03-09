@@ -1,7 +1,6 @@
 module.exports = {
-  preset: 'ts-jest',
-  coverageReporters: [
-    "cobertura",
-    "html",
-  ],
+    coverageReporters: [
+        "cobertura",
+        "html",
+    ],
 };

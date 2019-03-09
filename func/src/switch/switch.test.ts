@@ -1,102 +1,82 @@
-import { KeyVaultClient } from "@azure/keyvault";
-import * as msRestAzure from "@azure/ms-rest-nodeauth";
-import { HttpContext, IFunctionRequest } from "azure-functions-typescript";
+import { HttpContext } from "azure-functions-typescript";
 import { Client } from "azure-iothub";
 import { run } from "./switch";
 
-jest.mock("@azure/keyvault");
-jest.mock("@azure/ms-rest-nodeauth");
 jest.mock("azure-iothub");
 
-// tslint:disable-next-line:no-empty
-function log(...args: any[]): void {
-}
-// tslint:disable-next-line:no-namespace
-namespace log {
-  export let warn = jest.fn();
-  export let error = jest.fn();
-  export let info = jest.fn();
-  export let verbose = jest.fn();
-}
+const log = jest.fn() as unknown as HttpContext["log"];
+log.warn = jest.fn();
+log.error = jest.fn();
+log.info = jest.fn();
+log.verbose = jest.fn();
 
 const context: HttpContext = {
-  bindingData: {},
-  bindings: {},
-  done: jest.fn(),
-  invocationId: "id",
-  log,
-  res: {status: 0, body: ""},
+    bindingData: {},
+    bindings: {},
+    done: jest.fn(),
+    invocationId: "id",
+    log,
+    res: {status: 0, body: ""},
 };
-
-const getSecret = jest.fn(() => Promise.resolve({value: "abc"}));
-(KeyVaultClient as jest.Mock<KeyVaultClient>).mockImplementation(() => ({
-  getSecret,
-}));
 
 const invokeDeviceMethod = jest.fn((a, b, cb) => cb(undefined, {status: 200, paylod: "Hello"}));
 Client.fromConnectionString = jest.fn(() => ({
-  invokeDeviceMethod,
-}));
+    invokeDeviceMethod,
+} as any));
 
-test("get connection string from keyvault", async () => {
-  process.env.KEYVAULT_URI = "https://somevault.vault.azure.net/";
-  await run(context, {method: "POST", query: {off: ""}} as any);
-
-  expect(msRestAzure.loginWithAppServiceMSI)
-    .toHaveBeenCalled();
-  expect(getSecret)
-    .toHaveBeenCalledWith("https://somevault.vault.azure.net/", "iotHubConnectionString", "");
+beforeEach(() => {
+    process.env.APPSETTING_IOTHUB_CONNECTION_STRING = "https://myvault.x/a/123";
 });
 
-test("throws if no keyvault value is found", async () => {
-  getSecret.mockImplementationOnce(async () => ({}));
+test("throws if no iothub connection string is found", async () => {
+    delete process.env.APPSETTING_IOTHUB_CONNECTION_STRING;
 
-  await expect(run(context, {method: "POST", query: {off: ""}} as any)).rejects
-    .toEqual(new Error("Found no connection string in key vault"));
+    await expect(run(context, {method: "POST", query: {off: ""}} as any)).rejects
+        .toEqual(new Error("Found no connection string in key vault"));
 });
 
 test("send off to function switches device off", async () => {
-  await run(context, {method: "POST", query: {off: ""} } as any);
+    await run(context, {method: "POST", query: {off: ""} } as any);
 
-  expect(invokeDeviceMethod)
-    .toHaveBeenCalledWith("espressoPi", {methodName: "onSwitchOff"}, expect.anything());
-  expect(context.res.status)
-    .toBe(200);
+    expect(invokeDeviceMethod)
+        .toHaveBeenCalledWith("espressoPi", {methodName: "onSwitchOff"}, expect.anything());
+    expect(context.res.status)
+        .toBe(200);
 });
 
 test("send on to function switches device on", async () => {
-  await run(context, {method: "POST", query: {on: ""} } as any);
+    await run(context, {method: "POST", query: {on: ""} } as any);
 
-  expect(invokeDeviceMethod)
-    .toHaveBeenCalledWith("espressoPi", {methodName: "onSwitchOn"}, expect.anything());
-  expect(context.res.status)
-    .toBe(200);
+    expect(invokeDeviceMethod)
+        .toHaveBeenCalledWith("espressoPi", {methodName: "onSwitchOn"}, expect.anything());
+    expect(context.res.status)
+        .toBe(200);
 });
 
 test("send no parameter returns error", async () => {
-  await run(context, {method: "POST", query: {} } as any);
+    await run(context, {method: "POST", query: {} } as any);
 
-  expect(context.res.status)
-    .toBe(404);
+    expect(context.res.status)
+        .toBe(404);
 });
 
 test("log error invokation error", async () => {
-  invokeDeviceMethod.mockImplementationOnce((a, b, cb) => cb(new Error("Some Invokation Error")));
+    invokeDeviceMethod.mockImplementationOnce((a, b, cb) => cb(new Error("Some Invokation Error")));
 
-  await run(context, {method: "POST", query: {off: ""} } as any);
+    await run(context, {method: "POST", query: {off: ""} } as any);
 
-  expect(context.log.error)
-    .toHaveBeenCalledWith(
-      'Failed to invoke method "onSwitchOff" with error: "Some Invokation Error"', expect.anything());
+    expect(context.log.error)
+        .toHaveBeenCalledWith(
+            'Failed to invoke method "onSwitchOff" with error: "Some Invokation Error"', expect.anything());
 });
 
 test("returns error on Invokation Error", async () => {
-  invokeDeviceMethod.mockImplementationOnce((a, b, cb) => cb(new Error("Some Invokation Error")));
+    invokeDeviceMethod.mockImplementationOnce((a, b, cb) => cb(new Error("Some Invokation Error")));
 
-  await run(context, {method: "POST", query: {off: ""} } as any);
+    await run(context, {method: "POST", query: {off: ""} } as any);
 
-  expect(context.res.status)
-    .toBe(500);
-  expect(context.res.body)
-    .toBe("Failed to invoke method");
+    expect(context.res.status)
+        .toBe(500);
+    expect(context.res.body)
+        .toBe("Failed to invoke method");
 });

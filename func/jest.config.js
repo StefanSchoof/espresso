@@ -1,8 +1,7 @@
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
-  coverageReporters: [
-    "cobertura",
-    "html",
-  ],
+    testEnvironment: 'node',
+    coverageReporters: [
+        "cobertura",
+        "html",
+    ],
 };

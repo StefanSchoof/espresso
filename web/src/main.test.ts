@@ -1,11 +1,20 @@
 import { init } from "./main";
 
 declare function setImmediate(cb: () => void): void;
-const immediate = () => new Promise((resolve) => setImmediate(resolve));
+const immediate = (): Promise<void> => new Promise((resolve) => setImmediate(resolve));
+
+function getButton(name: string, buttons: HTMLButtonElement[]): HTMLButtonElement
+{
+    const button = buttons.find((e) => e.textContent === name);
+    if (!button) {
+        throw `Found no button '${name}'`;
+    }
+    return button;
+}
 
 describe("main", () => {
     beforeAll(() => {
-        window.fetch = jest.fn(() => Promise.resolve({ok: true}));
+        window.fetch = jest.fn(() => Promise.resolve({ok: true})) as any;
     });
 
     describe("click", () => {
@@ -18,9 +27,9 @@ describe("main", () => {
             }
             jest.clearAllMocks();
             init("func.azurewebsites.net", "abc", "key");
-            const buttons = Array.from(document.body.querySelectorAll("button") as NodeListOf<HTMLButtonElement>);
-            on = buttons.find((e) => e.textContent === "An")!;
-            off = buttons.find((e) => e.textContent === "Aus")!;
+            const buttons = Array.from(document.body.querySelectorAll("button"));
+            on = getButton("An", buttons);
+            off = getButton("Aus", buttons);
         });
 
         test("renders two buttons", () => {
@@ -58,7 +67,7 @@ describe("main", () => {
         });
 
         test("show error if request after on click is not ok", async () => {
-            window.fetch = jest.fn(() => Promise.resolve({ok: false, text: () => Promise.resolve("Not working")}));
+            window.fetch = jest.fn(() => Promise.resolve({ok: false, text: () => Promise.resolve("Not working")})) as any;
 
             on.click();
             await immediate();

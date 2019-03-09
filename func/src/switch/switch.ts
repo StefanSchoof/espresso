@@ -1,23 +1,8 @@
-import { KeyVaultClient } from "@azure/keyvault";
-import { interactiveLogin, loginWithAppServiceMSI } from "@azure/ms-rest-nodeauth";
 import { HttpContext, IFunctionRequest } from "azure-functions-typescript";
 import { Client, DeviceMethodParams } from "azure-iothub";
 import { promisify } from "util";
 
 const deviceId = "espressoPi";
-
-async function getConnectionString(): Promise<string> {
-    const cred = process.env.NODE_ENV === "development" ?
-        interactiveLogin() :
-        loginWithAppServiceMSI({resource: "https://vault.azure.net"});
-    const client = new KeyVaultClient(await cred);
-    const secret = await client.getSecret(process.env.KEYVAULT_URI!, "iotHubConnectionString", "");
-    if (secret.value === undefined) {
-        throw new Error("Found no connection string in key vault");
-    } else {
-        return secret.value;
-    }
-}
 
 export async function run(context: HttpContext, req: IFunctionRequest): Promise<void> {
     if (req.query.on === undefined && req.query.off === undefined) {
@@ -28,8 +13,10 @@ export async function run(context: HttpContext, req: IFunctionRequest): Promise<
 
         return;
     }
-    const connectionString = await getConnectionString();
-    const client = Client.fromConnectionString(connectionString);
+    if (!process.env.APPSETTING_IOTHUB_CONNECTION_STRING) {
+        throw new Error("Found no connection string in key vault");
+    }
+    const client = Client.fromConnectionString(process.env.APPSETTING_IOTHUB_CONNECTION_STRING);
 
     // remove promisify, after https://github.com/Azure/azure-sdk-for-node/issues/3369
     // and https://github.com/Azure/azure-iot-sdk-node/issues/362 are solved
@@ -54,4 +41,4 @@ export async function run(context: HttpContext, req: IFunctionRequest): Promise<
             status: 500,
         };
     }
-  }
+}

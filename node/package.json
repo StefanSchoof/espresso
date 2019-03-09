@@ -6,7 +6,7 @@
     "build": "tsc",
     "start": "node dist/main.js",
     "test": "jest",
-    "test:ci": "jest --ci --reporters=default --reporters=jest-junit --coverage",
+    "test:ci": "jest --ci --reporters=default --reporters=jest-junit --coverage --colors",
     "lint": "eslint --ext .ts,.js ."
   },
   "author": "Stefan Schoof",

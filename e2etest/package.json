@@ -29,6 +29,6 @@
     "build": "tsc",
     "test": "jest",
     "lint": "eslint --ext .ts,.js .",
-    "start": "jest --ci --reporters=default --reporters=jest-junit"
+    "start": "jest --ci --reporters=default --reporters=jest-junit --colors"
   }
 }

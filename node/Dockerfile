@@ -4,7 +4,7 @@
 #x86only     qemu-user-static \
 #x86only  && rm -rf /var/lib/apt/lists/*
 
-#x86only CMD update-binfmts --enable
+#x86only CMD update-binfmts --enable qemu-arm
 
 FROM alpine as cppbuilder
 

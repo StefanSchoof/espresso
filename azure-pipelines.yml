@@ -49,7 +49,7 @@ jobs:
   steps:
   - bash: |
      set -e
-     npm install
+     npm ci
      npm run build
      npm run test:ci
      npm run lint
@@ -79,7 +79,7 @@ jobs:
   steps:
   - bash: |
      set -e
-     npm install
+     npm ci
      npm run build
      npm run test:ci
      npm run lint
@@ -144,7 +144,7 @@ jobs:
   steps:
   - bash: |
      set -e
-     npm install
+     npm ci
      npm run build
      npm run lint
     workingDirectory: e2etest

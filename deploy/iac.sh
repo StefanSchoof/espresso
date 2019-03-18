@@ -6,8 +6,8 @@ export TF_WORKSPACE=${RELEASE_ENVIRONMENTNAME:-test}
 
 function applyTerraform {
   terraform init -backend-config=/temp/backend.conf -input=false
-  terraform plan -out=tfplan -input=false
-  terraform apply -input=false tfplan
+  terraform plan -lock-timeout=50m -out=tfplan -input=false
+  terraform apply -lock-timeout=50m -input=false tfplan
 }
 
 function ensureStaticWeb {

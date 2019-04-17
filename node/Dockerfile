@@ -6,7 +6,7 @@
 
 #x86only CMD update-binfmts --enable qemu-arm
 
-FROM alpine as cppbuilder
+FROM --platform=linux/arm/v6 alpine as cppbuilder
 
 #x86only COPY --from=qemu /usr/bin/qemu-arm-static /usr/bin
 
@@ -19,7 +19,7 @@ COPY steuerung.cpp .
 
 RUN g++ -DRPI 433Utils/rc-switch/RCSwitch.cpp steuerung.cpp -o steuerung -lwiringPi
 
-FROM node:10-alpine as builder
+FROM --platform=linux/arm/v6 node:10-alpine as builder
 
 #x86only COPY --from=qemu /usr/bin/qemu-arm-static /usr/bin
 
@@ -37,7 +37,7 @@ RUN npm run build \
  && npm prune --production \
  && mv node_modules dist/
 
-FROM node:10-alpine as runner
+FROM --platform=linux/arm/v6 node:10-alpine as runner
 
 WORKDIR /usr/app
 

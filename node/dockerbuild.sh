@@ -6,10 +6,9 @@ function buildtarget {
   if [[ ! -z "$USECACHEFROM" ]]
   then
     cachefrom+="--cache-from $tag "
-    docker pull --platform linux/arm/v6 $tag || true
+    docker pull $tag || true
   fi
   docker build --target $1 \
-    --platform linux/arm/v6 \
     $cachefrom \
     $dockerfilearg \
     -t $tag .
@@ -52,7 +51,6 @@ then
 fi
 
 docker build \
-  --platform linux/arm/v6 \
   $cachefrom \
   $dockerfilearg \
   $buildtag \

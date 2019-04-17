@@ -9,7 +9,7 @@ jobs:
       dockerRegistryEndpoint: 'docker hub sschoof'
       command: login
 
-  - bash: ./dockerbuild.sh
+  - bash: ./enableexperimental.sh && ./dockerbuild.sh
     workingDirectory: node
     displayName: 'docker build'
     env:

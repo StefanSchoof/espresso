@@ -24,7 +24,7 @@
     "@typescript-eslint/parser": "^1.4.2",
     "awesome-typescript-loader": "^5.2.1",
     "azure-functions-typescript": "github:christopheranderson/azure-functions-typescript",
-    "azure-iothub": "^1.9.4",
+    "azure-iothub": "^1.9.6",
     "babel-jest": "^24.5.0",
     "copy-webpack-plugin": "^5.0.1",
     "eslint": "^5.15.2",

@@ -54,7 +54,7 @@ resource "azurerm_app_service_plan" "WestEuropePlan" {
 }
 
 resource "azurerm_function_app" "function" {
-  name                      = "espressofunc${local.stage}"
+  name                      = "espressofunc2${local.stage}"
   location                  = "${azurerm_resource_group.group.location}"
   resource_group_name       = "${azurerm_resource_group.group.name}"
   app_service_plan_id       = "${azurerm_app_service_plan.WestEuropePlan.id}"

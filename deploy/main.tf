@@ -7,8 +7,15 @@ provider "template" {
   version = "~> 1.0"
 }
 
+provider "random" {
+  version = "~> 2.1"
+}
+
 locals {
   stage = "${terraform.workspace == "prod" ? "" : "${terraform.workspace}" }"
+}
+
+resource "random_pet" "func" {
 }
 
 data "azurerm_client_config" "current" {}
@@ -54,7 +61,8 @@ resource "azurerm_app_service_plan" "WestEuropePlan" {
 }
 
 resource "azurerm_function_app" "function" {
-  name                      = "espressofunc2${local.stage}"
+  # for an unkown reason sometime the func has no code. changing the name with a `terraform taint random_pet.func` will generate a new name
+  name                      = "espressofunc${terraform.workspace == "prod" ? "" : "-${random_pet.func.id}-"}${local.stage}"
   location                  = "${azurerm_resource_group.group.location}"
   resource_group_name       = "${azurerm_resource_group.group.name}"
   app_service_plan_id       = "${azurerm_app_service_plan.WestEuropePlan.id}"
@@ -69,11 +77,6 @@ resource "azurerm_function_app" "function" {
     WEBSITE_NODE_DEFAULT_VERSION = "10.14.1"
     APPINSIGHTS_INSTRUMENTATIONKEY = "${azurerm_application_insights.function.instrumentation_key}"
     IOTHUB_CONNECTION_STRING = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.iotHubConnectionString.id})"
-  }
-  lifecycle {
-    ignore_changes = [
-      "app_settings.WEBSITE_RUN_FROM_PACKAGE", # Done by the function depolyment
-    ]
   }
   version = "~2"
 }

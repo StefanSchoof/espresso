@@ -10,7 +10,6 @@ function buildtarget {
   fi
   docker build --target $1 \
     $cachefrom \
-    $dockerfilearg \
     -t $tag .
   if [[ ! -z "$PUSH" ]]
   then
@@ -24,10 +23,7 @@ image="stefanschoof/espresso"
 # enable cross compile with on not arm devices
 if [[ ! $(uname -m) == arm* ]]
 then
-  dockerfilearg="-f Dockerfile_x86"
-  sed 's/#x86only //' Dockerfile > Dockerfile_x86
-  buildtarget "qemu"
-  docker run --rm --privileged $image:build-cache-qemu
+  docker run --rm --privileged linuxkit/binfmt:v0.7
 fi
 
 # cache-from does not work with multistage, see https://github.com/moby/moby/issues/34715
@@ -52,7 +48,6 @@ fi
 
 docker build \
   $cachefrom \
-  $dockerfilearg \
   $buildtag \
   -t $image:$branch .
 

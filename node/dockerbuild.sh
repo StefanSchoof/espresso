@@ -5,6 +5,7 @@ set -e
 branch=$(basename ${BUILD_SOURCEBRANCH:-$(git rev-parse --abbrev-ref HEAD)})
 image="stefanschoof/espresso"
 
+echo "build builder"
 buildctl build \
   --frontend dockerfile.v0 \
   --local dockerfile=. \
@@ -12,10 +13,12 @@ buildctl build \
   --import-cache type=registry,ref=docker.io/$image:cache \
   --opt target=builder \
   --output type=docker,name=builder | docker load
+echo "copy test results"
 container=$(docker create --name builder builder)
 docker cp $container:/usr/src/app/junit.xml .
 docker cp $container:/usr/src/app/coverage .
 docker rm $container
+echo "build final image"
 buildctl build \
   --frontend dockerfile.v0 \
   --local dockerfile=. \
@@ -26,10 +29,11 @@ buildctl build \
 
 if [[ ! -z "$BUILD_BUILDID" ]]
 then
+  echo "push image with buildidtag"
   buildctl build \
-  --frontend dockerfile.v0 \
-  --local dockerfile=. \
-  --local context=. \
-  --import-cache type=registry,ref=docker.io/$image:cache \
-  --output type=image,name=docker.io/$image:$BUILD_BUILDID,push=true
+    --frontend dockerfile.v0 \
+    --local dockerfile=. \
+    --local context=. \
+    --import-cache type=registry,ref=docker.io/$image:cache \
+    --output type=image,name=docker.io/$image:$BUILD_BUILDID,push=true
 fi

@@ -13,16 +13,16 @@ jobs:
     workingDirectory: node
     displayName: 'docker build'
 
-  - task: PublishTestResults@2
-    condition: succeededOrFailed()
-    inputs:
-      testResultsFiles: node/junit.xml
+#  - task: PublishTestResults@2
+#    condition: succeededOrFailed()
+#    inputs:
+#      testResultsFiles: node/junit.xml
 
-  - task: PublishCodeCoverageResults@1
-    inputs:
-      codeCoverageTool: cobertura
-      summaryFileLocation: $(System.DefaultWorkingDirectory)/node/coverage/cobertura-coverage.xml
-      reportDirectory: $(System.DefaultWorkingDirectory)/node/coverage
+#  - task: PublishCodeCoverageResults@1
+#    inputs:
+#      codeCoverageTool: cobertura
+#      summaryFileLocation: $(System.DefaultWorkingDirectory)/node/coverage/cobertura-coverage.xml
+#      reportDirectory: $(System.DefaultWorkingDirectory)/node/coverage
 
   - task: CopyFiles@2
     displayName: 'Copy Files to staging'

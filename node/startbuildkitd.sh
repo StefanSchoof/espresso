@@ -1,3 +1,4 @@
+docker version
 echo "activate binfmt"
 docker run --privileged linuxkit/binfmt:v0.7
 echo "start buildkitd"

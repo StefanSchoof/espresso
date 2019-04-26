@@ -9,12 +9,9 @@ jobs:
       dockerRegistryEndpoint: 'docker hub sschoof'
       command: login
 
-  - bash: ./enableexperimental.sh && ./dockerbuild.sh
+  - bash: . startbuildkitd.sh && ./dockerbuild.sh
     workingDirectory: node
     displayName: 'docker build'
-    env:
-      PUSH: true
-      USECACHEFROM: true
 
   - task: PublishTestResults@2
     condition: succeededOrFailed()

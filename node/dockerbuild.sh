@@ -10,15 +10,15 @@ buildctl build \
   --local dockerfile=. \
   --local context=. \
   --import-cache type=registry,ref=docker.io/$image:cache \
-  --opt target=testresult \
-  --output type=local,dest=.
+  --export-cache type=registry,ref=docker.io/$image:cache,mode=max \
+  --output type=image,name=docker.io/$image:$branch,push=true
 buildctl build \
   --frontend dockerfile.v0 \
   --local dockerfile=. \
   --local context=. \
   --import-cache type=registry,ref=docker.io/$image:cache \
-  --export-cache type=registry,ref=docker.io/$image:cache,mode=max \
-  --output type=image,name=docker.io/$image:$branch,push=true
+  --opt target=testresult \
+  --output type=local,dest=.
 
 if [[ ! -z "$BUILD_BUILDID" ]]
 then

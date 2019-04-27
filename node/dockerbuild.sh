@@ -27,5 +27,5 @@ then
     --local dockerfile=. \
     --local context=. \
     --import-cache type=registry,ref=docker.io/$image:cache \
-    --output type=image,name=docker.io/$image:$BUILD_BUILDID,push=true
+    --output type=image,name=docker.io/$image:build$BUILD_BUILDID,push=true
 fi

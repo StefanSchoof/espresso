@@ -25,6 +25,11 @@ RUN npm run build \
  && npm prune --production \
  && mv node_modules dist/
 
+FROM scratch as testresult
+
+COPY --from=builder /usr/src/app/junit.xml .
+COPY --from=builder /usr/src/app/coverage coverage
+
 FROM --platform=linux/arm/v6 node:10-alpine as runner
 
 WORKDIR /usr/app

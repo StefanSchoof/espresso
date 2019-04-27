@@ -17,7 +17,7 @@ buildctl build \
   --local dockerfile=. \
   --local context=. \
   --import-cache type=registry,ref=docker.io/$image:cache \
-  --export-cache type=registry,ref=docker.io/$image:cache \
+  --export-cache type=registry,ref=docker.io/$image:cache,mode=max \
   --output type=image,name=docker.io/$image:$branch,push=true
 
 if [[ ! -z "$BUILD_BUILDID" ]]

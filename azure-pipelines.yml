@@ -9,9 +9,19 @@ jobs:
       dockerRegistryEndpoint: 'docker hub sschoof'
       command: login
 
-  - bash: . startbuildkitd.sh && ./dockerbuild.sh
+  - bash: ./enablecrosscompile.sh
+    workingDirectory: node
+    displayName: 'enable cross compile'
+
+  - bash: ./startbuildkitd.sh
+    workingDirectory: node
+    displayName: 'start buildkitd'
+
+  - bash: ./dockerbuild.sh
     workingDirectory: node
     displayName: 'docker build'
+    env:
+      BUILDKIT_HOST: tcp://0.0.0.0:1234
 
   - task: PublishTestResults@2
     condition: succeededOrFailed()

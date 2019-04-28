@@ -4,7 +4,7 @@ jobs:
 
   steps:
   - task: Docker@1
-    displayName 'docker login'
+    displayName: 'docker login'
     inputs:
       containerregistrytype: 'Container Registry'
       dockerRegistryEndpoint: 'docker hub sschoof'

@@ -1,4 +1,4 @@
-FROM --platform=linux/arm/v6 alpine as cppbuilder
+FROM alpine as cppbuilder
 
 WORKDIR /usr/src/app
 RUN apk add --no-cache wiringpi-dev g++ git
@@ -9,13 +9,13 @@ COPY steuerung.cpp .
 
 RUN g++ -DRPI 433Utils/rc-switch/RCSwitch.cpp steuerung.cpp -o steuerung -lwiringPi
 
-FROM --platform=linux/arm/v6 node:10-alpine as builder
+FROM node:10-alpine as builder
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm ci
 
 COPY . .
 
@@ -25,7 +25,12 @@ RUN npm run build \
  && npm prune --production \
  && mv node_modules dist/
 
-FROM --platform=linux/arm/v6 node:10-alpine as runner
+FROM scratch as testresult
+
+COPY --from=builder /usr/src/app/junit.xml .
+COPY --from=builder /usr/src/app/coverage coverage
+
+FROM node:10-alpine as runner
 
 WORKDIR /usr/app
 

@@ -32,8 +32,7 @@ jobs:
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: cobertura
-      summaryFileLocation: $(System.DefaultWorkingDirectory)/node/coverage/cobertura-coverage.xml
-      reportDirectory: $(System.DefaultWorkingDirectory)/node/coverage
+      summaryFileLocation: node/coverage/cobertura-coverage.xml
 
   - task: CopyFiles@2
     displayName: 'Copy Files to staging'
@@ -72,8 +71,7 @@ jobs:
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: cobertura
-      summaryFileLocation: $(System.DefaultWorkingDirectory)/func/coverage/cobertura-coverage.xml
-      reportDirectory: $(System.DefaultWorkingDirectory)/func/coverage
+      summaryFileLocation: func/coverage/cobertura-coverage.xml
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: func'
@@ -102,8 +100,7 @@ jobs:
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: cobertura
-      summaryFileLocation: $(System.DefaultWorkingDirectory)/web/coverage/cobertura-coverage.xml
-      reportDirectory: $(System.DefaultWorkingDirectory)/web/coverage
+      summaryFileLocation: web/coverage/cobertura-coverage.xml
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: web'

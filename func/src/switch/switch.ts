@@ -1,9 +1,9 @@
-import { HttpContext, IFunctionRequest } from "azure-functions-typescript";
+import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { Client } from "azure-iothub";
 
 const deviceId = "espressoPi";
 
-export async function run(context: HttpContext, req: IFunctionRequest): Promise<void> {
+const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
     if (req.query.on === undefined && req.query.off === undefined) {
         context.res = {
             body: "missing on or off query string",
@@ -35,3 +35,5 @@ export async function run(context: HttpContext, req: IFunctionRequest): Promise<
         };
     }
 }
+
+export default httpTrigger;

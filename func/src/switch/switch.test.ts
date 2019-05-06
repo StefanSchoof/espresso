@@ -1,23 +1,23 @@
-import { HttpContext } from "azure-functions-typescript";
+import { Context, Logger } from "@azure/functions";
 import { Client } from "azure-iothub";
-import { run } from "./switch";
+import { default as httpTrigger } from "./switch";
 
 jest.mock("azure-iothub");
 
-const log = jest.fn() as unknown as HttpContext["log"];
+const log = jest.fn() as unknown as Logger;
 log.warn = jest.fn();
 log.error = jest.fn();
 log.info = jest.fn();
 log.verbose = jest.fn();
 
-const context: HttpContext = {
+const context: Context = {
     bindingData: {},
     bindings: {},
     done: jest.fn(),
     invocationId: "id",
     log,
     res: {status: 0, body: ""},
-};
+} as any;
 
 const invokeDeviceMethod = jest.fn(() => Promise.resolve({result: {status: 200, paylod: "Hello"}}));
 Client.fromConnectionString = jest.fn(() => ({
@@ -31,13 +31,16 @@ beforeEach(() => {
 test("throws if no iothub connection string is found", async () => {
     delete process.env.APPSETTING_IOTHUB_CONNECTION_STRING;
 
-    await expect(run(context, {method: "POST", query: {off: ""}} as any)).rejects
+    await expect(httpTrigger(context, {method: "POST", query: {off: ""}} as any)).rejects
         .toEqual(new Error("Found no connection string in key vault"));
 });
 
 test("send off to function switches device off", async () => {
-    await run(context, {method: "POST", query: {off: ""} } as any);
+    await httpTrigger(context, {method: "POST", query: {off: ""} } as any);
 
+    if (!context.res) {
+        throw new Error("result is undefined");
+    }
     expect(invokeDeviceMethod)
         .toHaveBeenCalledWith("espressoPi", {methodName: "onSwitchOff"});
     expect(context.res.status)
@@ -45,8 +48,11 @@ test("send off to function switches device off", async () => {
 });
 
 test("send on to function switches device on", async () => {
-    await run(context, {method: "POST", query: {on: ""} } as any);
+    await httpTrigger(context, {method: "POST", query: {on: ""} } as any);
 
+    if (!context.res) {
+        throw new Error("result is undefined");
+    }
     expect(invokeDeviceMethod)
         .toHaveBeenCalledWith("espressoPi", {methodName: "onSwitchOn"});
     expect(context.res.status)
@@ -54,8 +60,11 @@ test("send on to function switches device on", async () => {
 });
 
 test("send no parameter returns error", async () => {
-    await run(context, {method: "POST", query: {} } as any);
+    await httpTrigger(context, {method: "POST", query: {} } as any);
 
+    if (!context.res) {
+        throw new Error("result is undefined");
+    }
     expect(context.res.status)
         .toBe(404);
 });
@@ -63,7 +72,7 @@ test("send no parameter returns error", async () => {
 test("log error invokation error", async () => {
     invokeDeviceMethod.mockImplementationOnce(() => Promise.reject(new Error("Some Invokation Error")));
 
-    await run(context, {method: "POST", query: {off: ""} } as any);
+    await httpTrigger(context, {method: "POST", query: {off: ""} } as any);
 
     expect(context.log.error)
         .toHaveBeenCalledWith(
@@ -73,8 +82,11 @@ test("log error invokation error", async () => {
 test("returns error on Invokation Error", async () => {
     invokeDeviceMethod.mockImplementationOnce(() => Promise.reject(new Error("Some Invokation Error")));
 
-    await run(context, {method: "POST", query: {off: ""} } as any);
+    await httpTrigger(context, {method: "POST", query: {off: ""} } as any);
 
+    if (!context.res) {
+        throw new Error("result is undefined");
+    }
     expect(context.res.status)
         .toBe(500);
     expect(context.res.body)

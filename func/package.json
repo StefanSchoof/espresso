@@ -16,6 +16,7 @@
     "url": "https://github.com/StefanSchoof/espresso.git"
   },
   "devDependencies": {
+    "@azure/functions": "^1.0.3",
     "@babel/preset-env": "^7.3.4",
     "@babel/preset-typescript": "^7.3.3",
     "@types/jest": "^24.0.11",
@@ -23,7 +24,6 @@
     "@typescript-eslint/eslint-plugin": "^1.4.2",
     "@typescript-eslint/parser": "^1.4.2",
     "awesome-typescript-loader": "^5.2.1",
-    "azure-functions-typescript": "github:christopheranderson/azure-functions-typescript",
     "azure-iothub": "^1.9.6",
     "babel-jest": "^24.5.0",
     "copy-webpack-plugin": "^5.0.1",

@@ -20,5 +20,6 @@ execForAll npm update
 execForAll rm -rf package-lock.json node_modules
 execForAll npm install-test
 execForAll npm run build
+execForAll npm run lint
 git checkout -b npmupdate
 git add .

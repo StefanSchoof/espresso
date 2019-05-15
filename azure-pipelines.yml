@@ -144,7 +144,7 @@ stages:
     environment: dev
     strategy:
       runOnce:
-        deploy:
+        deploy: deploy
           steps:
           - task: DownloadSecureFile@1
             displayName: 'Download secure file'
@@ -170,7 +170,7 @@ stages:
     environment: dev
     strategy:
       runOnce:
-        deploy:
+        deploy: start docker
           steps:
           - checkout: none
           - task: AzureKeyVault@1
@@ -196,7 +196,7 @@ stages:
     environment: dev
     strategy:
       runOnce:
-        deploy:
+        deploy: e2etest
           steps:
           - checkout: none
           - task: AzureKeyVault@1
@@ -229,7 +229,7 @@ stages:
     environment: dev
     strategy:
       runOnce:
-        deploy:
+        deploy: destroy
           steps:
           - checkout: none
           - task: DownloadSecureFile@1

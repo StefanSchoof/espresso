@@ -166,7 +166,11 @@ stages:
               azureSubscription: 'Visual Studio Premium mit MSDN'
               scriptPath: 'deploy/deploy.sh'
               workingDirectory: 'deploy'
-        - job:
+  - deployment:
+    environment: dev
+    strategy:
+      runOnce:
+        deploy:
           steps:
           - checkout: none
           - task: AzureKeyVault@1
@@ -188,7 +192,11 @@ stages:
               runOptions: script
               scriptPath: '_StefanSchoof.espresso/node/pideploy.sh'
               args: '"$(DeviceConnectionString)" "$(NodeInstrumentationKey)" "$(Build.BuildId)" "echo"'
-        - job:
+  - deployment:
+    environment: dev
+    strategy:
+      runOnce:
+        deploy:
           steps:
           - checkout: none
           - task: AzureKeyVault@1
@@ -217,7 +225,11 @@ stages:
             inputs:
               testResultsFiles: '**/junit.xml'
             condition: succeededOrFailed()
-        - job:
+  - deployment:
+    environment: dev
+    strategy:
+      runOnce:
+        deploy:
           steps:
           - checkout: none
           - task: DownloadSecureFile@1

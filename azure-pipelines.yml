@@ -31,10 +31,10 @@ stages:
       inputs:
         testResultsFiles: node/junit.xml
 
-    - task: PublishCodeCoverageResults@1
-      inputs:
-        codeCoverageTool: cobertura
-        summaryFileLocation: node/coverage/cobertura-coverage.xml
+#    - task: PublishCodeCoverageResults@1
+#      inputs:
+#        codeCoverageTool: cobertura
+#        summaryFileLocation: node/coverage/cobertura-coverage.xml
 
     - task: PublishPipelineArtifact@0
       inputs:
@@ -60,10 +60,10 @@ stages:
       inputs:
         testResultsFiles: func/junit.xml
 
-    - task: PublishCodeCoverageResults@1
-      inputs:
-        codeCoverageTool: cobertura
-        summaryFileLocation: func/coverage/cobertura-coverage.xml
+#    - task: PublishCodeCoverageResults@1
+#      inputs:
+#        codeCoverageTool: cobertura
+#        summaryFileLocation: func/coverage/cobertura-coverage.xml
 
     - task: PublishPipelineArtifact@0
       inputs:
@@ -88,10 +88,10 @@ stages:
       inputs:
         testResultsFiles: web/junit.xml
 
-    - task: PublishCodeCoverageResults@1
-      inputs:
-        codeCoverageTool: cobertura
-        summaryFileLocation: web/coverage/cobertura-coverage.xml
+#    - task: PublishCodeCoverageResults@1
+#      inputs:
+#        codeCoverageTool: cobertura
+#        summaryFileLocation: web/coverage/cobertura-coverage.xml
 
     - task: PublishPipelineArtifact@0
       inputs:

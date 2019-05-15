@@ -140,11 +140,11 @@ stages:
 
 - stage: Deploy
   jobs:
-  - deployment:
+  - deployment: deploy
     environment: dev
     strategy:
       runOnce:
-        deploy: deploy
+        deploy:
           steps:
           - task: DownloadSecureFile@1
             displayName: 'Download secure file'
@@ -166,11 +166,11 @@ stages:
               azureSubscription: 'Visual Studio Premium mit MSDN'
               scriptPath: 'deploy/deploy.sh'
               workingDirectory: 'deploy'
-  - deployment:
+  - deployment: container
     environment: dev
     strategy:
       runOnce:
-        deploy: start docker
+        deploy:
           steps:
           - checkout: none
           - task: AzureKeyVault@1
@@ -192,11 +192,11 @@ stages:
               runOptions: script
               scriptPath: '_StefanSchoof.espresso/node/pideploy.sh'
               args: '"$(DeviceConnectionString)" "$(NodeInstrumentationKey)" "$(Build.BuildId)" "echo"'
-  - deployment:
+  - deployment: e2etest
     environment: dev
     strategy:
       runOnce:
-        deploy: e2etest
+        deploy:
           steps:
           - checkout: none
           - task: AzureKeyVault@1
@@ -225,11 +225,11 @@ stages:
             inputs:
               testResultsFiles: '**/junit.xml'
             condition: succeededOrFailed()
-  - deployment:
+  - deployment: destroy
     environment: dev
     strategy:
       runOnce:
-        deploy: destroy
+        deploy:
           steps:
           - checkout: none
           - task: DownloadSecureFile@1

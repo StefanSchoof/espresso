@@ -142,92 +142,95 @@ stages:
   jobs:
   - deployment:
     environment: dev
-    steps:
-    - task: DownloadSecureFile@1
-      displayName: 'Download secure file'
-      inputs:
-        secureFile: 'df843c96-fc0e-409f-b3fd-f5a318bee16b'
-    - task: DownloadSecureFile@1
-      displayName: 'Download secure file'
-      inputs:
-        secureFile: 'c93bf295-33c5-4902-bab1-0f0e9f2b5b11'
-    - task: AzureCLI@1
-      displayName: 'Infrastructure as Code'
-      inputs:
-        azureSubscription: 'Visual Studio Premium mit MSDN'
-        scriptPath: 'deploy/iac.sh'
-        workingDirectory: 'deploy'
-    - task: AzureCLI@1
-      displayName: deploy
-      inputs:
-        azureSubscription: 'Visual Studio Premium mit MSDN'
-        scriptPath: 'deploy/deploy.sh'
-        workingDirectory: 'deploy'
-  - job:
-    steps:
-    - checkout: none
-    - task: AzureKeyVault@1
-      displayName: 'Azure Key Vault: espresso-global'
-      inputs:
-        azureSubscription: 'Visual Studio Premium mit MSDN'
-        KeyVaultName: 'espresso-global'
-    - task: CopyFilesOverSSH@0
-      displayName: 'Securely copy files to the remote machine'
-      inputs:
-        sshEndpoint: dockerhost
-        sourceFolder: '_StefanSchoof.espresso/node'
-        contents: 'docker-compose.yml'
-        targetFolder: espresso
-    - task: SSH@0
-      displayName: 'Run shell script on remote machine'
-      inputs:
-        sshEndpoint: dockerhost
-        runOptions: script
-        scriptPath: '_StefanSchoof.espresso/node/pideploy.sh'
-        args: '"$(DeviceConnectionString)" "$(NodeInstrumentationKey)" "$(Build.BuildId)" "echo"'
-  - job:
-    steps:
-    - checkout: none
-    - task: AzureKeyVault@1
-      displayName: 'Azure Key Vault: espresso-global'
-      inputs:
-        azureSubscription: 'Visual Studio Premium mit MSDN'
-        KeyVaultName: 'espresso-global'
-    - powershell: '$env:testurl = $(Website URL)'
-      displayName: 'Set Testurl'
-    - task: Npm@1
-      displayName: 'npm install --production'
-      inputs:
-        command: custom
-        workingDir: '_StefanSchoof.espresso/e2etest'
-        verbose: false
-        customCommand: 'install --production'
-    - task: Npm@1
-      displayName: e2etest
-      inputs:
-        command: custom
-        workingDir: '_StefanSchoof.espresso/e2etest'
-        verbose: false
-        customCommand: start
-    - task: PublishTestResults@2
-      displayName: 'Publish Test Results **/junit.xml'
-      inputs:
-        testResultsFiles: '**/junit.xml'
-      condition: succeededOrFailed()
-  - job:
-    steps:
-    - checkout: none
-    - task: DownloadSecureFile@1
-      displayName: 'Download secure file'
-      inputs:
-        secureFile: 'df843c96-fc0e-409f-b3fd-f5a318bee16b'
-    - task: DownloadSecureFile@1
-      displayName: 'Download secure file'
-      inputs:
-        secureFile: 'c93bf295-33c5-4902-bab1-0f0e9f2b5b11'
-    - task: Bash@3
-      displayName: 'Bash Script'
-      inputs:
-        targetType: filePath
-        filePath: '_StefanSchoof.espresso/deploy/destroy.sh'
-        workingDirectory: '_StefanSchoof.espresso/deploy'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadSecureFile@1
+            displayName: 'Download secure file'
+            inputs:
+              secureFile: 'df843c96-fc0e-409f-b3fd-f5a318bee16b'
+          - task: DownloadSecureFile@1
+            displayName: 'Download secure file'
+            inputs:
+              secureFile: 'c93bf295-33c5-4902-bab1-0f0e9f2b5b11'
+          - task: AzureCLI@1
+            displayName: 'Infrastructure as Code'
+            inputs:
+              azureSubscription: 'Visual Studio Premium mit MSDN'
+              scriptPath: 'deploy/iac.sh'
+              workingDirectory: 'deploy'
+          - task: AzureCLI@1
+            displayName: deploy
+            inputs:
+              azureSubscription: 'Visual Studio Premium mit MSDN'
+              scriptPath: 'deploy/deploy.sh'
+              workingDirectory: 'deploy'
+        - job:
+          steps:
+          - checkout: none
+          - task: AzureKeyVault@1
+            displayName: 'Azure Key Vault: espresso-global'
+            inputs:
+              azureSubscription: 'Visual Studio Premium mit MSDN'
+              KeyVaultName: 'espresso-global'
+          - task: CopyFilesOverSSH@0
+            displayName: 'Securely copy files to the remote machine'
+            inputs:
+              sshEndpoint: dockerhost
+              sourceFolder: '_StefanSchoof.espresso/node'
+              contents: 'docker-compose.yml'
+              targetFolder: espresso
+          - task: SSH@0
+            displayName: 'Run shell script on remote machine'
+            inputs:
+              sshEndpoint: dockerhost
+              runOptions: script
+              scriptPath: '_StefanSchoof.espresso/node/pideploy.sh'
+              args: '"$(DeviceConnectionString)" "$(NodeInstrumentationKey)" "$(Build.BuildId)" "echo"'
+        - job:
+          steps:
+          - checkout: none
+          - task: AzureKeyVault@1
+            displayName: 'Azure Key Vault: espresso-global'
+            inputs:
+              azureSubscription: 'Visual Studio Premium mit MSDN'
+              KeyVaultName: 'espresso-global'
+          - powershell: '$env:testurl = $(Website URL)'
+            displayName: 'Set Testurl'
+          - task: Npm@1
+            displayName: 'npm install --production'
+            inputs:
+              command: custom
+              workingDir: '_StefanSchoof.espresso/e2etest'
+              verbose: false
+              customCommand: 'install --production'
+          - task: Npm@1
+            displayName: e2etest
+            inputs:
+              command: custom
+              workingDir: '_StefanSchoof.espresso/e2etest'
+              verbose: false
+              customCommand: start
+          - task: PublishTestResults@2
+            displayName: 'Publish Test Results **/junit.xml'
+            inputs:
+              testResultsFiles: '**/junit.xml'
+            condition: succeededOrFailed()
+        - job:
+          steps:
+          - checkout: none
+          - task: DownloadSecureFile@1
+            displayName: 'Download secure file'
+            inputs:
+              secureFile: 'df843c96-fc0e-409f-b3fd-f5a318bee16b'
+          - task: DownloadSecureFile@1
+            displayName: 'Download secure file'
+            inputs:
+              secureFile: 'c93bf295-33c5-4902-bab1-0f0e9f2b5b11'
+          - task: Bash@3
+            displayName: 'Bash Script'
+            inputs:
+              targetType: filePath
+              filePath: '_StefanSchoof.espresso/deploy/destroy.sh'
+              workingDirectory: '_StefanSchoof.espresso/deploy'

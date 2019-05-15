@@ -142,7 +142,6 @@ stages:
   jobs:
   - job:
     steps:
-    - checkout: none
     - task: DownloadSecureFile@1
       displayName: 'Download secure file'
       inputs:
@@ -155,14 +154,14 @@ stages:
       displayName: 'Infrastructure as Code'
       inputs:
         azureSubscription: 'Visual Studio Premium mit MSDN'
-        scriptPath: '_StefanSchoof.espresso/deploy/iac.sh'
-        workingDirectory: '_StefanSchoof.espresso/deploy'
+        scriptPath: 'deploy/iac.sh'
+        workingDirectory: 'deploy'
     - task: AzureCLI@1
       displayName: deploy
       inputs:
         azureSubscription: 'Visual Studio Premium mit MSDN'
-        scriptPath: '$(System.DefaultWorkingDirectory)/_StefanSchoof.espresso/deploy/deploy.sh'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/_StefanSchoof.espresso/deploy'
+        scriptPath: 'deploy/deploy.sh'
+        workingDirectory: 'deploy'
   - job:
     steps:
     - checkout: none

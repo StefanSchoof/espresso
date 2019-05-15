@@ -140,7 +140,8 @@ stages:
 
 - stage: Deploy
   jobs:
-  - job:
+  - deployment:
+    environment: dev
     steps:
     - task: DownloadSecureFile@1
       displayName: 'Download secure file'

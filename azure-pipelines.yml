@@ -166,8 +166,8 @@ stages:
             displayName: deploy
             inputs:
               azureSubscription: 'Visual Studio Premium mit MSDN'
-              scriptPath: 'deploy/deploy.sh'
-              workingDirectory: 'deploy'
+              scriptPath: '../deploy/deploy.sh'
+              workingDirectory: '../deploy'
   - deployment: container
     environment: test
     dependsOn: deploy
@@ -186,7 +186,7 @@ stages:
             displayName: 'Securely copy files to the remote machine'
             inputs:
               sshEndpoint: dockerhost
-              sourceFolder: '_StefanSchoof.espresso/node'
+              sourceFolder: '../node'
               contents: 'docker-compose.yml'
               targetFolder: espresso
           - task: SSH@0
@@ -194,7 +194,7 @@ stages:
             inputs:
               sshEndpoint: dockerhost
               runOptions: script
-              scriptPath: '_StefanSchoof.espresso/node/pideploy.sh'
+              scriptPath: '../node/pideploy.sh'
               args: '"$(DeviceConnectionString)" "$(NodeInstrumentationKey)" "$(Build.BuildId)" "echo"'
   - deployment: e2etest
     environment: test
@@ -216,14 +216,14 @@ stages:
             displayName: 'npm install --production'
             inputs:
               command: custom
-              workingDir: '_StefanSchoof.espresso/e2etest'
+              workingDir: '../e2etest'
               verbose: false
               customCommand: 'install --production'
           - task: Npm@1
             displayName: e2etest
             inputs:
               command: custom
-              workingDir: '_StefanSchoof.espresso/e2etest'
+              workingDir: '../e2etest'
               verbose: false
               customCommand: start
           - task: PublishTestResults@2
@@ -252,5 +252,5 @@ stages:
             displayName: 'Bash Script'
             inputs:
               targetType: filePath
-              filePath: '_StefanSchoof.espresso/deploy/destroy.sh'
-              workingDirectory: '_StefanSchoof.espresso/deploy'
+              filePath: '../deploy/destroy.sh'
+              workingDirectory: '../deploy'

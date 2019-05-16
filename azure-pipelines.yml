@@ -158,7 +158,7 @@ stages:
             displayName: 'Infrastructure as Code'
             inputs:
               azureSubscription: 'Visual Studio Premium mit MSDN'
-              scriptPath: '$(System.ArtifactsDirectory)/deploy/iac.sh'
+              scriptPath: '$(System.ArtifactsDirectory)/iac.sh'
           - task: AzureCLI@1
             displayName: deploy
             inputs:

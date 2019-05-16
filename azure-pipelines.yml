@@ -198,7 +198,7 @@ stages:
               args: '"$(DeviceConnectionString)" "$(NodeInstrumentationKey)" "$(Build.BuildId)" "echo"'
   - deployment: e2etest
     environment: test
-    pool: Hosted Ubuntu 1604
+    pool: Hosted VS2017
     dependsOn: container
     strategy:
       runOnce:

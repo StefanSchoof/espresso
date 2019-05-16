@@ -1,4 +1,2 @@
-**/*
-!package*.json
-!src/test.ts
-!.babelrc.js
+node_modules
+junit.xml

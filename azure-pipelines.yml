@@ -142,6 +142,7 @@ stages:
   jobs:
   - deployment: deploy
     environment: test
+    pool: Hosted Ubuntu 1604
     strategy:
       runOnce:
         deploy:
@@ -169,6 +170,7 @@ stages:
   - deployment: container
     environment: test
     dependsOn: deploy
+    pool: Hosted Ubuntu 1604
     strategy:
       runOnce:
         deploy:
@@ -195,6 +197,7 @@ stages:
               args: '"$(DeviceConnectionString)" "$(NodeInstrumentationKey)" "$(Build.BuildId)" "echo"'
   - deployment: e2etest
     environment: test
+    pool: Hosted Ubuntu 1604
     dependsOn: container
     strategy:
       runOnce:
@@ -230,6 +233,7 @@ stages:
   - deployment: destroy
     environment: test
     dependsOn: e2etest
+    pool: Hosted Ubuntu 1604
     strategy:
       runOnce:
         deploy:

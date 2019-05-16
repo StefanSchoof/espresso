@@ -213,12 +213,12 @@ stages:
           - powershell: '$env:testurl = $(Website URL)'
             displayName: 'Set Testurl'
           - task: Npm@1
-            displayName: 'npm install --production'
+            displayName: 'npm ci --production'
             inputs:
               command: custom
               workingDir: '../e2etest'
               verbose: false
-              customCommand: 'install --production'
+              customCommand: 'ci --production'
           - task: Npm@1
             displayName: e2etest
             inputs:

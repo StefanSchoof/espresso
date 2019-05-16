@@ -167,6 +167,7 @@ stages:
               workingDirectory: 'deploy'
   - deployment: container
     environment: test
+    dependsOn: deploy
     strategy:
       runOnce:
         deploy:
@@ -193,6 +194,7 @@ stages:
               args: '"$(DeviceConnectionString)" "$(NodeInstrumentationKey)" "$(Build.BuildId)" "echo"'
   - deployment: e2etest
     environment: test
+    dependsOn: container
     strategy:
       runOnce:
         deploy:
@@ -226,6 +228,7 @@ stages:
             condition: succeededOrFailed()
   - deployment: destroy
     environment: test
+    dependsOn: e2etest
     strategy:
       runOnce:
         deploy:

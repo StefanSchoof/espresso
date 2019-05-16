@@ -1,0 +1,5 @@
+**/*
+!*.tf
+!*.sh
+!cloud-config.txt
+plan.sh

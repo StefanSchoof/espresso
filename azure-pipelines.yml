@@ -141,7 +141,7 @@ stages:
 - stage: Deploy
   jobs:
   - deployment: deploy
-    environment: dev
+    environment: test
     strategy:
       runOnce:
         deploy:
@@ -166,7 +166,7 @@ stages:
               scriptPath: 'deploy/deploy.sh'
               workingDirectory: 'deploy'
   - deployment: container
-    environment: dev
+    environment: test
     strategy:
       runOnce:
         deploy:
@@ -192,7 +192,7 @@ stages:
               scriptPath: '_StefanSchoof.espresso/node/pideploy.sh'
               args: '"$(DeviceConnectionString)" "$(NodeInstrumentationKey)" "$(Build.BuildId)" "echo"'
   - deployment: e2etest
-    environment: dev
+    environment: test
     strategy:
       runOnce:
         deploy:
@@ -225,7 +225,7 @@ stages:
               testResultsFiles: '**/junit.xml'
             condition: succeededOrFailed()
   - deployment: destroy
-    environment: dev
+    environment: test
     strategy:
       runOnce:
         deploy:

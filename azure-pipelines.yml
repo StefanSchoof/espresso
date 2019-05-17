@@ -4,17 +4,25 @@ jobs:
 
   steps:
   - task: Docker@1
+    displayName: 'docker login'
     inputs:
       containerregistrytype: 'Container Registry'
       dockerRegistryEndpoint: 'docker hub sschoof'
       command: login
 
+  - bash: ./enablecrosscompile.sh
+    workingDirectory: node
+    displayName: 'enable cross compile'
+
+  - bash: ./startbuildkitd.sh
+    workingDirectory: node
+    displayName: 'start buildkitd'
+
   - bash: ./dockerbuild.sh
     workingDirectory: node
     displayName: 'docker build'
     env:
-      PUSH: true
-      USECACHEFROM: true
+      BUILDKIT_HOST: tcp://0.0.0.0:1234
 
   - task: PublishTestResults@2
     condition: succeededOrFailed()
@@ -24,8 +32,7 @@ jobs:
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: cobertura
-      summaryFileLocation: $(System.DefaultWorkingDirectory)/node/coverage/cobertura-coverage.xml
-      reportDirectory: $(System.DefaultWorkingDirectory)/node/coverage
+      summaryFileLocation: node/coverage/cobertura-coverage.xml
 
   - task: CopyFiles@2
     displayName: 'Copy Files to staging'
@@ -49,7 +56,7 @@ jobs:
   steps:
   - bash: |
      set -e
-     npm install
+     npm ci
      npm run build
      npm run test:ci
      npm run lint
@@ -64,8 +71,7 @@ jobs:
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: cobertura
-      summaryFileLocation: $(System.DefaultWorkingDirectory)/func/coverage/cobertura-coverage.xml
-      reportDirectory: $(System.DefaultWorkingDirectory)/func/coverage
+      summaryFileLocation: func/coverage/cobertura-coverage.xml
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: func'
@@ -79,7 +85,7 @@ jobs:
   steps:
   - bash: |
      set -e
-     npm install
+     npm ci
      npm run build
      npm run test:ci
      npm run lint
@@ -94,8 +100,7 @@ jobs:
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: cobertura
-      summaryFileLocation: $(System.DefaultWorkingDirectory)/web/coverage/cobertura-coverage.xml
-      reportDirectory: $(System.DefaultWorkingDirectory)/web/coverage
+      summaryFileLocation: web/coverage/cobertura-coverage.xml
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: web'
@@ -144,7 +149,7 @@ jobs:
   steps:
   - bash: |
      set -e
-     npm install
+     npm ci
      npm run build
      npm run lint
     workingDirectory: e2etest

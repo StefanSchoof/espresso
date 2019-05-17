@@ -215,7 +215,7 @@ stages:
               KeyVaultName: 'espresso-global'
           - powershell: '$env:testurl = $(Website URL)'
             displayName: 'Set Testurl'
-          - powershell: 'Get-ChildItem -Path ../e2etest'
+          - powershell: 'Get-ChildItem -Force -Path ../e2etest'
           - task: Npm@1
             displayName: 'npm ci --production'
             inputs:

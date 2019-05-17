@@ -1,4 +1,4 @@
-.artefactignore
+.artifactignore
 .eslint*
 tsconfig.json
 node_modules

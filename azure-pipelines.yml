@@ -207,7 +207,7 @@ stages:
           - task: DownloadPipelineArtifact@1
             inputs:
               artifactName: e2etest
-              itemPattern: ['.*', '**']
+              itemPattern: '{**,.*}'
           - checkout: none
           - task: AzureKeyVault@1
             displayName: 'Azure Key Vault: espresso-global'

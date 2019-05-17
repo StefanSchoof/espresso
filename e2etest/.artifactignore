@@ -1,2 +1,5 @@
+.artefactignore
+.eslint*
+tsconfig.json
 node_modules
 junit.xml

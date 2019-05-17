@@ -244,6 +244,7 @@ stages:
         deploy:
           steps:
           - checkout: none
+          - download: none
           - task: DownloadSecureFile@1
             displayName: 'Download secure file'
             inputs:

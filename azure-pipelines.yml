@@ -208,7 +208,7 @@ stages:
             inputs:
               artifactName: e2etest
               itemPattern: '{**,.*}'
-          - checkout: none
+#          - checkout: none
           - task: AzureKeyVault@1
             displayName: 'Azure Key Vault: espresso-global'
             inputs:

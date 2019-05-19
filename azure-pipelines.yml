@@ -209,7 +209,6 @@ stages:
             inputs:
               artifactName: e2etest
               itemPattern: '{**,.*}'
-#          - checkout: none
           - task: AzureKeyVault@1
             displayName: 'Azure Key Vault: espresso-global'
             inputs:
@@ -217,8 +216,6 @@ stages:
               KeyVaultName: 'espresso-global'
           - powershell: '$env:testurl = $(Website URL)'
             displayName: 'Set Testurl'
-          - powershell: 'Write-Host $(System.ArtifactsDirectory)'
-#          - powershell: 'Get-ChildItem -Force -Path ../e2etest'
           - task: Npm@1
             displayName: 'npm ci --production'
             inputs:
@@ -255,7 +252,7 @@ stages:
             inputs:
               secureFile: 'c93bf295-33c5-4902-bab1-0f0e9f2b5b11'
           - task: Bash@3
-            displayName: 'Bash Script'
+            displayName: 'destroy'
             inputs:
               targetType: filePath
               filePath: '../deploy/destroy.sh'

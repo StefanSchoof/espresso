@@ -177,7 +177,6 @@ stages:
       runOnce:
         deploy:
           steps:
-          - checkout: none
           - task: AzureKeyVault@1
             displayName: 'Azure Key Vault: espresso-global'
             inputs:
@@ -247,8 +246,6 @@ stages:
       runOnce:
         deploy:
           steps:
-          - checkout: none
-          - download: none
           - task: DownloadSecureFile@1
             displayName: 'Download secure file'
             inputs:

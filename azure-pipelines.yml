@@ -162,7 +162,7 @@ stages:
               scriptPath: '../deploy/iac.sh'
               workingDirectory: '../deploy'
             env:
-              KeyVaultName: 'espresso-global'
+              KEYVAULTNAME: 'espresso-global'
           - task: AzureCLI@1
             displayName: deploy
             inputs:

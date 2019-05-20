@@ -307,7 +307,7 @@ stages:
   - deployment: container
     environment: prod
     dependsOn: deploy
-    pool: Hosted Ubuntu 1604
+    pool: Home
     strategy:
       runOnce:
         deploy:

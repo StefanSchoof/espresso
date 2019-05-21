@@ -265,6 +265,7 @@ stages:
     pool: Hosted Ubuntu 1604
     variables:
       KEYVAULTNAME: 'espresso-global'
+      RELEASE_ENVIRONMENTNAME: 'prod'
     strategy:
       runOnce:
         deploy:
@@ -299,8 +300,6 @@ stages:
               azureSubscription: 'Visual Studio Premium mit MSDN'
               scriptPath: '../deploy/iac.sh'
               workingDirectory: '../deploy'
-            env:
-              RELEASE_ENVIRONMENTNAME: 'prod'
           - task: AzureCLI@1
             displayName: deploy
             inputs:

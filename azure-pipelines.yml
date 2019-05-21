@@ -31,10 +31,10 @@ stages:
       inputs:
         testResultsFiles: node/junit.xml
 
-    - task: PublishCodeCoverageResults@1
-      inputs:
-        codeCoverageTool: cobertura
-        summaryFileLocation: node/coverage/cobertura-coverage.xml
+#    - task: PublishCodeCoverageResults@1
+#      inputs:
+#        codeCoverageTool: cobertura
+#        summaryFileLocation: node/coverage/cobertura-coverage.xml
 
     - task: PublishPipelineArtifact@0
       inputs:

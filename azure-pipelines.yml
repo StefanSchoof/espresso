@@ -258,7 +258,7 @@ stages:
               filePath: '../deploy/destroy.sh'
               workingDirectory: '../deploy'
 - stage: prod
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+#  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
   jobs:
   - deployment: deploy
     environment: prod

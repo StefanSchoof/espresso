@@ -209,6 +209,7 @@ stages:
             inputs:
               artifactName: e2etest
               itemPattern: '{**,.*}'
+              downloadPath: .
           - task: AzureKeyVault@1
             displayName: 'Azure Key Vault: espresso-global'
             inputs:
@@ -220,14 +221,14 @@ stages:
             displayName: 'npm ci --production'
             inputs:
               command: custom
-              workingDir: '$(System.ArtifactsDirectory)'
+#              workingDir: '$(System.ArtifactsDirectory)'
               verbose: false
               customCommand: 'ci --production'
           - task: Npm@1
             displayName: e2etest
             inputs:
               command: custom
-              workingDir: '$(System.ArtifactsDirectory)'
+#              workingDir: '$(System.ArtifactsDirectory)'
               verbose: false
               customCommand: start
           - task: PublishTestResults@2

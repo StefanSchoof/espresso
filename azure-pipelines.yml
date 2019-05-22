@@ -234,7 +234,7 @@ stages:
           - task: PublishTestResults@2
             displayName: 'Publish Test Results **/junit.xml'
             inputs:
-              testResultsFiles: '**/junit.xml'
+              testResultsFiles: 'junit.xml'
             condition: succeededOrFailed()
   - deployment: destroy
     environment: test

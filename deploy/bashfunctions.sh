@@ -9,7 +9,7 @@ function terraform {
     -v $(pwd):/app/ \
     -v ${AGENT_TEMPDIRECTORY:-$PWD}:/temp/ \
     -w /app/ \
-    hashicorp/terraform:0.11.14 $@
+    hashicorp/terraform $@
 }
 
 function writeDevopsVar {

@@ -159,6 +159,7 @@ stages:
               secureFile: 'c93bf295-33c5-4902-bab1-0f0e9f2b5b11'
           - task: AzureCLI@1
             displayName: 'Infrastructure as Code'
+            name: iac
             inputs:
               azureSubscription: 'Visual Studio Premium mit MSDN'
               scriptPath: '../deploy/iac.sh'
@@ -173,15 +174,14 @@ stages:
     environment: test
     dependsOn: deploy
     pool: Hosted Ubuntu 1604
+    variables:
+      DeviceConnectionString: $[ dependencies.deploy.outputs['iac.DeviceConnectionString'] ]
+      NodeInstrumentationKey: $[ dependencies.deploy.outputs['iac.NodeInstrumentationKey'] ]
+      WebsiteUrl: $[ dependencies.deploy.outputs['iac.WebsiteUrl'] ]
     strategy:
       runOnce:
         deploy:
           steps:
-          - task: AzureKeyVault@1
-            displayName: 'Azure Key Vault: espresso-global'
-            inputs:
-              azureSubscription: 'Visual Studio Premium mit MSDN'
-              KeyVaultName: 'espresso-global'
           - task: CopyFilesOverSSH@0
             displayName: 'Securely copy files to the remote machine'
             inputs:

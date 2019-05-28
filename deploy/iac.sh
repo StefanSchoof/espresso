@@ -57,6 +57,7 @@ function writeKeyVault
   writeDevopsVar NodeInstrumentationKey "$nodeInstrumentationKey" true
   az keyvault secret set --vault-name "$KEYVAULTNAME" --name NodeInstrumentationKey --value "$nodeInstrumentationKey"
   az keyvault secret set --vault-name "$KEYVAULTNAME" --name WebsiteUrl --value "$websiteUrl"
+  writeDevopsVar WebsiteUrl "$websiteUrl"
 }
 
 applyTerraform

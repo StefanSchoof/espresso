@@ -221,15 +221,11 @@ stages:
             displayName: 'npm ci --production'
             inputs:
               command: custom
-#              workingDir: '$(System.ArtifactsDirectory)'
-              verbose: false
               customCommand: 'ci --production'
           - task: Npm@1
             displayName: e2etest
             inputs:
               command: custom
-#              workingDir: '$(System.ArtifactsDirectory)'
-              verbose: false
               customCommand: start
           - task: PublishTestResults@2
             displayName: 'Publish Test Results **/junit.xml'

@@ -1,172 +1,333 @@
-jobs:
-- job: node
-  pool: Hosted Ubuntu 1604
+stages:
+- stage: Build
+  jobs:
+  - job: node
+    pool: Hosted Ubuntu 1604
 
-  steps:
-  - task: Docker@1
-    displayName: 'docker login'
-    inputs:
-      containerregistrytype: 'Container Registry'
-      dockerRegistryEndpoint: 'docker hub sschoof'
-      command: login
+    steps:
+    - task: Docker@1
+      displayName: 'docker login'
+      inputs:
+        containerregistrytype: 'Container Registry'
+        dockerRegistryEndpoint: 'docker hub sschoof'
+        command: login
 
-  - bash: ./enablecrosscompile.sh
-    workingDirectory: node
-    displayName: 'enable cross compile'
+    - bash: ./enablecrosscompile.sh
+      workingDirectory: node
+      displayName: 'enable cross compile'
 
-  - bash: ./startbuildkitd.sh
-    workingDirectory: node
-    displayName: 'start buildkitd'
+    - bash: ./startbuildkitd.sh
+      workingDirectory: node
+      displayName: 'start buildkitd'
 
-  - bash: ./dockerbuild.sh
-    workingDirectory: node
-    displayName: 'docker build'
-    env:
-      BUILDKIT_HOST: tcp://0.0.0.0:1234
+    - bash: ./dockerbuild.sh
+      workingDirectory: node
+      displayName: 'docker build'
+      env:
+        BUILDKIT_HOST: tcp://0.0.0.0:1234
 
-  - task: PublishTestResults@2
-    condition: succeededOrFailed()
-    inputs:
-      testResultsFiles: node/junit.xml
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      inputs:
+        testResultsFiles: node/junit.xml
 
-  - task: PublishCodeCoverageResults@1
-    inputs:
-      codeCoverageTool: cobertura
-      summaryFileLocation: node/coverage/cobertura-coverage.xml
+#    - task: PublishCodeCoverageResults@1
+#      inputs:
+#        codeCoverageTool: cobertura
+#        summaryFileLocation: node/coverage/cobertura-coverage.xml
 
-  - task: CopyFiles@2
-    displayName: 'Copy Files to staging'
-    inputs:
-      SourceFolder: 'node'
-      Contents: |
-        docker-compose.yml
-        pideploy.sh
-      TargetFolder: '$(build.artifactstagingdirectory)/node'
+    - task: PublishPipelineArtifact@0
+      inputs:
+        artifactName: node
+        targetPath: node
 
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: node'
-    inputs:
-      PathtoPublish: '$(build.artifactstagingdirectory)/node'
-      ArtifactName: node
+  - job: function
+    displayName: function
+    pool: Hosted Ubuntu 1604
 
-- job: function
-  displayName: function
-  pool: Hosted Ubuntu 1604
+    steps:
+    - bash: |
+        set -e
+        npm ci
+        npm run build
+        npm run test:ci
+        npm run lint
+      workingDirectory: func
+      displayName: 'Build'
 
-  steps:
-  - bash: |
-     set -e
-     npm ci
-     npm run build
-     npm run test:ci
-     npm run lint
-    workingDirectory: func
-    displayName: 'Build'
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      inputs:
+        testResultsFiles: func/junit.xml
 
-  - task: PublishTestResults@2
-    condition: succeededOrFailed()
-    inputs:
-      testResultsFiles: func/junit.xml
+#    - task: PublishCodeCoverageResults@1
+#      inputs:
+#        codeCoverageTool: cobertura
+#        summaryFileLocation: func/coverage/cobertura-coverage.xml
 
-  - task: PublishCodeCoverageResults@1
-    inputs:
-      codeCoverageTool: cobertura
-      summaryFileLocation: func/coverage/cobertura-coverage.xml
+    - task: PublishPipelineArtifact@0
+      inputs:
+        artifactName: func
+        targetPath: func/dist
 
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: func'
-    inputs:
-      PathtoPublish: func/dist
-      ArtifactName: func
+  - job: web
+    pool: Hosted Ubuntu 1604
 
-- job: web
-  pool: Hosted Ubuntu 1604
+    steps:
+    - bash: |
+        set -e
+        npm ci
+        npm run build
+        npm run test:ci
+        npm run lint
+      workingDirectory: web
+      displayName: 'Build'
 
-  steps:
-  - bash: |
-     set -e
-     npm ci
-     npm run build
-     npm run test:ci
-     npm run lint
-    workingDirectory: web
-    displayName: 'Build'
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      inputs:
+        testResultsFiles: web/junit.xml
 
-  - task: PublishTestResults@2
-    condition: succeededOrFailed()
-    inputs:
-      testResultsFiles: web/junit.xml
+#    - task: PublishCodeCoverageResults@1
+#      inputs:
+#        codeCoverageTool: cobertura
+#        summaryFileLocation: web/coverage/cobertura-coverage.xml
 
-  - task: PublishCodeCoverageResults@1
-    inputs:
-      codeCoverageTool: cobertura
-      summaryFileLocation: web/coverage/cobertura-coverage.xml
+    - task: PublishPipelineArtifact@0
+      inputs:
+        artifactName: web
+        targetPath: web/dist
 
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: web'
-    inputs:
-      PathtoPublish: web/dist
-      ArtifactName: web
+  - job: deploy
+    pool: Hosted Ubuntu 1604
 
-- job: deploy
-  pool: Hosted Ubuntu 1604
+    steps:
+    - task: DownloadSecureFile@1
+      displayName: 'Download secure file'
+      inputs:
+        secureFile: 'df843c96-fc0e-409f-b3fd-f5a318bee16b'
 
-  steps:
-  - task: DownloadSecureFile@1
-    displayName: 'Download secure file'
-    inputs:
-      secureFile: 'df843c96-fc0e-409f-b3fd-f5a318bee16b'
+    - task: DownloadSecureFile@1
+      displayName: 'Download secure file'
+      inputs:
+        secureFile: 'c93bf295-33c5-4902-bab1-0f0e9f2b5b11'
 
-  - task: DownloadSecureFile@1
-    displayName: 'Download secure file'
-    inputs:
-      secureFile: 'c93bf295-33c5-4902-bab1-0f0e9f2b5b11'
+    - bash: ./plan.sh
+      workingDirectory: deploy
+      displayName: 'Plan'
 
-  - bash: ./plan.sh
-    workingDirectory: deploy
-    displayName: 'Plan'
+    - task: PublishPipelineArtifact@0
+      inputs:
+        artifactName: deploy
+        targetPath: deploy
 
-  - task: CopyFiles@2
-    displayName: 'Copy Files to staging'
-    inputs:
-      SourceFolder: 'deploy'
-      Contents: |
-        *.tf
-        *.sh
-        cloud-config.txt
-        !plan.sh
-      TargetFolder: '$(build.artifactstagingdirectory)/terraform'
+  - job: e2etest
+    pool: Hosted Ubuntu 1604
 
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: deploy'
-    inputs:
-      PathtoPublish: '$(build.artifactstagingdirectory)/terraform'
-      ArtifactName: deploy
+    steps:
+    - bash: |
+        set -e
+        npm ci
+        npm run build
+        npm run lint
+      workingDirectory: e2etest
+      displayName: 'Build'
 
-- job: e2etest
-  pool: Hosted Ubuntu 1604
+    - task: PublishPipelineArtifact@0
+      inputs:
+        artifactName: e2etest
+        targetPath: e2etest
 
-  steps:
-  - bash: |
-     set -e
-     npm ci
-     npm run build
-     npm run lint
-    workingDirectory: e2etest
-    displayName: 'Build'
-
-  - task: CopyFiles@2
-    displayName: 'Copy Files to staging'
-    inputs:
-      SourceFolder: 'e2etest'
-      Contents: |
-        package*.json
-        src/test.ts
-        .babelrc.js
-      TargetFolder: '$(build.artifactstagingdirectory)/e2etest'
-
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: e2etest'
-    inputs:
-      PathtoPublish: '$(build.artifactstagingdirectory)/e2etest'
-      ArtifactName: e2etest
+- stage: test
+  jobs:
+  - deployment: deploy
+    environment: test
+    pool: Hosted Ubuntu 1604
+    variables:
+      KEYVAULTNAME: 'espresso-global'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadSecureFile@1
+            displayName: 'Download secure file'
+            inputs:
+              secureFile: 'df843c96-fc0e-409f-b3fd-f5a318bee16b'
+          - task: DownloadSecureFile@1
+            displayName: 'Download secure file'
+            inputs:
+              secureFile: 'c93bf295-33c5-4902-bab1-0f0e9f2b5b11'
+          - task: AzureCLI@1
+            displayName: 'Infrastructure as Code'
+            inputs:
+              azureSubscription: 'Visual Studio Premium mit MSDN'
+              scriptPath: '../deploy/iac.sh'
+              workingDirectory: '../deploy'
+          - task: AzureCLI@1
+            displayName: deploy
+            inputs:
+              azureSubscription: 'Visual Studio Premium mit MSDN'
+              scriptPath: '../deploy/deploy.sh'
+              workingDirectory: '../deploy'
+  - deployment: container
+    environment: test
+    dependsOn: deploy
+    pool: Hosted Ubuntu 1604
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureKeyVault@1
+            displayName: 'Azure Key Vault: espresso-global'
+            inputs:
+              azureSubscription: 'Visual Studio Premium mit MSDN'
+              KeyVaultName: 'espresso-global'
+          - task: CopyFilesOverSSH@0
+            displayName: 'Securely copy files to the remote machine'
+            inputs:
+              sshEndpoint: dockerhost
+              sourceFolder: '../node'
+              contents: 'docker-compose.yml'
+              targetFolder: espresso
+          - task: SSH@0
+            displayName: 'Run shell script on remote machine'
+            inputs:
+              sshEndpoint: dockerhost
+              runOptions: script
+              scriptPath: '../node/pideploy.sh'
+              args: '"$(DeviceConnectionString)" "$(NodeInstrumentationKey)" "$(Build.BuildId)" "echo"'
+  - deployment: e2etest
+    environment: test
+    pool: Hosted VS2017
+    dependsOn: container
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: none
+          - task: DownloadPipelineArtifact@1
+            inputs:
+              artifactName: e2etest
+              itemPattern: '{**,.*}'
+              downloadPath: .
+          - task: AzureKeyVault@1
+            displayName: 'Azure Key Vault: espresso-global'
+            inputs:
+              azureSubscription: 'Visual Studio Premium mit MSDN'
+              KeyVaultName: 'espresso-global'
+          - powershell: '$env:testurl = $(Website URL)'
+            displayName: 'Set Testurl'
+          - task: Npm@1
+            displayName: 'npm ci --production'
+            inputs:
+              command: custom
+              customCommand: 'ci --production'
+          - task: Npm@1
+            displayName: e2etest
+            inputs:
+              command: custom
+              customCommand: start
+          - task: PublishTestResults@2
+            displayName: 'Publish Test Results **/junit.xml'
+            inputs:
+              testResultsFiles: 'junit.xml'
+            condition: succeededOrFailed()
+  - deployment: destroy
+    environment: test
+    dependsOn: e2etest
+    pool: Hosted Ubuntu 1604
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadSecureFile@1
+            displayName: 'Download secure file'
+            inputs:
+              secureFile: 'df843c96-fc0e-409f-b3fd-f5a318bee16b'
+          - task: DownloadSecureFile@1
+            displayName: 'Download secure file'
+            inputs:
+              secureFile: 'c93bf295-33c5-4902-bab1-0f0e9f2b5b11'
+          - task: Bash@3
+            displayName: 'destroy'
+            inputs:
+              targetType: filePath
+              filePath: '../deploy/destroy.sh'
+              workingDirectory: '../deploy'
+- stage: prod
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+  jobs:
+  - deployment: deploy
+    environment: prod
+    pool: Hosted Ubuntu 1604
+    variables:
+      KEYVAULTNAME: 'espresso-global'
+      RELEASE_ENVIRONMENTNAME: 'prod'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: Docker@1
+            displayName: pull
+            inputs:
+              containerregistrytype: 'Container Registry'
+              dockerRegistryEndpoint: 'docker hub sschoof'
+              command: pull
+              arguments: 'stefanschoof/espresso:build$(Build.BuildId)'
+          - bash: 'docker tag stefanschoof/espresso:build$(Build.BuildId) stefanschoof/espresso:latest'
+            displayName: 'Tag image'
+          - task: Docker@1
+            displayName: 'Push an image'
+            inputs:
+              containerregistrytype: 'Container Registry'
+              dockerRegistryEndpoint: 'docker hub sschoof'
+              command: 'Push an image'
+              imageName: 'stefanschoof/espresso:latest'
+          - task: DownloadSecureFile@1
+            displayName: 'Download secure file'
+            inputs:
+              secureFile: 'df843c96-fc0e-409f-b3fd-f5a318bee16b'
+          - task: DownloadSecureFile@1
+            displayName: 'Download secure file'
+            inputs:
+              secureFile: 'c93bf295-33c5-4902-bab1-0f0e9f2b5b11'
+          - task: AzureCLI@1
+            displayName: 'Infrastructure as Code'
+            inputs:
+              azureSubscription: 'Visual Studio Premium mit MSDN'
+              scriptPath: '../deploy/iac.sh'
+              workingDirectory: '../deploy'
+          - task: AzureCLI@1
+            displayName: deploy
+            inputs:
+              azureSubscription: 'Visual Studio Premium mit MSDN'
+              scriptPath: '../deploy/deploy.sh'
+              workingDirectory: '../deploy'
+  - deployment: container
+    environment: prod
+    dependsOn: deploy
+    pool: Home
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureKeyVault@1
+            displayName: 'Azure Key Vault: espresso-global'
+            inputs:
+              azureSubscription: 'Visual Studio Premium mit MSDN'
+              KeyVaultName: 'espresso-global'
+          - task: CopyFilesOverSSH@0
+            displayName: 'Securely copy files to the remote machine'
+            inputs:
+              sshEndpoint: 'pi devops'
+              sourceFolder: '../node'
+              contents: 'docker-compose.yml'
+              targetFolder: espresso
+          - task: SSH@0
+            displayName: 'Run shell script on remote machine'
+            inputs:
+              displayName: 'Update docker'
+              sshEndpoint: 'pi devops'
+              runOptions: script
+              scriptPath: '../node/pideploy.sh'
+              args: '"$(DeviceConnectionString)" "$(NodeInstrumentationKey)" "$(Build.BuildId)"'

@@ -29,6 +29,11 @@ jobs:
     inputs:
       testResultsFiles: node/junit.xml
 
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: node/src
+      targetFolder: /usr/src/app/src/
+
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: cobertura

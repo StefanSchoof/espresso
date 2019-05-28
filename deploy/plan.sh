@@ -4,9 +4,10 @@ set -e
 
 terraform init -backend-config=/temp/backend.conf -input=false
 terraform --version
-for workspace in $(terraform workspace list | sed 's/. //' | grep -v -e "default" -e "^$")
+for workspace in $(terraform workspace list | head -n -1 | sed 's/. //' | grep -v -e "default")
 do
   echo "plan $workspace"
-  TF_WORKSPACE=$workspace terraform plan -lock-timeout=50m -input=false -no-color
+  terraform workspace select ${workspace/$'\r'/}
+  terraform plan -lock-timeout=50m -input=false
 done
 

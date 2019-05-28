@@ -4,10 +4,10 @@
   "description": "A project to control my espresso machine with a raspberry pi. This is the static webpage",
   "scripts": {
     "test": "jest",
-    "test:ci": "jest --ci --reporters=default --reporters=jest-junit --coverage",
+    "test:ci": "jest --ci --reporters=default --reporters=jest-junit --coverage --colors",
     "start": "webpack-dev-server",
-    "build": "webpack --mode production",
-    "lint": "eslint --ext .ts,.js ."
+    "build": "webpack --mode production --colors",
+    "lint": "eslint --color --ext .ts,.js ."
   },
   "author": "Stefan Schoof",
   "license": "Unlicense",

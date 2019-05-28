@@ -64,8 +64,4 @@ applyTerraform
 ensureStaticWeb
 ensureIotDevice
 ensureFunctionsCors
-
-if [ -n "$KEYVAULTNAME" ]
-then
-  writeKeyVault
-fi
+writeKeyVault

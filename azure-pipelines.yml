@@ -98,7 +98,7 @@ stages:
         artifactName: web
         targetPath: web/dist
 
-  - job: deploy
+  - job: iac
     pool: Hosted Ubuntu 1604
 
     steps:

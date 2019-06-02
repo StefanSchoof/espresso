@@ -29,6 +29,10 @@ jobs:
     inputs:
       testResultsFiles: node/junit.xml
 
+  - bash: |
+     sudo mkdir -p /usr/src/app/src
+     sudo chmod 777 /usr/src/app/src
+
   - task: CopyFiles@2
     inputs:
       sourceFolder: node/src

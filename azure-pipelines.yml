@@ -177,7 +177,6 @@ stages:
     variables:
       DeviceConnectionString: $[ dependencies.deploy.outputs['iac.DeviceConnectionString'] ]
       NodeInstrumentationKey: $[ dependencies.deploy.outputs['iac.NodeInstrumentationKey'] ]
-      WebsiteUrl: $[ dependencies.deploy.outputs['iac.WebsiteUrl'] ]
     strategy:
       runOnce:
         deploy:

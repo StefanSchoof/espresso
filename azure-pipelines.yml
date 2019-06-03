@@ -29,14 +29,9 @@ jobs:
     inputs:
       testResultsFiles: node/junit.xml
 
-  - bash: |
-     sudo mkdir -p /usr/src/app/src
-     sudo chmod 777 /usr/src/app/src
-
-  - task: CopyFiles@2
-    inputs:
-      sourceFolder: node/src
-      targetFolder: /usr/src/app/src/
+  - bash: sed -E -i "s#(<source>).*(<\/source>)#\1$PWD\2#" coverage/cobertura-coverage.xml
+    workingDirectory: node
+    displayName: 'update coverage paths'
 
   - task: PublishCodeCoverageResults@1
     inputs:

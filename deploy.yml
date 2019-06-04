@@ -99,7 +99,7 @@ jobs:
             condition: succeededOrFailed()
   - deployment: destroy
     environment: ${{ parameters.environment }}
-    environment: test
+    dependsOn: e2etest
     pool: Hosted Ubuntu 1604
     strategy:
       runOnce:

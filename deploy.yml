@@ -34,7 +34,7 @@ jobs:
             scriptPath: '../deploy/deploy.sh'
             workingDirectory: '../deploy'
 - deployment: container
-  environment: test
+  environment: ${{ parameters.environment }}
   dependsOn: deploy
   pool: Hosted Ubuntu 1604
   strategy:
@@ -61,7 +61,7 @@ jobs:
             scriptPath: '../node/pideploy.sh'
             args: '"$(DeviceConnectionString)" "$(NodeInstrumentationKey)" "$(Build.BuildId)" "echo"'
 - deployment: e2etest
-  environment: test
+  environment: ${{ parameters.environment }}
   pool: Hosted VS2017
   dependsOn: container
   strategy:
@@ -97,8 +97,8 @@ jobs:
             testResultsFiles: 'junit.xml'
           condition: succeededOrFailed()
 - deployment: destroy
+  environment: ${{ parameters.environment }}
   environment: test
-  dependsOn: e2etest
   pool: Hosted Ubuntu 1604
   strategy:
     runOnce:

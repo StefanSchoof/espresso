@@ -60,7 +60,7 @@ jobs:
             runOptions: script
             scriptPath: '../node/pideploy.sh'
             args: '"$(DeviceConnectionString)" "$(NodeInstrumentationKey)" "$(Build.BuildId)" "echo"'
-- ${{ if eq(parameters.test, 'true') }}:
+- ${{ if parameters.test }}:
   - deployment: e2etest
     environment: ${{ parameters.environment }}
     pool: Hosted VS2017

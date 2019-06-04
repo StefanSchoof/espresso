@@ -144,7 +144,7 @@ stages:
     parameters:
       environment: test
       sshEndpoint: dockerhost
-      test: true
+      test: false
 
 - stage: prod
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')

@@ -1,6 +1,11 @@
+parameters:
+  environment: test
+  sshEndpoint: dockerhost
+  test: false
+
 jobs:
 - deployment: deploy
-  environment: test
+  environment: ${{ environment }}
   pool: Hosted Ubuntu 1604
   variables:
     KEYVAULTNAME: 'espresso-global'
@@ -44,14 +49,14 @@ jobs:
         - task: CopyFilesOverSSH@0
           displayName: 'Securely copy files to the remote machine'
           inputs:
-            sshEndpoint: dockerhost
+            sshEndpoint: ${{ sshEndpoint }}
             sourceFolder: '../node'
             contents: 'docker-compose.yml'
             targetFolder: espresso
         - task: SSH@0
           displayName: 'Run shell script on remote machine'
           inputs:
-            sshEndpoint: dockerhost
+            sshEndpoint: ${{ sshEndpoint }}
             runOptions: script
             scriptPath: '../node/pideploy.sh'
             args: '"$(DeviceConnectionString)" "$(NodeInstrumentationKey)" "$(Build.BuildId)" "echo"'

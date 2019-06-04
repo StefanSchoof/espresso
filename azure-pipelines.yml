@@ -141,6 +141,10 @@ stages:
 - stage: test
   jobs:
   - template: deploy.yml
+    parameters:
+      environment: test
+      sshEndpoint: dockerhost
+      test: true
 
 - stage: prod
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')

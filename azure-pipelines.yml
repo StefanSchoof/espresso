@@ -1,4 +1,4 @@
-#stages:
+stages:
 #- stage: Build
 #  jobs:
 #  - job: node

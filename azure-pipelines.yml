@@ -183,7 +183,7 @@ stages:
       runOnce:
         deploy:
           steps:
-          - bash: echo $(NodeInstrumentationKey)
+          - bash: printenv
 #          - task: CopyFilesOverSSH@0
 #            displayName: 'Securely copy files to the remote machine'
 #            inputs:

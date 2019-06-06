@@ -1,10 +1,11 @@
 stages:
-#- stage: Build
-#  jobs:
-#  - job: node
-#    pool: Hosted Ubuntu 1604
+- stage: Build
+  jobs:
+  - job: node
+    pool: Hosted Ubuntu 1604
 #
-#    steps:
+    steps:
+     - bash: echo "build"
 #    - task: Docker@1
 #      displayName: 'docker login'
 #      inputs:

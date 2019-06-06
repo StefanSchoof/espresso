@@ -183,7 +183,7 @@ stages:
       runOnce:
         deploy:
           steps:
-          - bash: printenv
+          - bash: printenv | sort
 #          - task: CopyFilesOverSSH@0
 #            displayName: 'Securely copy files to the remote machine'
 #            inputs:

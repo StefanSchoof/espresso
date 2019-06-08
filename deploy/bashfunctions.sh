@@ -19,5 +19,5 @@ function writeDevopsVar {
     secret=";issecret=true"
   fi
   echo "setvariable $1"
-  echo "##vso[task.setvariable variable=$1;isOutput=true]thisisthevalue"
+  echo "##vso[task.setvariable variable=$1;isOutput=true]$2"
 }

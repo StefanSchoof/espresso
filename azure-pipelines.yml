@@ -1,141 +1,141 @@
 stages:
-- stage: Build
-  jobs:
-  - job: node
-    pool: Hosted Ubuntu 1604
-    steps:
-    - task: Docker@1
-      displayName: 'docker login'
-      inputs:
-        containerregistrytype: 'Container Registry'
-        dockerRegistryEndpoint: 'docker hub sschoof'
-        command: login
-
-    - bash: ./enablecrosscompile.sh
-      workingDirectory: node
-      displayName: 'enable cross compile'
-
-    - bash: ./startbuildkitd.sh
-      workingDirectory: node
-      displayName: 'start buildkitd'
-
-    - bash: ./dockerbuild.sh
-      workingDirectory: node
-      displayName: 'docker build'
-      env:
-        BUILDKIT_HOST: tcp://0.0.0.0:1234
-
-    - task: PublishTestResults@2
-      condition: succeededOrFailed()
-      inputs:
-        testResultsFiles: node/junit.xml
-
-#    - task: PublishCodeCoverageResults@1
+#- stage: Build
+#  jobs:
+#  - job: node
+#    pool: Hosted Ubuntu 1604
+#    steps:
+#    - task: Docker@1
+#      displayName: 'docker login'
 #      inputs:
-#        codeCoverageTool: cobertura
-#        summaryFileLocation: node/coverage/cobertura-coverage.xml
-
-    - task: PublishPipelineArtifact@0
-      inputs:
-        artifactName: node
-        targetPath: node
-
-  - job: function
-    displayName: function
-    pool: Hosted Ubuntu 1604
-
-    steps:
-    - bash: |
-        set -e
-        npm ci
-        npm run build
-        npm run test:ci
-        npm run lint
-      workingDirectory: func
-      displayName: 'Build'
-
-    - task: PublishTestResults@2
-      condition: succeededOrFailed()
-      inputs:
-        testResultsFiles: func/junit.xml
-
-#    - task: PublishCodeCoverageResults@1
+#        containerregistrytype: 'Container Registry'
+#        dockerRegistryEndpoint: 'docker hub sschoof'
+#        command: login
+#
+#    - bash: ./enablecrosscompile.sh
+#      workingDirectory: node
+#      displayName: 'enable cross compile'
+#
+#    - bash: ./startbuildkitd.sh
+#      workingDirectory: node
+#      displayName: 'start buildkitd'
+#
+#    - bash: ./dockerbuild.sh
+#      workingDirectory: node
+#      displayName: 'docker build'
+#      env:
+#        BUILDKIT_HOST: tcp://0.0.0.0:1234
+#
+#    - task: PublishTestResults@2
+#      condition: succeededOrFailed()
 #      inputs:
-#        codeCoverageTool: cobertura
-#        summaryFileLocation: func/coverage/cobertura-coverage.xml
-
-    - task: PublishPipelineArtifact@0
-      inputs:
-        artifactName: func
-        targetPath: func/dist
-
-  - job: web
-    pool: Hosted Ubuntu 1604
-
-    steps:
-    - bash: |
-        set -e
-        npm ci
-        npm run build
-        npm run test:ci
-        npm run lint
-      workingDirectory: web
-      displayName: 'Build'
-
-    - task: PublishTestResults@2
-      condition: succeededOrFailed()
-      inputs:
-        testResultsFiles: web/junit.xml
-
-#    - task: PublishCodeCoverageResults@1
+#        testResultsFiles: node/junit.xml
+#
+##    - task: PublishCodeCoverageResults@1
+##      inputs:
+##        codeCoverageTool: cobertura
+##        summaryFileLocation: node/coverage/cobertura-coverage.xml
+#
+#    - task: PublishPipelineArtifact@0
 #      inputs:
-#        codeCoverageTool: cobertura
-#        summaryFileLocation: web/coverage/cobertura-coverage.xml
-
-    - task: PublishPipelineArtifact@0
-      inputs:
-        artifactName: web
-        targetPath: web/dist
-
-  - job: iac
-    pool: Hosted Ubuntu 1604
-
-    steps:
-    - task: DownloadSecureFile@1
-      displayName: 'Download secure file'
-      inputs:
-        secureFile: 'df843c96-fc0e-409f-b3fd-f5a318bee16b'
-
-    - task: DownloadSecureFile@1
-      displayName: 'Download secure file'
-      inputs:
-        secureFile: 'c93bf295-33c5-4902-bab1-0f0e9f2b5b11'
-
-    - bash: ./plan.sh
-      workingDirectory: deploy
-      displayName: 'Plan'
-
-    - task: PublishPipelineArtifact@0
-      inputs:
-        artifactName: deploy
-        targetPath: deploy
-
-  - job: e2etest
-    pool: Hosted Ubuntu 1604
-
-    steps:
-    - bash: |
-        set -e
-        npm ci
-        npm run build
-        npm run lint
-      workingDirectory: e2etest
-      displayName: 'Build'
-
-    - task: PublishPipelineArtifact@0
-      inputs:
-        artifactName: e2etest
-        targetPath: e2etest
+#        artifactName: node
+#        targetPath: node
+#
+#  - job: function
+#    displayName: function
+#    pool: Hosted Ubuntu 1604
+#
+#    steps:
+#    - bash: |
+#        set -e
+#        npm ci
+#        npm run build
+#        npm run test:ci
+#        npm run lint
+#      workingDirectory: func
+#      displayName: 'Build'
+#
+#    - task: PublishTestResults@2
+#      condition: succeededOrFailed()
+#      inputs:
+#        testResultsFiles: func/junit.xml
+#
+##    - task: PublishCodeCoverageResults@1
+##      inputs:
+##        codeCoverageTool: cobertura
+##        summaryFileLocation: func/coverage/cobertura-coverage.xml
+#
+#    - task: PublishPipelineArtifact@0
+#      inputs:
+#        artifactName: func
+#        targetPath: func/dist
+#
+#  - job: web
+#    pool: Hosted Ubuntu 1604
+#
+#    steps:
+#    - bash: |
+#        set -e
+#        npm ci
+#        npm run build
+#        npm run test:ci
+#        npm run lint
+#      workingDirectory: web
+#      displayName: 'Build'
+#
+#    - task: PublishTestResults@2
+#      condition: succeededOrFailed()
+#      inputs:
+#        testResultsFiles: web/junit.xml
+#
+##    - task: PublishCodeCoverageResults@1
+##      inputs:
+##        codeCoverageTool: cobertura
+##        summaryFileLocation: web/coverage/cobertura-coverage.xml
+#
+#    - task: PublishPipelineArtifact@0
+#      inputs:
+#        artifactName: web
+#        targetPath: web/dist
+#
+#  - job: iac
+#    pool: Hosted Ubuntu 1604
+#
+#    steps:
+#    - task: DownloadSecureFile@1
+#      displayName: 'Download secure file'
+#      inputs:
+#        secureFile: 'df843c96-fc0e-409f-b3fd-f5a318bee16b'
+#
+#    - task: DownloadSecureFile@1
+#      displayName: 'Download secure file'
+#      inputs:
+#        secureFile: 'c93bf295-33c5-4902-bab1-0f0e9f2b5b11'
+#
+#    - bash: ./plan.sh
+#      workingDirectory: deploy
+#      displayName: 'Plan'
+#
+#    - task: PublishPipelineArtifact@0
+#      inputs:
+#        artifactName: deploy
+#        targetPath: deploy
+#
+#  - job: e2etest
+#    pool: Hosted Ubuntu 1604
+#
+#    steps:
+#    - bash: |
+#        set -e
+#        npm ci
+#        npm run build
+#        npm run lint
+#      workingDirectory: e2etest
+#      displayName: 'Build'
+#
+#    - task: PublishPipelineArtifact@0
+#      inputs:
+#        artifactName: e2etest
+#        targetPath: e2etest
 
 - stage: test
   jobs:
@@ -148,26 +148,26 @@ stages:
       runOnce:
         deploy:
           steps:
-          - task: DownloadSecureFile@1
-            displayName: 'Download secure file'
-            inputs:
-              secureFile: 'df843c96-fc0e-409f-b3fd-f5a318bee16b'
-          - task: DownloadSecureFile@1
-            displayName: 'Download secure file'
-            inputs:
-              secureFile: 'c93bf295-33c5-4902-bab1-0f0e9f2b5b11'
-          - task: AzureCLI@1
-            displayName: 'Infrastructure as Code'
-            inputs:
-              azureSubscription: 'Visual Studio Premium mit MSDN'
-              scriptPath: '../deploy/iac.sh'
-              workingDirectory: '../deploy'
-          - task: AzureCLI@1
-            displayName: deploy
-            inputs:
-              azureSubscription: 'Visual Studio Premium mit MSDN'
-              scriptPath: '../deploy/deploy.sh'
-              workingDirectory: '../deploy'
+#          - task: DownloadSecureFile@1
+#            displayName: 'Download secure file'
+#            inputs:
+#              secureFile: 'df843c96-fc0e-409f-b3fd-f5a318bee16b'
+#          - task: DownloadSecureFile@1
+#            displayName: 'Download secure file'
+#            inputs:
+#              secureFile: 'c93bf295-33c5-4902-bab1-0f0e9f2b5b11'
+#          - task: AzureCLI@1
+#            displayName: 'Infrastructure as Code'
+#            inputs:
+#              azureSubscription: 'Visual Studio Premium mit MSDN'
+#              scriptPath: '../deploy/iac.sh'
+#              workingDirectory: '../deploy'
+#          - task: AzureCLI@1
+#            displayName: deploy
+#            inputs:
+#              azureSubscription: 'Visual Studio Premium mit MSDN'
+#              scriptPath: '../deploy/deploy.sh'
+#              workingDirectory: '../deploy'
           - bash: echo "##vso[task.setvariable variable=NodeInstrumentationKey;isOutput=true]this is the value"
             name: iac
   - deployment: container

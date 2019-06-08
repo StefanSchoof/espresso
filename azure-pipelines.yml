@@ -1,15 +1,15 @@
 stages:
-#- stage: Build
-#  jobs:
-#  - job: node
-#    pool: Hosted Ubuntu 1604
-#    steps:
-#    - task: Docker@1
-#      displayName: 'docker login'
-#      inputs:
-#        containerregistrytype: 'Container Registry'
-#        dockerRegistryEndpoint: 'docker hub sschoof'
-#        command: login
+- stage: Build
+  jobs:
+  - job: node
+    pool: Hosted Ubuntu 1604
+    steps:
+    - task: Docker@1
+      displayName: 'docker login'
+      inputs:
+        containerregistrytype: 'Container Registry'
+        dockerRegistryEndpoint: 'docker hub sschoof'
+        command: login
 #
 #    - bash: ./enablecrosscompile.sh
 #      workingDirectory: node

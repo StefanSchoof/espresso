@@ -20,5 +20,5 @@ function writeDevopsVar {
   fi
   echo "setvariable $1"
   echo "##vso[task.setvariable variable=$1$secret;isOutput=true]$2"
-  echo "debug##vso[task.setvariable variable=$1$secret;isOutput=true]$2"
+  echo "[task.setvariable variable=$1$secret;isOutput=true]$2"
 }

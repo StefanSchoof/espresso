@@ -157,19 +157,22 @@ stages:
             displayName: 'Download secure file'
             inputs:
               secureFile: 'c93bf295-33c5-4902-bab1-0f0e9f2b5b11'
-          - task: AzureCLI@1
-            displayName: 'Infrastructure as Code'
-            inputs:
-              azureSubscription: 'Visual Studio Premium mit MSDN'
-              scriptPath: '../deploy/iac.sh'
-              workingDirectory: '../deploy'
+#          - task: AzureCLI@1
+#            displayName: 'Infrastructure as Code'
+#            inputs:
+#              azureSubscription: 'Visual Studio Premium mit MSDN'
+#              scriptPath: '../deploy/iac.sh'
+#              workingDirectory: '../deploy'
 #          - task: AzureCLI@1
 #            displayName: deploy
 #            inputs:
 #              azureSubscription: 'Visual Studio Premium mit MSDN'
 #              scriptPath: '../deploy/deploy.sh'
 #              workingDirectory: '../deploy'
-          - bash: echo "##vso[task.setvariable variable=NodeInstrumentationKey;isOutput=true]this is the value"
+          - bash: |
+              echo "##vso[task.setvariable variable=DeviceConnectionString;issecret=true;isOutput=true]***"
+              echo "##vso[task.setvariable variable=NodeInstrumentationKey;issecret=true;isOutput=true]***"
+              echo "##vso[task.setvariable variable=WebsiteUrl;isOutput=true]https://espressopitest.z6.web.core.windows.net/"
             name: iac
   - deployment: container
     environment: test

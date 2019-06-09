@@ -20,6 +20,7 @@ stages:
     dependsOn: deploy
     pool: Hosted Ubuntu 1604
     variables:
+      DeviceConnectionString: $[ dependencies.deploy.outputs['iac.DeviceConnectionString'] ]
       NodeInstrumentationKey: $[ dependencies.deploy.outputs['iac.NodeInstrumentationKey'] ]
     strategy:
       runOnce:

@@ -14,7 +14,6 @@ stages:
           - bash: |
               echo "##vso[task.setvariable variable=DeviceConnectionString;issecret=true;isOutput=true]***"
               echo "##vso[task.setvariable variable=NodeInstrumentationKey;issecret=true;isOutput=true]***"
-              echo "##vso[task.setvariable variable=WebsiteUrl;isOutput=true]https://espressopitest.z6.web.core.windows.net/"
             name: iac
   - deployment: container
     environment: test

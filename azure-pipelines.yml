@@ -185,20 +185,21 @@ stages:
       runOnce:
         deploy:
           steps:
-          - task: CopyFilesOverSSH@0
-            displayName: 'Securely copy files to the remote machine'
-            inputs:
-              sshEndpoint: dockerhost
-              sourceFolder: '../node'
-              contents: 'docker-compose.yml'
-              targetFolder: espresso
-          - task: SSH@0
-            displayName: 'Run shell script on remote machine'
-            inputs:
-              sshEndpoint: dockerhost
-              runOptions: script
-              scriptPath: '../node/pideploy.sh'
-              args: '"$(DeviceConnectionString)" "$(NodeInstrumentationKey)" "$(Build.BuildId)" "echo"'
+          - bash: printenv | sort
+#          - task: CopyFilesOverSSH@0
+#            displayName: 'Securely copy files to the remote machine'
+#            inputs:
+#              sshEndpoint: dockerhost
+#              sourceFolder: '../node'
+#              contents: 'docker-compose.yml'
+#              targetFolder: espresso
+#          - task: SSH@0
+#            displayName: 'Run shell script on remote machine'
+#            inputs:
+#              sshEndpoint: dockerhost
+#              runOptions: script
+#              scriptPath: '../node/pideploy.sh'
+#              args: '"$(DeviceConnectionString)" "$(NodeInstrumentationKey)" "$(Build.BuildId)" "echo"'
 #  - deployment: e2etest
 #    environment: test
 #    pool: Hosted VS2017

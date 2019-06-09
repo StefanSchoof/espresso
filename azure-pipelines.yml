@@ -1,6 +1,6 @@
 stages:
-- stage: Build
-  jobs:
+#- stage: Build
+#  jobs:
 #  - job: node
 #    pool: Hosted Ubuntu 1604
 #
@@ -97,30 +97,30 @@ stages:
 #      inputs:
 #        artifactName: web
 #        targetPath: web/dist
-
-  - job: iac
-    pool: Hosted Ubuntu 1604
-
-    steps:
-    - task: DownloadSecureFile@1
-      displayName: 'Download secure file'
-      inputs:
-        secureFile: 'df843c96-fc0e-409f-b3fd-f5a318bee16b'
-
-    - task: DownloadSecureFile@1
-      displayName: 'Download secure file'
-      inputs:
-        secureFile: 'c93bf295-33c5-4902-bab1-0f0e9f2b5b11'
-
-    - bash: ./plan.sh
-      workingDirectory: deploy
-      displayName: 'Plan'
-
-    - task: PublishPipelineArtifact@0
-      inputs:
-        artifactName: deploy
-        targetPath: deploy
-
+#
+#  - job: iac
+#    pool: Hosted Ubuntu 1604
+#
+#    steps:
+#    - task: DownloadSecureFile@1
+#      displayName: 'Download secure file'
+#      inputs:
+#        secureFile: 'df843c96-fc0e-409f-b3fd-f5a318bee16b'
+#
+#    - task: DownloadSecureFile@1
+#      displayName: 'Download secure file'
+#      inputs:
+#        secureFile: 'c93bf295-33c5-4902-bab1-0f0e9f2b5b11'
+#
+#    - bash: ./plan.sh
+#      workingDirectory: deploy
+#      displayName: 'Plan'
+#
+#    - task: PublishPipelineArtifact@0
+#      inputs:
+#        artifactName: deploy
+#        targetPath: deploy
+#
 #  - job: e2etest
 #    pool: Hosted Ubuntu 1604
 #

@@ -1,102 +1,102 @@
 stages:
 - stage: Build
   jobs:
-  - job: node
-    pool: Hosted Ubuntu 1604
-
-    steps:
-    - task: Docker@1
-      displayName: 'docker login'
-      inputs:
-        containerregistrytype: 'Container Registry'
-        dockerRegistryEndpoint: 'docker hub sschoof'
-        command: login
-
-    - bash: ./enablecrosscompile.sh
-      workingDirectory: node
-      displayName: 'enable cross compile'
-
-    - bash: ./startbuildkitd.sh
-      workingDirectory: node
-      displayName: 'start buildkitd'
-
-    - bash: ./dockerbuild.sh
-      workingDirectory: node
-      displayName: 'docker build'
-      env:
-        BUILDKIT_HOST: tcp://0.0.0.0:1234
-
-    - task: PublishTestResults@2
-      condition: succeededOrFailed()
-      inputs:
-        testResultsFiles: node/junit.xml
-
-#    - task: PublishCodeCoverageResults@1
+#  - job: node
+#    pool: Hosted Ubuntu 1604
+#
+#    steps:
+#    - task: Docker@1
+#      displayName: 'docker login'
 #      inputs:
-#        codeCoverageTool: cobertura
-#        summaryFileLocation: node/coverage/cobertura-coverage.xml
-
-    - task: PublishPipelineArtifact@0
-      inputs:
-        artifactName: node
-        targetPath: node
-
-  - job: function
-    displayName: function
-    pool: Hosted Ubuntu 1604
-
-    steps:
-    - bash: |
-        set -e
-        npm ci
-        npm run build
-        npm run test:ci
-        npm run lint
-      workingDirectory: func
-      displayName: 'Build'
-
-    - task: PublishTestResults@2
-      condition: succeededOrFailed()
-      inputs:
-        testResultsFiles: func/junit.xml
-
-#    - task: PublishCodeCoverageResults@1
+#        containerregistrytype: 'Container Registry'
+#        dockerRegistryEndpoint: 'docker hub sschoof'
+#        command: login
+#
+#    - bash: ./enablecrosscompile.sh
+#      workingDirectory: node
+#      displayName: 'enable cross compile'
+#
+#    - bash: ./startbuildkitd.sh
+#      workingDirectory: node
+#      displayName: 'start buildkitd'
+#
+#    - bash: ./dockerbuild.sh
+#      workingDirectory: node
+#      displayName: 'docker build'
+#      env:
+#        BUILDKIT_HOST: tcp://0.0.0.0:1234
+#
+#    - task: PublishTestResults@2
+#      condition: succeededOrFailed()
 #      inputs:
-#        codeCoverageTool: cobertura
-#        summaryFileLocation: func/coverage/cobertura-coverage.xml
-
-    - task: PublishPipelineArtifact@0
-      inputs:
-        artifactName: func
-        targetPath: func/dist
-
-  - job: web
-    pool: Hosted Ubuntu 1604
-
-    steps:
-    - bash: |
-        set -e
-        npm ci
-        npm run build
-        npm run test:ci
-        npm run lint
-      workingDirectory: web
-      displayName: 'Build'
-
-    - task: PublishTestResults@2
-      condition: succeededOrFailed()
-      inputs:
-        testResultsFiles: web/junit.xml
-
-#    - task: PublishCodeCoverageResults@1
+#        testResultsFiles: node/junit.xml
+#
+##    - task: PublishCodeCoverageResults@1
+##      inputs:
+##        codeCoverageTool: cobertura
+##        summaryFileLocation: node/coverage/cobertura-coverage.xml
+#
+#    - task: PublishPipelineArtifact@0
 #      inputs:
-#        codeCoverageTool: cobertura
-#        summaryFileLocation: web/coverage/cobertura-coverage.xml
-
-    - task: PublishPipelineArtifact@0
-      inputs:
-        artifactName: web
-        targetPath: web/dist
+#        artifactName: node
+#        targetPath: node
+#
+#  - job: function
+#    displayName: function
+#    pool: Hosted Ubuntu 1604
+#
+#    steps:
+#    - bash: |
+#        set -e
+#        npm ci
+#        npm run build
+#        npm run test:ci
+#        npm run lint
+#      workingDirectory: func
+#      displayName: 'Build'
+#
+#    - task: PublishTestResults@2
+#      condition: succeededOrFailed()
+#      inputs:
+#        testResultsFiles: func/junit.xml
+#
+##    - task: PublishCodeCoverageResults@1
+##      inputs:
+##        codeCoverageTool: cobertura
+##        summaryFileLocation: func/coverage/cobertura-coverage.xml
+#
+#    - task: PublishPipelineArtifact@0
+#      inputs:
+#        artifactName: func
+#        targetPath: func/dist
+#
+#  - job: web
+#    pool: Hosted Ubuntu 1604
+#
+#    steps:
+#    - bash: |
+#        set -e
+#        npm ci
+#        npm run build
+#        npm run test:ci
+#        npm run lint
+#      workingDirectory: web
+#      displayName: 'Build'
+#
+#    - task: PublishTestResults@2
+#      condition: succeededOrFailed()
+#      inputs:
+#        testResultsFiles: web/junit.xml
+#
+##    - task: PublishCodeCoverageResults@1
+##      inputs:
+##        codeCoverageTool: cobertura
+##        summaryFileLocation: web/coverage/cobertura-coverage.xml
+#
+#    - task: PublishPipelineArtifact@0
+#      inputs:
+#        artifactName: web
+#        targetPath: web/dist
 
   - job: iac
     pool: Hosted Ubuntu 1604
@@ -121,22 +121,22 @@ stages:
         artifactName: deploy
         targetPath: deploy
 
-  - job: e2etest
-    pool: Hosted Ubuntu 1604
-
-    steps:
-    - bash: |
-        set -e
-        npm ci
-        npm run build
-        npm run lint
-      workingDirectory: e2etest
-      displayName: 'Build'
-
-    - task: PublishPipelineArtifact@0
-      inputs:
-        artifactName: e2etest
-        targetPath: e2etest
+#  - job: e2etest
+#    pool: Hosted Ubuntu 1604
+#
+#    steps:
+#    - bash: |
+#        set -e
+#        npm ci
+#        npm run build
+#        npm run lint
+#      workingDirectory: e2etest
+#      displayName: 'Build'
+#
+#    - task: PublishPipelineArtifact@0
+#      inputs:
+#        artifactName: e2etest
+#        targetPath: e2etest
 
 - stage: test
   jobs:

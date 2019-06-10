@@ -17,22 +17,22 @@ jobs:
     runOnce:
       deploy:
         steps:
-          - task: Docker@1
-            displayName: pull
-            inputs:
-              containerregistrytype: 'Container Registry'
-              dockerRegistryEndpoint: 'docker hub sschoof'
-              command: pull
-              arguments: 'stefanschoof/espresso:build$(Build.BuildId)'
-          - bash: 'docker tag stefanschoof/espresso:build$(Build.BuildId) stefanschoof/espresso:${{ parameters.dockerTag }}'
-            displayName: 'Tag image'
-          - task: Docker@1
-            displayName: 'Push an image'
-            inputs:
-              containerregistrytype: 'Container Registry'
-              dockerRegistryEndpoint: 'docker hub sschoof'
-              command: 'Push an image'
-              imageName: 'stefanschoof/espresso:${{ parameters.dockerTag }}'
+        - task: Docker@1
+          displayName: pull
+          inputs:
+            containerregistrytype: 'Container Registry'
+            dockerRegistryEndpoint: 'docker hub sschoof'
+            command: pull
+            arguments: 'stefanschoof/espresso:build$(Build.BuildId)'
+        - bash: 'docker tag stefanschoof/espresso:build$(Build.BuildId) stefanschoof/espresso:${{ parameters.dockerTag }}'
+          displayName: 'Tag image'
+        - task: Docker@1
+          displayName: 'Push an image'
+          inputs:
+            containerregistrytype: 'Container Registry'
+            dockerRegistryEndpoint: 'docker hub sschoof'
+            command: 'Push an image'
+            imageName: 'stefanschoof/espresso:${{ parameters.dockerTag }}'
         - task: DownloadSecureFile@1
           displayName: 'Download secure file'
           inputs:

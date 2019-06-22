@@ -22,7 +22,7 @@
     "@types/selenium-webdriver": "^3.0.16",
     "@typescript-eslint/eslint-plugin": "^1.7.0",
     "@typescript-eslint/parser": "^1.7.0",
-    "eslint": "^5.16.0",
+    "eslint": "^6.0.0",
     "typescript": "^3.4.5"
   },
   "scripts": {

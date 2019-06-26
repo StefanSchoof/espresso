@@ -147,7 +147,7 @@ stages:
       test: true
 
 - stage: prod
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+  condition: and(succeeded('test'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   jobs:
   - template: deploy.yml
     parameters:

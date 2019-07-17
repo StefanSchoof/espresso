@@ -15,7 +15,6 @@ function ensureStaticWeb {
   storage_account=$(terraform output storage_account)
 
   # currently not supported in terraform, see https://github.com/terraform-providers/terraform-provider-azurerm/issues/1903
-  az extension add --name storage-preview
   if [ "$(az storage blob service-properties show --account-name $storage_account --query 'staticWebsite.enabled')" = "false" ];
   then
     echo "activate static web"

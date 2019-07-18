@@ -38,6 +38,11 @@ resource "azurerm_storage_account" "storage" {
   }
 }
 
+module "staticweb" {
+  source               = "StefanSchoof/static-website/azurerm"
+  storage_account_name = azurerm_storage_account.storage.name
+}
+
 resource "azurerm_iothub" "iothub" {
   name                = "espresso${local.stage}"
   resource_group_name = azurerm_resource_group.group.name

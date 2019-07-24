@@ -1,4 +1,3 @@
-# Configure the Azure Provider
 provider "azurerm" {
   version = "~> 1.29"
 }
@@ -11,6 +10,10 @@ provider "random" {
   version = "~> 2.1"
 }
 
+provider "external" {
+  version = "~> 1.2"
+}
+
 locals {
   stage = terraform.workspace == "prod" ? "" : terraform.workspace
 }
@@ -19,6 +22,10 @@ resource "random_pet" "func" {
 }
 
 data "azurerm_client_config" "current" {
+}
+
+data "external" "current_aduser" {
+  program = ["az", "ad", "signed-in-user", "show", "--query", "{objectId:objectId}"]
 }
 
 resource "azurerm_resource_group" "group" {
@@ -116,7 +123,7 @@ resource "azurerm_key_vault_access_policy" "service" {
   key_vault_id = azurerm_key_vault.keyvault.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.azurerm_client_config.current.service_principal_object_id
+  object_id = data.external.current_aduser.result.objectId
 
   key_permissions = [
   ]

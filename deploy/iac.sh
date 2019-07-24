@@ -5,24 +5,9 @@ set -e
 export TF_WORKSPACE=${RELEASE_ENVIRONMENTNAME:-test}
 
 function applyTerraform {
-  terraform init -backend-config=/temp/backend.conf -input=false
+  initTerraform
   terraform plan -lock-timeout=50m -out=tfplan -input=false
   terraform apply -lock-timeout=50m -input=false tfplan
-}
-
-function ensureStaticWeb {
-  resource_group=$(terraform output resource_group)
-  storage_account=$(terraform output storage_account)
-
-  # currently not supported in terraform, see https://github.com/terraform-providers/terraform-provider-azurerm/issues/1903
-  az extension add --name storage-preview
-  if [ "$(az storage blob service-properties show --account-name $storage_account --query 'staticWebsite.enabled')" = "false" ];
-  then
-    echo "activate static web"
-    az storage blob service-properties update --account-name $storage_account --static-website --index-document index.html > /dev/null
-  fi
-  websiteUrl=$(az storage account show -n $storage_account -g $resource_group --query "primaryEndpoints.web" --output tsv)
-  echo "websiteUrl: $websiteUrl"
 }
 
 function ensureIotDevice {
@@ -60,7 +45,6 @@ function writeKeyVault
 }
 
 applyTerraform
-ensureStaticWeb
 ensureIotDevice
 ensureFunctionsCors
 

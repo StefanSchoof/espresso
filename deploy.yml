@@ -33,20 +33,15 @@ jobs:
             dockerRegistryEndpoint: 'docker hub sschoof'
             command: 'Push an image'
             imageName: 'stefanschoof/espresso:${{ parameters.dockerTag }}'
-        - task: DownloadSecureFile@1
-          displayName: 'Download secure file'
-          inputs:
-            secureFile: 'df843c96-fc0e-409f-b3fd-f5a318bee16b'
-        - task: DownloadSecureFile@1
-          displayName: 'Download secure file'
-          inputs:
-            secureFile: 'c93bf295-33c5-4902-bab1-0f0e9f2b5b11'
+        - bash: '../deploy/installteraform.sh'
+          displayName: 'Install terraform'
         - task: AzureCLI@1
           displayName: 'Infrastructure as Code'
           inputs:
             azureSubscription: 'Visual Studio Premium mit MSDN'
             scriptPath: '../deploy/iac.sh'
             workingDirectory: '../deploy'
+            addSpnToEnvironment: true
         - task: AzureCLI@1
           displayName: deploy
           inputs:

@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-printenv 
 . bashfunctions.sh
 
 initTerraform

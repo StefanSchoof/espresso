@@ -1,5 +1,5 @@
 stages:
-- stage: Build
+- stage: build
   jobs:
   - job: node
     pool: Hosted Ubuntu 1604
@@ -99,6 +99,7 @@ stages:
         targetPath: web/dist
 
   - job: deploy
+    condition: not(startsWith(variables['Build.SourceBranch'], 'refs/heads/greenkeeper/'))
     pool: Hosted Ubuntu 1604
 
     steps:
@@ -139,6 +140,7 @@ stages:
         targetPath: e2etest
 
 - stage: test
+  condition: and(succeeded('build'), not(startsWith(variables['Build.SourceBranch'], 'refs/heads/greenkeeper/')))
   jobs:
   - template: deploy.yml
     parameters:

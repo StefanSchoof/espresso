@@ -35,6 +35,7 @@ jobs:
             imageName: 'stefanschoof/espresso:${{ parameters.dockerTag }}'
         - bash: '../deploy/installteraform.sh'
           displayName: 'Install terraform'
+          workingDirectory: ../deploy
         - task: AzureCLI@1
           displayName: 'Infrastructure as Code'
           inputs:

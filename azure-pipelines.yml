@@ -104,6 +104,7 @@ stages:
     steps:
     - bash: 'deploy/installterraform.sh'
       displayName: 'Install terraform'
+      workingDirectory: deploy
     - task: AzureCLI@1
       displayName: 'Plan'
       inputs:

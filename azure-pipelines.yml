@@ -102,7 +102,7 @@ stages:
     pool: Hosted Ubuntu 1604
 
     steps:
-    - bash: 'deploy/installterraform.sh'
+    - bash: ./installterraform.sh
       displayName: 'Install terraform'
       workingDirectory: deploy
     - task: AzureCLI@1

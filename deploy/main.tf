@@ -10,6 +10,10 @@ provider "random" {
   version = "~> 2.1"
 }
 
+provider "null" {
+  version = "~> 2.1"
+}
+
 provider "external" {
   version = "~> 1.2"
 }
@@ -26,7 +30,13 @@ data "azurerm_client_config" "current" {
 
 data "external" "current_aduser" {
   program = ["az", "ad", "signed-in-user", "show", "--query", "{objectId:objectId}"]
+  count = data.azurerm_client_config.current.service_principal_object_id == "" ? 0 : 1
 }
+
+locals {
+  object_id = data.azurerm_client_config.current.service_principal_object_id == "" ? data.external.current_aduser[0].result.objectId : data.azurerm_client_config.current.service_principal_object_id
+}
+
 
 resource "azurerm_resource_group" "group" {
   name     = "espresso${local.stage}"
@@ -123,7 +133,7 @@ resource "azurerm_key_vault_access_policy" "service" {
   key_vault_id = azurerm_key_vault.keyvault.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.external.current_aduser.result.objectId
+  object_id = local.object_id
 
   key_permissions = [
   ]

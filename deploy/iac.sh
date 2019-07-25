@@ -24,6 +24,7 @@ function ensureIotDevice {
 
 function ensureFunctionsCors {
   # currently not supported in terraform, see https://github.com/terraform-providers/terraform-provider-azurerm/issues/1374
+  resource_group=$(terraform output resource_group)
   function_app=$(terraform output function_app)
   if ! az functionapp cors show -g $resource_group -n $function_app --query allowedOrigins --out tsv | grep "${websiteUrl%/}" --quiet
   then

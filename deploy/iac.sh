@@ -42,7 +42,7 @@ function writeKeyVault
   nodeInstrumentationKey="$(terraform output azurerm_application_insights_node)"
   writeDevopsVar NodeInstrumentationKey "$nodeInstrumentationKey" true
   az keyvault secret set --vault-name "$KEYVAULTNAME" --name NodeInstrumentationKey --value "$nodeInstrumentationKey"
-  az keyvault secret set --vault-name "$KEYVAULTNAME" --name WebsiteUrl --value "$websiteUrl"
+#  az keyvault secret set --vault-name "$KEYVAULTNAME" --name WebsiteUrl --value "$websiteUrl"
 }
 
 applyTerraform

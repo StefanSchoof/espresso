@@ -97,8 +97,6 @@ jobs:
             inputs:
               azureSubscription: 'Visual Studio Premium mit MSDN'
               KeyVaultName: 'espresso-global'
-          - powershell: '$env:testurl = $(Website URL)'
-            displayName: 'Set Testurl'
           - task: Npm@1
             displayName: 'npm ci --production'
             inputs:

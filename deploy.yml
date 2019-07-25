@@ -33,8 +33,7 @@ jobs:
             dockerRegistryEndpoint: 'docker hub sschoof'
             command: 'Push an image'
             imageName: 'stefanschoof/espresso:${{ parameters.dockerTag }}'
-        - bash: ls -R ..
-        - bash: ./installteraform.sh
+        - bash: ./installterraform.sh
           displayName: 'Install terraform'
           workingDirectory: ../deploy
         - task: AzureCLI@1

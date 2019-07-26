@@ -18,7 +18,7 @@ function initTerraform {
   export TF_IN_AUTOMATION=true
   if [[ -z $servicePrincipalId ]]
   then
-    TF_VAR_object_id=$(az ad signed-in-user show --query objectId --output tsv)
+    export TF_VAR_object_id=$(az ad signed-in-user show --query objectId --output tsv)
   fi
   terraform init -lock-timeout=50m -input=false
 }

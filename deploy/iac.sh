@@ -26,6 +26,7 @@ function ensureFunctionsCors {
   # currently not supported in terraform, see https://github.com/terraform-providers/terraform-provider-azurerm/issues/1374
   resource_group=$(terraform output resource_group)
   function_app=$(terraform output function_app)
+  websiteUrl=$(terraform output static-web-url)
   if ! az functionapp cors show -g $resource_group -n $function_app --query allowedOrigins --out tsv | grep "${websiteUrl%/}" --quiet
   then
     echo "add cors"
@@ -42,7 +43,7 @@ function writeKeyVault
   nodeInstrumentationKey="$(terraform output azurerm_application_insights_node)"
   writeDevopsVar NodeInstrumentationKey "$nodeInstrumentationKey" true
   az keyvault secret set --vault-name "$KEYVAULTNAME" --name NodeInstrumentationKey --value "$nodeInstrumentationKey"
-#  az keyvault secret set --vault-name "$KEYVAULTNAME" --name WebsiteUrl --value "$websiteUrl"
+  az keyvault secret set --vault-name "$KEYVAULTNAME" --name WebsiteUrl --value "$websiteUrl"
 }
 
 applyTerraform

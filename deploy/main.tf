@@ -51,6 +51,13 @@ module "staticweb" {
   storage_account_name = azurerm_storage_account.storage.name
 }
 
+data "azurerm_storage_account" "test" {
+  name                = azurerm_storage_account.storage.name
+  resource_group_name = azurerm_resource_group.group.name
+
+  depends_on = ["module.staticweb"]
+}
+
 resource "azurerm_iothub" "iothub" {
   name                = "espresso${local.stage}"
   resource_group_name = azurerm_resource_group.group.name

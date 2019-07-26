@@ -51,7 +51,7 @@ module "staticweb" {
   storage_account_name = azurerm_storage_account.storage.name
 }
 
-data "azurerm_storage_account" "test" {
+data "azurerm_storage_account" "this" {
   name                = azurerm_storage_account.storage.name
   resource_group_name = azurerm_resource_group.group.name
 

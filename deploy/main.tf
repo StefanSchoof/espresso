@@ -14,10 +14,6 @@ provider "null" {
   version = "~> 2.1"
 }
 
-provider "external" {
-  version = "~> 1.2"
-}
-
 locals {
   stage = terraform.workspace == "prod" ? "" : terraform.workspace
 }

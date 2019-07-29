@@ -6,6 +6,6 @@ resource "null_resource" "function_cors" {
   }
 
   provisioner "local-exec" {
-    command = "az functionapp cors add --resource-group ${var.resource_group_name} --name ${var.function_app_name} --allowed_origins ${join(",", var.allowed_origins)}"
+    command = "az functionapp cors add --resource-group ${var.resource_group_name} --name ${var.function_app_name} --allowed-origins ${join(",", var.allowed_origins)}"
   }
 }

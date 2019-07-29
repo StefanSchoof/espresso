@@ -5,23 +5,9 @@ set -e
 export TF_WORKSPACE=${RELEASE_ENVIRONMENTNAME:-test}
 
 function applyTerraform {
-  terraform init -backend-config=/temp/backend.conf -input=false
+  initTerraform
   terraform plan -lock-timeout=50m -out=tfplan -input=false
   terraform apply -lock-timeout=50m -input=false tfplan
-}
-
-function ensureStaticWeb {
-  resource_group=$(terraform output resource_group)
-  storage_account=$(terraform output storage_account)
-
-  # currently not supported in terraform, see https://github.com/terraform-providers/terraform-provider-azurerm/issues/1903
-  if [ "$(az storage blob service-properties show --account-name $storage_account --query 'staticWebsite.enabled')" = "false" ];
-  then
-    echo "activate static web"
-    az storage blob service-properties update --account-name $storage_account --static-website --index-document index.html > /dev/null
-  fi
-  websiteUrl=$(az storage account show -n $storage_account -g $resource_group --query "primaryEndpoints.web" --output tsv)
-  echo "websiteUrl: $websiteUrl"
 }
 
 function ensureIotDevice {
@@ -38,7 +24,9 @@ function ensureIotDevice {
 
 function ensureFunctionsCors {
   # currently not supported in terraform, see https://github.com/terraform-providers/terraform-provider-azurerm/issues/1374
+  resource_group=$(terraform output resource_group)
   function_app=$(terraform output function_app)
+  websiteUrl=$(terraform output static-web-url)
   if ! az functionapp cors show -g $resource_group -n $function_app --query allowedOrigins --out tsv | grep "${websiteUrl%/}" --quiet
   then
     echo "add cors"
@@ -59,7 +47,6 @@ function writeKeyVault
 }
 
 applyTerraform
-ensureStaticWeb
 ensureIotDevice
 ensureFunctionsCors
 

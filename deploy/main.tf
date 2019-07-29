@@ -1,4 +1,3 @@
-# Configure the Azure Provider
 provider "azurerm" {
   version = "~> 1.29"
 }
@@ -11,6 +10,10 @@ provider "random" {
   version = "~> 2.1"
 }
 
+provider "null" {
+  version = "~> 2.1"
+}
+
 locals {
   stage = terraform.workspace == "prod" ? "" : terraform.workspace
 }
@@ -20,6 +23,7 @@ resource "random_pet" "func" {
 
 data "azurerm_client_config" "current" {
 }
+
 
 resource "azurerm_resource_group" "group" {
   name     = "espresso${local.stage}"
@@ -36,6 +40,18 @@ resource "azurerm_storage_account" "storage" {
   lifecycle {
     prevent_destroy = true
   }
+}
+
+module "staticweb" {
+  source               = "StefanSchoof/static-website/azurerm"
+  storage_account_name = azurerm_storage_account.storage.name
+}
+
+data "azurerm_storage_account" "this" {
+  name                = azurerm_storage_account.storage.name
+  resource_group_name = azurerm_resource_group.group.name
+
+  depends_on = ["module.staticweb"]
 }
 
 resource "azurerm_iothub" "iothub" {
@@ -111,7 +127,7 @@ resource "azurerm_key_vault_access_policy" "service" {
   key_vault_id = azurerm_key_vault.keyvault.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.azurerm_client_config.current.service_principal_object_id
+  object_id = var.object_id == "" ? data.azurerm_client_config.current.service_principal_object_id : var.object_id
 
   key_permissions = [
   ]

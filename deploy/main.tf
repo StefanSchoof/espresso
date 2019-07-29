@@ -103,10 +103,7 @@ resource "azurerm_key_vault" "keyvault" {
   location            = azurerm_resource_group.group.location
   resource_group_name = azurerm_resource_group.group.name
   tenant_id           = data.azurerm_client_config.current.tenant_id
-
-  sku {
-    name = "standard"
-  }
+  sku_name            = "standard"
 }
 
 resource "azurerm_key_vault_access_policy" "app" {

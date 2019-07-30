@@ -98,6 +98,13 @@ resource "azurerm_function_app" "function" {
   version = "~2"
 }
 
+module "function-cors" {
+  source              = "StefanSchoof/function-cors/azurerm"
+  resource_group_name = azurerm_resource_group.group.name
+  allowed_origins     = [substr(data.azurerm_storage_account.this.primary_web_endpoint, 0, length(data.azurerm_storage_account.this.primary_web_endpoint) - 1)]
+  function_app_name   = azurerm_function_app.function.name
+}
+
 resource "azurerm_key_vault" "keyvault" {
   name                = "espresso${local.stage}Vault"
   location            = azurerm_resource_group.group.location

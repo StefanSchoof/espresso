@@ -99,7 +99,7 @@ resource "azurerm_function_app" "function" {
 }
 
 module "function-cors" {
-  source              = "./terraform-azurerm-function-cors"
+  source              = "StefanSchoof/function-cors/azurerm"
   resource_group_name = azurerm_resource_group.group.name
   allowed_origins     = list(substr(data.azurerm_storage_account.this.primary_web_endpoint, 0, length(data.azurerm_storage_account.this.primary_web_endpoint) - 1))
   function_app_name   = azurerm_function_app.function.name

@@ -45,6 +45,9 @@ jobs:
             scriptPath: '../deploy/apply.sh'
             workingDirectory: '../deploy'
             addSpnToEnvironment: true
+        - bash: echo "##vso[task.setvariable variable=WebsiteUrl;isOutput=true]$(terraform output static-web-url)"
+          workingDirectory: '../deploy'
+          name: websiteUrl
 - deployment: container
   environment: ${{ parameters.environment }}
   dependsOn: deploy
@@ -76,12 +79,15 @@ jobs:
   - deployment: e2etest
     environment: ${{ parameters.environment }}
     pool: Hosted VS2017
+    variables:
+      WebsiteUrl: $[ dependencies.deploy.outputs['websiteUrl.WebsiteUrl'] ]
     dependsOn: container
     strategy:
       runOnce:
         deploy:
           steps:
           - download: none
+          - bash: printenv | sort
           - task: DownloadPipelineArtifact@1
             inputs:
               artifactName: e2etest

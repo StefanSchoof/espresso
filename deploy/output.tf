@@ -28,6 +28,6 @@ output "azurerm_application_insights_node" {
   sensitive = true
 }
 
-output "static-web-url" {
+output "WebsiteUrl" {
   value = data.azurerm_storage_account.this.primary_web_endpoint
 }

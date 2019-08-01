@@ -48,6 +48,7 @@ jobs:
         - task: AzureCLI@1
           name: websiteUrl
           inputs:
+            azureSubscription: 'Visual Studio Premium mit MSDN'
             scriptLocation: inlineScript
             inlineScript: . bashfunctions.sh && writeOutputToDevops WebsiteUrl static-web-url
             workingDirectory: '../deploy'

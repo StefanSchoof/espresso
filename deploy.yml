@@ -45,9 +45,13 @@ jobs:
             scriptPath: '../deploy/apply.sh'
             workingDirectory: '../deploy'
             addSpnToEnvironment: true
-        - bash: terraform output static-web-url
-          workingDirectory: '../deploy'
+        - task: AzureCLI@1
           name: websiteUrl
+          inputs:
+            scriptLocation: inlineScript
+            inlineScript: . bashfunctions.sh && writeOutputToDevops WebsiteUrl static-web-url
+            workingDirectory: '../deploy'
+            addSpnToEnvironment: true
 - deployment: container
   environment: ${{ parameters.environment }}
   dependsOn: deploy

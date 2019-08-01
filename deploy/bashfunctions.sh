@@ -1,15 +1,19 @@
 #!/bin/bash -e
 
 function writeDevopsVar {
-  secret=""
+  options=""
   if [ $3 ]
   then
-    secret=";issecret=true"
+    options=";issecret=true"
   fi
-  echo "##vso[task.setvariable variable=$1$secret]$2"
+  if [ $4 ]
+  then
+    options="$options;isoutput=true"
+  fi
+  echo "##vso[task.setvariable variable=$1$options]$2"
 }
 
-function initTerraform {
+function setTerraformVars {
   # taking the vars from the azure Devops task
   export ARM_CLIENT_ID="$servicePrincipalId"
   export ARM_CLIENT_SECRET="$servicePrincipalKey"
@@ -20,5 +24,14 @@ function initTerraform {
   then
     export TF_VAR_object_id=$(az ad signed-in-user show --query objectId --output tsv)
   fi
+}
+
+function initTerraform {
+  setTerraformVars
   terraform init -lock-timeout=50m -input=false
+}
+
+function writeOutputToDevops {
+  setTerraformVars
+  writeDevopsVar "$1" "$(terraform output $2)" "$3" true
 }

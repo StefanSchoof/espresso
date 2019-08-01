@@ -45,7 +45,7 @@ jobs:
             scriptPath: '../deploy/apply.sh'
             workingDirectory: '../deploy'
             addSpnToEnvironment: true
-        - bash: echo "##vso[task.setvariable variable=WebsiteUrl;isOutput=true]$(terraform output static-web-url)"
+        - bash: echo "hello world"
           workingDirectory: '../deploy'
           name: websiteUrl
 - deployment: container

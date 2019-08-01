@@ -117,23 +117,23 @@ jobs:
             inputs:
               testResultsFiles: 'junit.xml'
             condition: succeededOrFailed()
-  - deployment: destroy
-    environment: ${{ parameters.environment }}
-    dependsOn: e2etest
-    pool: Hosted Ubuntu 1604
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: Bash@3
-            displayName: 'Install terraform'
-            inputs:
-              filePath: ../deploy/installterraform.sh
-              workingDirectory: ../deploy
-          - task: AzureCLI@1
-            displayName: 'destroy'
-            inputs:
-              azureSubscription: 'Visual Studio Premium mit MSDN'
-              scriptPath: '../deploy/destroy.sh'
-              workingDirectory: '../deploy'
-              addSpnToEnvironment: true
+#  - deployment: destroy
+#    environment: ${{ parameters.environment }}
+#    dependsOn: e2etest
+#    pool: Hosted Ubuntu 1604
+#    strategy:
+#      runOnce:
+#        deploy:
+#          steps:
+#          - task: Bash@3
+#            displayName: 'Install terraform'
+#            inputs:
+#              filePath: ../deploy/installterraform.sh
+#              workingDirectory: ../deploy
+#          - task: AzureCLI@1
+#            displayName: 'destroy'
+#            inputs:
+#              azureSubscription: 'Visual Studio Premium mit MSDN'
+#              scriptPath: '../deploy/destroy.sh'
+#              workingDirectory: '../deploy'
+#              addSpnToEnvironment: true

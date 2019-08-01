@@ -45,7 +45,7 @@ jobs:
             scriptPath: '../deploy/apply.sh'
             workingDirectory: '../deploy'
             addSpnToEnvironment: true
-        - bash: echo "hello world"
+        - bash: terraform output static-web-url
           workingDirectory: '../deploy'
           name: websiteUrl
 - deployment: container

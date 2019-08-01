@@ -50,7 +50,9 @@ jobs:
           inputs:
             azureSubscription: 'Visual Studio Premium mit MSDN'
             scriptPath: '../deploy/writeoutputtodevops.sh'
-            arguments: WebsiteUrl static-web-url
+            arguments:
+             - WebsiteUrl
+             - static-web-url
             workingDirectory: '../deploy'
             addSpnToEnvironment: true
 - deployment: container

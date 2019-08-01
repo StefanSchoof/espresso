@@ -31,7 +31,3 @@ function initTerraform {
   terraform init -lock-timeout=50m -input=false
 }
 
-function writeOutputToDevops {
-  setTerraformVars
-  writeDevopsVar "$1" "$(terraform output $2)" "$3" true
-}

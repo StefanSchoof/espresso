@@ -49,8 +49,8 @@ jobs:
           name: websiteUrl
           inputs:
             azureSubscription: 'Visual Studio Premium mit MSDN'
-            scriptLocation: inlineScript
-            inlineScript: . bashfunctions.sh && writeOutputToDevops WebsiteUrl static-web-url
+            scriptPath: '../deploy/writeoutputtodevops.sh'
+            arguments: WebsiteUrl static-web-url
             workingDirectory: '../deploy'
             addSpnToEnvironment: true
 - deployment: container

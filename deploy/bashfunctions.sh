@@ -8,7 +8,7 @@ function writeDevopsVar {
   fi
   if [ $4 ]
   then
-    options="$options;isoutput=true"
+    options="$options;isOutput=true"
   fi
   echo "##vso[task.setvariable variable=$1$options]$2"
 }

@@ -57,10 +57,13 @@ jobs:
   environment: ${{ parameters.environment }}
   dependsOn: deploy
   pool: ${{ parameters.containerPool }}
+  variables:
+    WebsiteUrl: $[ dependencies.deploy.outputs['websiteUrl.WebsiteUrl'] ]
   strategy:
     runOnce:
       deploy:
         steps:
+        - bash: printenv | sort
         - task: AzureKeyVault@1
           displayName: 'Azure Key Vault: espresso-global'
           inputs:
@@ -84,15 +87,12 @@ jobs:
   - deployment: e2etest
     environment: ${{ parameters.environment }}
     pool: Hosted VS2017
-    variables:
-      WebsiteUrl: $[ dependencies.deploy.outputs['websiteUrl.WebsiteUrl'] ]
     dependsOn: container
     strategy:
       runOnce:
         deploy:
           steps:
           - download: none
-          - bash: printenv | sort
           - task: DownloadPipelineArtifact@1
             inputs:
               artifactName: e2etest

@@ -58,7 +58,7 @@ jobs:
   dependsOn: deploy
   pool: ${{ parameters.containerPool }}
   variables:
-    WebsiteUrl: $[ dependencies.deploy.outputs['websiteUrl.WebsiteUrl'] ]
+    WebsiteUrl: $[ join(',', dependencies.deploy.outputs.* ]
   strategy:
     runOnce:
       deploy:

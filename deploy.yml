@@ -42,7 +42,14 @@ jobs:
           displayName: 'Infrastructure as Code'
           inputs:
             azureSubscription: 'Visual Studio Premium mit MSDN'
-            scriptPath: '../deploy/apply.sh'
+            scriptPath: '../deploy/iac.sh'
+            workingDirectory: '../deploy'
+            addSpnToEnvironment: true
+        - task: AzureCLI@1
+          displayName: 'Deploy'
+          inputs:
+            azureSubscription: 'Visual Studio Premium mit MSDN'
+            scriptPath: '../deploy/deploy.sh'
             workingDirectory: '../deploy'
             addSpnToEnvironment: true
 - deployment: container

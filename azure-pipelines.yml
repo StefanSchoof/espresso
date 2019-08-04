@@ -12,6 +12,11 @@ stages:
         dockerRegistryEndpoint: 'docker hub sschoof'
         command: login
 
+    - task: DockerInstaller@0
+      displayName: Docker Installer
+      inputs:
+        dockerVersion: 19.03.0-ce
+
     - bash: ./enablecrosscompile.sh
       workingDirectory: node
       displayName: 'enable cross compile'

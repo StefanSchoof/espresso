@@ -7,6 +7,7 @@ docker -v
 docker version
 docker info
 sudo service docker restart
+sleep 10
 docker info
 
 # in azure pipeline git is in detached head so git does not know it brach and we take the env var. But these are in the format /ref/head/master, so we take the basename

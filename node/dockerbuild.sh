@@ -3,7 +3,7 @@ set -e
 
 export DOCKER_CLI_EXPERIMENTAL=enabled
 docker -v
-DOCKER_CLI_EXPERIMENTAL=enabled docker buildx ls
+#DOCKER_CLI_EXPERIMENTAL=enabled docker buildx ls
 docker version
 docker info
 curl -fsSL https://get.docker.com -o get-docker.sh

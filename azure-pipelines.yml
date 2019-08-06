@@ -12,10 +12,10 @@ stages:
         dockerRegistryEndpoint: 'docker hub sschoof'
         command: login
 
-    - task: DockerInstaller@0
-      displayName: Docker Installer
-      inputs:
-        dockerVersion: 19.03.1
+#    - task: DockerInstaller@0
+#      displayName: Docker Installer
+#      inputs:
+#        dockerVersion: 19.03.1
 
     - bash: ./enablecrosscompile.sh
       workingDirectory: node

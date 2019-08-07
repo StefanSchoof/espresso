@@ -12,13 +12,10 @@ stages:
         dockerRegistryEndpoint: 'docker hub sschoof'
         command: login
 
-     - bash: |
-         curl -fsSL https://get.docker.com -o get-docker.sh
-         sh get-docker.sh
-#    - task: DockerInstaller@0
-#      displayName: Docker Installer
-#      inputs:
-#        dockerVersion: 19.03.1
+    - script: |
+       curl -fsSL https://get.docker.com -o get-docker.sh
+       sh get-docker.sh
+      displayName: Docker Install
 
     - bash: ./enablecrosscompile.sh
       workingDirectory: node

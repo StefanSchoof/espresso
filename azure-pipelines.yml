@@ -12,6 +12,9 @@ stages:
         dockerRegistryEndpoint: 'docker hub sschoof'
         command: login
 
+     - bash: |
+         curl -fsSL https://get.docker.com -o get-docker.sh
+         sh get-docker.sh
 #    - task: DockerInstaller@0
 #      displayName: Docker Installer
 #      inputs:

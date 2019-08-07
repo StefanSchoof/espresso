@@ -6,8 +6,6 @@ docker -v
 #DOCKER_CLI_EXPERIMENTAL=enabled docker buildx ls
 docker version
 docker info
-curl -fsSL https://get.docker.com -o get-docker.sh
-sh get-docker.sh
 #sudo service docker restart
 #sleep 10
 docker info

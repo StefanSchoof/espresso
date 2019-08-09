@@ -120,11 +120,10 @@ jobs:
       runOnce:
         deploy:
           steps:
-          - task: Bash@3
-            displayName: 'Install terraform'
+          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+            displayName: 'Install Terraform'
             inputs:
-              filePath: ../deploy/installterraform.sh
-              workingDirectory: ../deploy
+              terraformVersion: $(TERRAFORM_VERSION)
           - task: AzureCLI@1
             displayName: 'destroy'
             inputs:

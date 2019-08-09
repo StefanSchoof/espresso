@@ -36,7 +36,7 @@ jobs:
         - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
           displayName: 'Install Terraform'
           inputs:
-            terraformVersion: 0.12.6
+            terraformVersion: $(TERRAFORM_VERSION)
         - task: AzureCLI@1
           displayName: 'Infrastructure as Code'
           inputs:

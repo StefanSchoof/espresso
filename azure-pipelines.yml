@@ -1,3 +1,6 @@
+variables:
+  TERRAFORM_VERSION: 0.12.6
+
 stages:
 - stage: build
   jobs:
@@ -106,7 +109,7 @@ stages:
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
       displayName: 'Install Terraform'
       inputs:
-        terraformVersion: 0.12.6
+        terraformVersion: $(TERRAFORM_VERSION)
     - task: AzureCLI@1
       displayName: 'Plan'
       inputs:

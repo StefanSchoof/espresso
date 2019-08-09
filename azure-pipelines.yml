@@ -103,9 +103,10 @@ stages:
     pool: Hosted Ubuntu 1604
 
     steps:
-    - bash: ./installterraform.sh
-      displayName: 'Install terraform'
-      workingDirectory: deploy
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+      displayName: 'Install Terraform'
+      inputs:
+        terraformVersion: 0.12.6
     - task: AzureCLI@1
       displayName: 'Plan'
       inputs:

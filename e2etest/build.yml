@@ -1,0 +1,18 @@
+jobs:
+- job: e2etest
+  pool: Hosted Ubuntu 1604
+
+  steps:
+  - bash: |
+      set -e
+      npm ci
+      npm run build
+      npm run lint
+    workingDirectory: e2etest
+    displayName: 'Build'
+
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: e2etest
+      targetPath: e2etest
+

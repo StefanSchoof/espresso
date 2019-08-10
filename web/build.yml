@@ -1,0 +1,29 @@
+jobs:
+- job: web
+  pool: Hosted Ubuntu 1604
+
+  steps:
+  - bash: |
+      set -e
+      npm ci
+      npm run build
+      npm run test:ci
+      npm run lint
+    workingDirectory: web
+    displayName: 'Build'
+
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFiles: web/junit.xml
+
+#  - task: PublishCodeCoverageResults@1
+#    inputs:
+#      codeCoverageTool: cobertura
+#      summaryFileLocation: web/coverage/cobertura-coverage.xml
+
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: web
+      targetPath: web/dist
+

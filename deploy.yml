@@ -33,7 +33,7 @@ jobs:
             dockerRegistryEndpoint: 'docker hub sschoof'
             command: 'Push an image'
             imageName: 'stefanschoof/espresso:${{ parameters.dockerTag }}'
-        - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+        - task: TerraformInstaller@0
           displayName: 'Install Terraform'
           inputs:
             terraformVersion: $(TERRAFORM_VERSION)
@@ -120,7 +120,7 @@ jobs:
       runOnce:
         deploy:
           steps:
-          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+          - task: TerraformInstaller@0
             displayName: 'Install Terraform'
             inputs:
               terraformVersion: $(TERRAFORM_VERSION)

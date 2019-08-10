@@ -106,7 +106,7 @@ stages:
     pool: Hosted Ubuntu 1604
 
     steps:
-    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+    - task: TerraformInstaller@0
       displayName: 'Install Terraform'
       inputs:
         terraformVersion: $(TERRAFORM_VERSION)

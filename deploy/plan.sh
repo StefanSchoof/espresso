@@ -2,8 +2,7 @@
 set -e
 . bashfunctions.sh
 
-initTerraform
-terraform --version
+setTerraformVars
 for workspace in $(terraform workspace list | head -n -1 | sed 's/. //' | grep -v -e "default")
 do
   echo "plan $workspace"

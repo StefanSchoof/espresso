@@ -1,0 +1,10 @@
+- task: TerraformTaskV1@0
+  displayName: 'Terraform init'
+  inputs:
+    workingDirectory: '$(System.DefaultWorkingDirectory)/_terraform CI/Job'
+    commandOptions: '-var-file="dev.tfvars"'
+    backendServiceArm: Econet
+    backendAzureRmResourceGroupName: CustomerPortal
+    backendAzureRmStorageAccountName: customerportalstate
+    backendAzureRmContainerName: dev
+    backendAzureRmKey: tfstate

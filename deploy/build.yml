@@ -23,16 +23,16 @@ jobs:
       command: plan
       workingDirectory: deploy
       environmentServiceNameAzureRM: 'Visual Studio Premium mit MSDN'
-   env:
-     TF_WORKSPACE: test
+    env:
+      TF_WORKSPACE: test
   - task: TerraformTaskV1@0
     displayName: 'Terraform plan prod'
     inputs:
       command: plan
       workingDirectory: deploy
       environmentServiceNameAzureRM: 'Visual Studio Premium mit MSDN'
-   env:
-     TF_WORKSPACE: prod
+    env:
+      TF_WORKSPACE: prod
   - task: PublishPipelineArtifact@0
     inputs:
       artifactName: deploy

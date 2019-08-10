@@ -1,3 +1,6 @@
+variables:
+  TERRAFORM_VERSION: 0.12.6
+
 stages:
 - stage: build
   jobs:
@@ -103,9 +106,10 @@ stages:
     pool: Hosted Ubuntu 1604
 
     steps:
-    - bash: ./installterraform.sh
-      displayName: 'Install terraform'
-      workingDirectory: deploy
+    - task: TerraformInstaller@0
+      displayName: 'Install Terraform'
+      inputs:
+        terraformVersion: $(TERRAFORM_VERSION)
     - task: AzureCLI@1
       displayName: 'Plan'
       inputs:

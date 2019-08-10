@@ -100,28 +100,7 @@ stages:
       inputs:
         artifactName: web
         targetPath: web/dist
-
-  - job: deploy
-    condition: not(startsWith(variables['Build.SourceBranch'], 'refs/heads/greenkeeper/'))
-    pool: Hosted Ubuntu 1604
-
-    steps:
-    - task: TerraformInstaller@0
-      displayName: 'Install Terraform'
-      inputs:
-        terraformVersion: $(TERRAFORM_VERSION)
-    - task: AzureCLI@1
-      displayName: 'Plan'
-      inputs:
-        azureSubscription: 'Visual Studio Premium mit MSDN'
-        scriptPath: 'deploy/plan.sh'
-        workingDirectory: 'deploy'
-        addSpnToEnvironment: true
-    - task: PublishPipelineArtifact@0
-      inputs:
-        artifactName: deploy
-        targetPath: deploy
-
+  - template: deploy/build.yml
   - job: e2etest
     pool: Hosted Ubuntu 1604
 

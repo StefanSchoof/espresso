@@ -2,5 +2,3 @@
 !*.tf
 !*.sh
 !cloud-config.txt
-!hashicorp.asc
-plan.sh

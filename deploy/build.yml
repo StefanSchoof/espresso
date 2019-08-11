@@ -8,13 +8,31 @@ jobs:
     displayName: 'Install Terraform'
     inputs:
       terraformVersion: $(TERRAFORM_VERSION)
-  - task: AzureCLI@1
-    displayName: 'Plan'
+  - task: TerraformTaskV1@0
+    displayName: 'Terraform init'
     inputs:
-      azureSubscription: 'Visual Studio Premium mit MSDN'
-      scriptPath: 'deploy/plan.sh'
-      workingDirectory: 'deploy'
-      addSpnToEnvironment: true
+      workingDirectory: deploy
+      backendServiceArm: 'Visual Studio Premium mit MSDN'
+      backendAzureRmResourceGroupName: espresso-tfstate
+      backendAzureRmStorageAccountName: espressotfstate
+      backendAzureRmContainerName: tfstate
+      backendAzureRmKey: terraform.tfstate
+  - task: TerraformTaskV1@0
+    displayName: 'Terraform plan test'
+    inputs:
+      command: plan
+      workingDirectory: deploy
+      environmentServiceNameAzureRM: 'Visual Studio Premium mit MSDN'
+    env:
+      TF_WORKSPACE: test
+  - task: TerraformTaskV1@0
+    displayName: 'Terraform plan prod'
+    inputs:
+      command: plan
+      workingDirectory: deploy
+      environmentServiceNameAzureRM: 'Visual Studio Premium mit MSDN'
+    env:
+      TF_WORKSPACE: prod
   - task: PublishPipelineArtifact@0
     inputs:
       artifactName: deploy

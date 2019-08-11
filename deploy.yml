@@ -13,6 +13,19 @@ jobs:
     KEYVAULTNAME: 'espresso-global'
     RELEASE_ENVIRONMENTNAME: ${{ parameters.environment }}
   steps:
+  - checkout: none
+  - task: DownloadPipelineArtifact@1
+    inputs:
+      artifactName: deploy
+      downloadPath: deploy
+  - task: DownloadPipelineArtifact@1
+    inputs:
+      artifactName: web
+      downloadPath: web
+  - task: DownloadPipelineArtifact@1
+    inputs:
+      artifactName: func
+      downloadPath: func
   - task: Docker@1
     displayName: pull
     inputs:
@@ -37,20 +50,25 @@ jobs:
     displayName: 'Infrastructure as Code'
     inputs:
       azureSubscription: 'Visual Studio Premium mit MSDN'
-      scriptPath: '../deploy/iac.sh'
-      workingDirectory: '../deploy'
+      scriptPath: 'deploy/iac.sh'
+      workingDirectory: 'deploy'
       addSpnToEnvironment: true
   - task: AzureCLI@1
     displayName: 'Deploy'
     inputs:
       azureSubscription: 'Visual Studio Premium mit MSDN'
-      scriptPath: '../deploy/deploy.sh'
-      workingDirectory: '../deploy'
+      scriptPath: 'deploy/deploy.sh'
+      workingDirectory: 'deploy'
       addSpnToEnvironment: true
 - job: container
   dependsOn: deploy
   pool: ${{ parameters.containerPool }}
   steps:
+  - checkout: none
+  - task: DownloadPipelineArtifact@1
+    inputs:
+      artifactName: node
+      downloadPath: .
   - task: AzureKeyVault@1
     displayName: 'Azure Key Vault: espresso-global'
     inputs:
@@ -60,7 +78,6 @@ jobs:
     displayName: 'Securely copy files to the remote machine'
     inputs:
       sshEndpoint: ${{ parameters.sshEndpoint }}
-      sourceFolder: '../node'
       contents: 'docker-compose.yml'
       targetFolder: espresso
   - task: SSH@0
@@ -68,14 +85,14 @@ jobs:
     inputs:
       sshEndpoint: ${{ parameters.sshEndpoint }}
       runOptions: script
-      scriptPath: '../node/pideploy.sh'
+      scriptPath: 'pideploy.sh'
       args: '"$(DeviceConnectionString)" "$(NodeInstrumentationKey)" "$(Build.BuildId)" "${{ parameters.testingCmd }}"'
 - ${{ if eq(parameters.test, 'true') }}:
   - job: e2etest
     pool: Hosted VS2017
     dependsOn: container
     steps:
-    - download: none
+    - checkout: none
     - task: DownloadPipelineArtifact@1
       inputs:
         artifactName: e2etest
@@ -104,6 +121,11 @@ jobs:
     dependsOn: e2etest
     pool: Hosted Ubuntu 1604
     steps:
+    - checkout: none
+    - task: DownloadPipelineArtifact@1
+      inputs:
+        artifactName: deploy
+        downloadPath: .
     - task: TerraformInstaller@0
       displayName: 'Install Terraform'
       inputs:
@@ -112,6 +134,5 @@ jobs:
       displayName: 'destroy'
       inputs:
         azureSubscription: 'Visual Studio Premium mit MSDN'
-        scriptPath: '../deploy/destroy.sh'
-        workingDirectory: '../deploy'
+        scriptPath: 'destroy.sh'
         addSpnToEnvironment: true

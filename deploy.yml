@@ -14,18 +14,18 @@ jobs:
     RELEASE_ENVIRONMENTNAME: ${{ parameters.environment }}
   steps:
   - checkout: none
-  - task: DownloadPipelineArtifact@1
+  - task: DownloadPipelineArtifact@2
     inputs:
       artifactName: deploy
-      downloadPath: deploy
-  - task: DownloadPipelineArtifact@1
+      path: deploy
+  - task: DownloadPipelineArtifact@2
     inputs:
       artifactName: web
-      downloadPath: web
-  - task: DownloadPipelineArtifact@1
+      path: web
+  - task: DownloadPipelineArtifact@2
     inputs:
       artifactName: func
-      downloadPath: func
+      path: func
   - bash: ls -lR
   - task: Docker@1
     displayName: pull
@@ -66,10 +66,10 @@ jobs:
   pool: ${{ parameters.containerPool }}
   steps:
   - checkout: none
-  - task: DownloadPipelineArtifact@1
+  - task: DownloadPipelineArtifact@2
     inputs:
       artifactName: node
-      downloadPath: .
+      path: .
   - task: AzureKeyVault@1
     displayName: 'Azure Key Vault: espresso-global'
     inputs:
@@ -94,10 +94,10 @@ jobs:
     dependsOn: container
     steps:
     - checkout: none
-    - task: DownloadPipelineArtifact@1
+    - task: DownloadPipelineArtifact@2
       inputs:
         artifactName: e2etest
-        downloadPath: .
+        path: .
     - task: AzureKeyVault@1
       displayName: 'Azure Key Vault: espresso-global'
       inputs:
@@ -123,10 +123,10 @@ jobs:
     pool: Hosted Ubuntu 1604
     steps:
     - checkout: none
-    - task: DownloadPipelineArtifact@1
+    - task: DownloadPipelineArtifact@2
       inputs:
         artifactName: deploy
-        downloadPath: .
+        path: .
     - task: TerraformInstaller@0
       displayName: 'Install Terraform'
       inputs:

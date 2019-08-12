@@ -17,15 +17,15 @@ jobs:
   - task: DownloadPipelineArtifact@1
     inputs:
       artifactName: deploy
-      downloadPath: ./deploy
+      downloadPath: deploy
   - task: DownloadPipelineArtifact@1
     inputs:
       artifactName: web
-      downloadPath: ./web
+      downloadPath: web
   - task: DownloadPipelineArtifact@1
     inputs:
       artifactName: func
-      downloadPath: ./func
+      downloadPath: func
   - bash: ls -lR
   - task: Docker@1
     displayName: pull

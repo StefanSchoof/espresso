@@ -18,10 +18,10 @@ jobs:
     inputs:
       testResultsFiles: func/junit.xml
 
-#  - task: PublishCodeCoverageResults@1
-#    inputs:
-#      codeCoverageTool: cobertura
-#      summaryFileLocation: func/coverage/cobertura-coverage.xml
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: cobertura
+      summaryFileLocation: func/coverage/cobertura-coverage.xml
 
   - task: PublishPipelineArtifact@0
     inputs:

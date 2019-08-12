@@ -4,12 +4,6 @@ set -e
 
 export TF_WORKSPACE=${RELEASE_ENVIRONMENTNAME:-test}
 
-function applyTerraform {
-  setTerraformVars
-  terraform plan -lock-timeout=50m -out=tfplan -input=false
-  terraform apply -lock-timeout=50m -input=false tfplan
-}
-
 function ensureIotDevice {
   # currently not supported in terraform, see https://github.com/terraform-providers/terraform-provider-azurerm/issues/1712
   iothub=$(terraform output iothub)
@@ -35,7 +29,6 @@ function writeKeyVault
   az keyvault secret set --vault-name "$KEYVAULTNAME" --name WebsiteUrl --value "$websiteUrl"
 }
 
-applyTerraform
 ensureIotDevice
 
 if [ -n "$KEYVAULTNAME" ]

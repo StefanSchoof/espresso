@@ -26,6 +26,7 @@ jobs:
     inputs:
       artifactName: func
       downloadPath: func
+  - bash: ls -lR
   - task: Docker@1
     displayName: pull
     inputs:

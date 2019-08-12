@@ -17,10 +17,10 @@ jobs:
     inputs:
       testResultsFiles: web/junit.xml
 
-#  - task: PublishCodeCoverageResults@1
-#    inputs:
-#      codeCoverageTool: cobertura
-#      summaryFileLocation: web/coverage/cobertura-coverage.xml
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: cobertura
+      summaryFileLocation: web/coverage/cobertura-coverage.xml
 
   - task: PublishPipelineArtifact@0
     inputs:

@@ -83,6 +83,8 @@ jobs:
       artifactName: node
       path: .
   - bash: printenv | sort
+    env:
+      DeviceConnectionString: $(DeviceConnectionString)
   - task: AzureKeyVault@1
     displayName: 'Azure Key Vault: espresso-global'
     inputs:

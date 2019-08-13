@@ -48,6 +48,7 @@ jobs:
       terraformVersion: $(TERRAFORM_VERSION)
   - task: AzureCLI@1
     displayName: 'Infrastructure as Code'
+    name: iac
     inputs:
       azureSubscription: 'Visual Studio Premium mit MSDN'
       scriptPath: 'deploy/iac.sh'
@@ -73,6 +74,8 @@ jobs:
   pool: ${{ parameters.containerPool }}
   variables:
     WebsiteUrl: $[ dependencies.deploy.outputs['websiteUrl.WebsiteUrl'] ]
+    DeviceConnectionString: $[ dependencies.deploy.outputs['iac.DeviceConnectionString'] ]
+    NodeInstrumentationKey: $[ dependencies.deploy.outputs['iac.NodeInstrumentationKey'] ]
   steps:
   - checkout: none
   - task: DownloadPipelineArtifact@2

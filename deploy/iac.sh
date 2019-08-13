@@ -26,10 +26,10 @@ function writeKeyVault
 {
   echo "write to keyvault"
   deviceConnectionString="$(az iot hub device-identity show-connection-string --hub-name $iothub --device-id $deviceId --output tsv)"
-  writeDevopsVar DeviceConnectionString "$deviceConnectionString" true
+  writeDevopsVar DeviceConnectionString "$deviceConnectionString" true true
   az keyvault secret set --vault-name "$KEYVAULTNAME" --name 'DeviceConnectionString' --value "$deviceConnectionString"
   nodeInstrumentationKey="$(terraform output azurerm_application_insights_node)"
-  writeDevopsVar NodeInstrumentationKey "$nodeInstrumentationKey" true
+  writeDevopsVar NodeInstrumentationKey "$nodeInstrumentationKey" true true
   az keyvault secret set --vault-name "$KEYVAULTNAME" --name NodeInstrumentationKey --value "$nodeInstrumentationKey"
   websiteUrl=$(terraform output WebsiteUrl)
   az keyvault secret set --vault-name "$KEYVAULTNAME" --name WebsiteUrl --value "$websiteUrl"

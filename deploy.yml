@@ -72,7 +72,7 @@ jobs:
   dependsOn: deploy
   pool: ${{ parameters.containerPool }}
   variables:
-    WebsiteUrl: $[ join(',', dependencies.deploy.result) ]
+    WebsiteUrl: $[ dependencies.deploy.outputs['websiteUrl.WebsiteUrl'] ]
   steps:
   - checkout: none
   - task: DownloadPipelineArtifact@2

@@ -9,3 +9,4 @@ junit.xml
 coverage/
 .dockerignore
 .artifactignore
+build.yml

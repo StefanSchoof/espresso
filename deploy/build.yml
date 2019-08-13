@@ -1,0 +1,39 @@
+jobs:
+- job: deploy
+  condition: not(startsWith(variables['Build.SourceBranch'], 'refs/heads/greenkeeper/'))
+  pool: Hosted Ubuntu 1604
+
+  steps:
+  - task: TerraformInstaller@0
+    displayName: 'Install Terraform'
+    inputs:
+      terraformVersion: $(TERRAFORM_VERSION)
+  - task: TerraformTaskV1@0
+    displayName: 'Terraform init'
+    inputs:
+      workingDirectory: deploy
+      backendServiceArm: 'Visual Studio Premium mit MSDN'
+      backendAzureRmResourceGroupName: espresso-tfstate
+      backendAzureRmStorageAccountName: espressotfstate
+      backendAzureRmContainerName: tfstate
+      backendAzureRmKey: terraform.tfstate
+  - task: TerraformTaskV1@0
+    displayName: 'Terraform plan test'
+    inputs:
+      command: plan
+      workingDirectory: deploy
+      environmentServiceNameAzureRM: 'Visual Studio Premium mit MSDN'
+    env:
+      TF_WORKSPACE: test
+  - task: TerraformTaskV1@0
+    displayName: 'Terraform plan prod'
+    inputs:
+      command: plan
+      workingDirectory: deploy
+      environmentServiceNameAzureRM: 'Visual Studio Premium mit MSDN'
+    env:
+      TF_WORKSPACE: prod
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: deploy
+      targetPath: deploy

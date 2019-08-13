@@ -29,5 +29,6 @@ function deployWeb {
   az storage blob upload-batch -s ../web -d '$web' --account-name $STORAGE_ACCOUNT_NAME
 }
 
+setTerraformVars
 deployFunc
 deployWeb

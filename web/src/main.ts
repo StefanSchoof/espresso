@@ -1,6 +1,6 @@
 import { ApplicationInsights } from "@microsoft/applicationinsights-web";
 
-declare var process: {
+declare const process: {
     env: {
         NODE_ENV: string;
     };

@@ -1,5 +1,5 @@
 provider "azurerm" {
-  version = "~> 1.29"
+  version = "~> 1.33"
 }
 
 provider "template" {
@@ -88,6 +88,12 @@ resource "azurerm_function_app" "function" {
     type = "SystemAssigned"
   }
 
+site_config {
+  cors {
+    allowed_origins = [substr(data.azurerm_storage_account.this.primary_web_endpoint, 0, length(data.azurerm_storage_account.this.primary_web_endpoint) - 1)]
+  }
+}
+
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME       = "node"
     WEBSITE_RUN_FROM_PACKAGE       = "1"
@@ -96,13 +102,6 @@ resource "azurerm_function_app" "function" {
     IOTHUB_CONNECTION_STRING       = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.iotHubConnectionString.id})"
   }
   version = "~2"
-}
-
-module "function-cors" {
-  source              = "StefanSchoof/function-cors/azurerm"
-  resource_group_name = azurerm_resource_group.group.name
-  allowed_origins     = [substr(data.azurerm_storage_account.this.primary_web_endpoint, 0, length(data.azurerm_storage_account.this.primary_web_endpoint) - 1)]
-  function_app_name   = azurerm_function_app.function.name
 }
 
 resource "azurerm_key_vault" "keyvault" {

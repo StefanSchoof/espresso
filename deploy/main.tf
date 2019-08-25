@@ -42,16 +42,20 @@ resource "azurerm_storage_account" "storage" {
   }
 }
 
-module "staticweb" {
-  source               = "StefanSchoof/static-website/azurerm"
-  storage_account_name = azurerm_storage_account.storage.name
+resource "null_resource" "static-website" {
+  triggers = {
+    account = azurerm_storage_account.storage.name
+  }
+  provisioner "local-exec" {
+    command = "az account show || az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID && az storage blob service-properties update --account-name ${azurerm_storage_account.storage.name} --static-website true --index-document index.html --404-document 404.html"
+  }
 }
 
 data "azurerm_storage_account" "this" {
   name                = azurerm_storage_account.storage.name
   resource_group_name = azurerm_resource_group.group.name
 
-  depends_on = ["module.staticweb"]
+  depends_on = ["null_resource.static-website"]
 }
 
 resource "azurerm_iothub" "iothub" {
@@ -88,11 +92,11 @@ resource "azurerm_function_app" "function" {
     type = "SystemAssigned"
   }
 
-site_config {
-  cors {
-    allowed_origins = [substr(data.azurerm_storage_account.this.primary_web_endpoint, 0, length(data.azurerm_storage_account.this.primary_web_endpoint) - 1)]
+  site_config {
+    cors {
+      allowed_origins = [substr(data.azurerm_storage_account.this.primary_web_endpoint, 0, length(data.azurerm_storage_account.this.primary_web_endpoint) - 1)]
+    }
   }
-}
 
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME       = "node"

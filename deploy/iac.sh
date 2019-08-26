@@ -8,6 +8,7 @@ function writeKeyVault
 {
   echo "write to keyvault"
   az extension add --name azure-cli-iot-ext
+  iothub=$(terraform output iothub)
   deviceConnectionString="$(az iot hub device-identity show-connection-string --hub-name $iothub --device-id espressoPi --output tsv)"
   writeDevopsVar DeviceConnectionString "$deviceConnectionString" true
   az keyvault secret set --vault-name "$KEYVAULTNAME" --name 'DeviceConnectionString' --value "$deviceConnectionString"

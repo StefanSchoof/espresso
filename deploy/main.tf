@@ -69,6 +69,16 @@ resource "azurerm_iothub" "iothub" {
   }
 }
 
+resource "null_resource" "iot-device" {
+  triggers = {
+    account = azurerm_iothub.iothub.name
+  }
+  provisioner "local-exec" {
+    command = "az account show || az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID && az extension add --name azure-cli-iot-ext && az iot hub device-identity create --hub-name ${azurerm_iothub.iothub.name} --device-id espressoPi"
+  }
+}
+
+
 resource "azurerm_app_service_plan" "WestEuropePlan" {
   name                = "WestEuropePlan"
   location            = azurerm_resource_group.group.location

@@ -20,7 +20,7 @@
     "azure-iot-common": "^1.10.1",
     "azure-iot-device": "^1.11.0",
     "azure-iot-device-mqtt": "^1.10.1",
-    "jest-junit": "^7.0.0"
+    "jest-junit": "^8.0.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.5.5",

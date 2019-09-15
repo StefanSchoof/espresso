@@ -1,4 +1,5 @@
 **/*
 !*.tf
+!*.tfvars
 !*.sh
 !cloud-config.txt

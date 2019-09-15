@@ -31,3 +31,7 @@ output "azurerm_application_insights_node" {
 output "static-web-url" {
   value = data.azurerm_storage_account.this.primary_web_endpoint
 }
+
+output "iot_device_connection_string" {
+  value = data.external.iot_device.result.connectionString
+}

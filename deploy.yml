@@ -59,6 +59,7 @@ jobs:
     displayName: 'Terraform apply'
     inputs:
       command: apply
+      commandOptions: -var-file="${{ parameters.environment }}.tfvars"
       workingDirectory: deploy
       environmentServiceNameAzureRM: 'Visual Studio Premium mit MSDN'
     env:

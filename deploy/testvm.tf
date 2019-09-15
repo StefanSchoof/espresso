@@ -1,5 +1,5 @@
 resource "azurerm_virtual_network" "network" {
-  count               = terraform.workspace == "prod" ? 0 : 1
+  count               = var.with_testvm ? 1 : 0
   name                = "dockerhost-vnet"
   address_space       = ["10.1.0.0/24"]
   location            = azurerm_resource_group.group.location
@@ -7,7 +7,7 @@ resource "azurerm_virtual_network" "network" {
 }
 
 resource "azurerm_subnet" "default" {
-  count                = terraform.workspace == "prod" ? 0 : 1
+  count                = var.with_testvm ? 1 : 0
   name                 = "default"
   resource_group_name  = azurerm_resource_group.group.name
   virtual_network_name = azurerm_virtual_network.network[0].name
@@ -15,7 +15,7 @@ resource "azurerm_subnet" "default" {
 }
 
 resource "azurerm_public_ip" "ip" {
-  count                   = terraform.workspace == "prod" ? 0 : 1
+  count                   = var.with_testvm ? 1 : 0
   name                    = "dockerhost-ip"
   location                = azurerm_resource_group.group.location
   resource_group_name     = azurerm_resource_group.group.name
@@ -25,7 +25,7 @@ resource "azurerm_public_ip" "ip" {
 }
 
 resource "azurerm_network_interface" "nic" {
-  count               = terraform.workspace == "prod" ? 0 : 1
+  count               = var.with_testvm ? 1 : 0
   name                = "dockerhost-nic"
   location            = azurerm_resource_group.group.location
   resource_group_name = azurerm_resource_group.group.name
@@ -55,7 +55,7 @@ data "template_cloudinit_config" "config" {
 }
 
 resource "azurerm_virtual_machine" "dockerhost" {
-  count                            = terraform.workspace == "prod" ? 0 : 1
+  count                            = var.with_testvm ? 1 : 0
   name                             = "dockerhost-vm"
   location                         = azurerm_resource_group.group.location
   resource_group_name              = azurerm_resource_group.group.name
@@ -91,7 +91,7 @@ resource "azurerm_virtual_machine" "dockerhost" {
 }
 
 resource "azurerm_virtual_machine_extension" "cloudinitwait" {
-  count                = terraform.workspace == "prod" ? 0 : 1
+  count                = var.with_testvm ? 1 : 0
   name                 = "cloudinitwait"
   location             = azurerm_resource_group.group.location
   resource_group_name  = azurerm_resource_group.group.name

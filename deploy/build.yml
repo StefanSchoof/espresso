@@ -21,6 +21,7 @@ jobs:
     displayName: 'Terraform plan test'
     inputs:
       command: plan
+      commandOptions: -var-file="test.tfvars"
       workingDirectory: deploy
       environmentServiceNameAzureRM: 'Visual Studio Premium mit MSDN'
     env:
@@ -29,6 +30,7 @@ jobs:
     displayName: 'Terraform plan prod'
     inputs:
       command: plan
+      commandOptions: -var-file="prod.tfvars"
       workingDirectory: deploy
       environmentServiceNameAzureRM: 'Visual Studio Premium mit MSDN'
     env:

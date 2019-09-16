@@ -1,13 +1,5 @@
-output "resource_group" {
-  value = azurerm_resource_group.group.name
-}
-
 output "storage_account" {
   value = azurerm_storage_account.storage.name
-}
-
-output "iothub" {
-  value = azurerm_iothub.iothub.name
 }
 
 output "function_app" {
@@ -30,4 +22,9 @@ output "azurerm_application_insights_node" {
 
 output "static-web-url" {
   value = data.azurerm_storage_account.this.primary_web_endpoint
+}
+
+output "iot_device_connection_string" {
+  value     = data.external.iot_device.result.connectionString
+  sensitive = true
 }

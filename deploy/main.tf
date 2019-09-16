@@ -1,23 +1,3 @@
-provider "azurerm" {
-  version = "~> 1.33"
-}
-
-provider "template" {
-  version = "~> 2.1"
-}
-
-provider "random" {
-  version = "~> 2.1"
-}
-
-provider "null" {
-  version = "~> 2.1"
-}
-
-locals {
-  stage = terraform.workspace == "prod" ? "" : terraform.workspace
-}
-
 resource "random_pet" "func" {
 }
 
@@ -26,12 +6,12 @@ data "azurerm_client_config" "current" {
 
 
 resource "azurerm_resource_group" "group" {
-  name     = "espresso${local.stage}"
+  name     = "espresso${var.stage}"
   location = "West Europe"
 }
 
 resource "azurerm_storage_account" "storage" {
-  name                     = "espressopi${local.stage}"
+  name                     = "espressopi${var.stage}"
   resource_group_name      = azurerm_resource_group.group.name
   location                 = azurerm_resource_group.group.location
   account_tier             = "Standard"
@@ -42,27 +22,45 @@ resource "azurerm_storage_account" "storage" {
   }
 }
 
-module "staticweb" {
-  source               = "StefanSchoof/static-website/azurerm"
-  storage_account_name = azurerm_storage_account.storage.name
+resource "null_resource" "static-website" {
+  triggers = {
+    account = azurerm_storage_account.storage.name
+  }
+  provisioner "local-exec" {
+    command = "az account show || az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID && az storage blob service-properties update --account-name ${azurerm_storage_account.storage.name} --static-website true --index-document index.html --404-document 404.html"
+  }
 }
 
 data "azurerm_storage_account" "this" {
   name                = azurerm_storage_account.storage.name
   resource_group_name = azurerm_resource_group.group.name
 
-  depends_on = ["module.staticweb"]
+  depends_on = ["null_resource.static-website"]
 }
 
 resource "azurerm_iothub" "iothub" {
-  name                = "espresso${local.stage}"
+  name                = "espresso${var.stage}"
   resource_group_name = azurerm_resource_group.group.name
   location            = azurerm_resource_group.group.location
   sku {
-    name     = terraform.workspace == "prod" ? "F1" : "S1"
-    tier     = terraform.workspace == "prod" ? "Free" : "Standard"
+    name     = var.stage == "" ? "F1" : "S1"
+    tier     = var.stage == "" ? "Free" : "Standard"
     capacity = "1"
   }
+}
+
+resource "null_resource" "iot-device" {
+  triggers = {
+    account = azurerm_iothub.iothub.name
+  }
+  provisioner "local-exec" {
+    command = "az account show || az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID && az extension add --name azure-cli-iot-ext && az iot hub device-identity create --hub-name ${azurerm_iothub.iothub.name} --device-id espressoPi"
+  }
+}
+
+data "external" "iot_device" {
+  program    = ["sh", "iotdeviceconnection.sh", azurerm_iothub.iothub.name]
+  depends_on = [null_resource.iot-device]
 }
 
 resource "azurerm_app_service_plan" "WestEuropePlan" {
@@ -79,7 +77,7 @@ resource "azurerm_app_service_plan" "WestEuropePlan" {
 
 resource "azurerm_function_app" "function" {
   # for an unkown reason sometime the func has no code. changing the name with a `terraform taint random_pet.func` will generate a new name
-  name                      = "espressofunc${terraform.workspace == "prod" ? "" : "-${random_pet.func.id}-"}${local.stage}"
+  name                      = "espressofunc${var.stage == "" ? "" : "-${random_pet.func.id}-"}${var.stage}"
   location                  = azurerm_resource_group.group.location
   resource_group_name       = azurerm_resource_group.group.name
   app_service_plan_id       = azurerm_app_service_plan.WestEuropePlan.id
@@ -88,11 +86,11 @@ resource "azurerm_function_app" "function" {
     type = "SystemAssigned"
   }
 
-site_config {
-  cors {
-    allowed_origins = [substr(data.azurerm_storage_account.this.primary_web_endpoint, 0, length(data.azurerm_storage_account.this.primary_web_endpoint) - 1)]
+  site_config {
+    cors {
+      allowed_origins = [substr(data.azurerm_storage_account.this.primary_web_endpoint, 0, length(data.azurerm_storage_account.this.primary_web_endpoint) - 1)]
+    }
   }
-}
 
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME       = "node"
@@ -105,7 +103,7 @@ site_config {
 }
 
 resource "azurerm_key_vault" "keyvault" {
-  name                = "espresso${local.stage}Vault"
+  name                = "espresso${var.stage}Vault"
   location            = azurerm_resource_group.group.location
   resource_group_name = azurerm_resource_group.group.name
   tenant_id           = data.azurerm_client_config.current.tenant_id
@@ -152,21 +150,21 @@ resource "azurerm_key_vault_secret" "iotHubConnectionString" {
 }
 
 resource "azurerm_application_insights" "node" {
-  name                = "espresso${local.stage}-node"
+  name                = "espresso${var.stage}-node"
   location            = azurerm_resource_group.group.location
   resource_group_name = azurerm_resource_group.group.name
   application_type    = "Node.JS"
 }
 
 resource "azurerm_application_insights" "web" {
-  name                = "espresso${local.stage}-web"
+  name                = "espresso${var.stage}-web"
   location            = azurerm_resource_group.group.location
   resource_group_name = azurerm_resource_group.group.name
   application_type    = "web"
 }
 
 resource "azurerm_application_insights" "function" {
-  name                = "espressoPi${local.stage}"
+  name                = "espressoPi${var.stage}"
   location            = azurerm_resource_group.group.location
   resource_group_name = azurerm_resource_group.group.name
   application_type    = "web"

@@ -10,7 +10,6 @@ jobs:
 - job: deploy
   pool: Hosted Ubuntu 1604
   variables:
-    KEYVAULTNAME: 'espresso-global'
     RELEASE_ENVIRONMENTNAME: ${{ parameters.environment }}
   steps:
   - checkout: none
@@ -100,14 +99,6 @@ jobs:
     inputs:
       artifactName: node
       path: .
-  - bash: printenv | sort
-    env:
-      DeviceConnectionString: $(DeviceConnectionString)
-  - task: AzureKeyVault@1
-    displayName: 'Azure Key Vault: espresso-global'
-    inputs:
-      azureSubscription: 'Visual Studio Premium mit MSDN'
-      KeyVaultName: 'espresso-global'
   - task: CopyFilesOverSSH@0
     displayName: 'Securely copy files to the remote machine'
     inputs:
@@ -131,11 +122,6 @@ jobs:
       inputs:
         artifactName: e2etest
         path: .
-    - task: AzureKeyVault@1
-      displayName: 'Azure Key Vault: espresso-global'
-      inputs:
-        azureSubscription: 'Visual Studio Premium mit MSDN'
-        KeyVaultName: 'espresso-global'
     - task: Npm@1
       displayName: 'npm ci --production'
       inputs:

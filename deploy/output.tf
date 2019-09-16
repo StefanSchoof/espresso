@@ -33,5 +33,6 @@ output "static-web-url" {
 }
 
 output "iot_device_connection_string" {
-  value = data.external.iot_device.result.connectionString
+  value     = data.external.iot_device.result.connectionString
+  sensitive = true
 }

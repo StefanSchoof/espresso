@@ -59,7 +59,8 @@ resource "null_resource" "iot-device" {
 }
 
 data "external" "iot_device" {
-  program = ["sh", "iotdeviceconnection.sh", azurerm_iothub.iothub.name]
+  program    = ["sh", "iotdeviceconnection.sh", azurerm_iothub.iothub.name]
+  depends_on = [null_resource.iot-device]
 }
 
 resource "azurerm_app_service_plan" "WestEuropePlan" {

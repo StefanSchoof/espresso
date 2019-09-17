@@ -63,6 +63,7 @@ jobs:
       environmentServiceNameAzureRM: 'Visual Studio Premium mit MSDN'
     env:
       TF_WORKSPACE: ${{ parameters.environment }}
+  - bash: printenv | sort
   - task: AzureCLI@1
     displayName: 'Infrastructure as Code'
     name: iac

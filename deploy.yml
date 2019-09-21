@@ -63,10 +63,9 @@ jobs:
       environmentServiceNameAzureRM: 'Visual Studio Premium mit MSDN'
     env:
       TF_WORKSPACE: ${{ parameters.environment }}
-  - bash: printenv | sort
   - task: PowerShell@2
     displayName: 'terraform output to devops'
-    name: iac
+    name: terraformOutput
     inputs:
       filePath: 'deploy/output.ps1'
       workingDirectory: 'deploy'
@@ -89,9 +88,8 @@ jobs:
   dependsOn: deploy
   pool: ${{ parameters.containerPool }}
   variables:
-    WebsiteUrl: $[ dependencies.deploy.outputs['websiteUrl.WebsiteUrl'] ]
-    DeviceConnectionString: $[ dependencies.deploy.outputs['iac.DeviceConnectionString'] ]
-    NodeInstrumentationKey: $[ dependencies.deploy.outputs['iac.NodeInstrumentationKey'] ]
+    DeviceConnectionString: $[ dependencies.deploy.outputs['terraformOutput.iot_device_connection_string'] ]
+    NodeInstrumentationKey: $[ dependencies.deploy.outputs['terraformOutput.azurerm_application_insights_node'] ]
   steps:
   - checkout: none
   - task: DownloadPipelineArtifact@2

@@ -1,3 +1,4 @@
+Get-ChildItem Env:
 Write-Host $env:jsonOutputVariablesPath
 $json=Get-Content $env:jsonOutputVariablesPath | ConvertFrom-Json
 $json `

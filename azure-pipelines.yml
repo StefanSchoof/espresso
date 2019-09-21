@@ -1,6 +1,14 @@
 variables:
   TERRAFORM_VERSION: 0.12.6
 
+schedules:
+- cron: "0 0 * * THU"
+  displayName: Weekly build
+  branches:
+    include:
+    - master
+  always: true
+
 stages:
 - stage: build
   jobs:

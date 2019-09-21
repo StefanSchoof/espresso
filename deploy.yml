@@ -75,15 +75,8 @@ jobs:
       azureSubscription: 'Visual Studio Premium mit MSDN'
       scriptPath: 'deploy/deploy.sh'
       workingDirectory: 'deploy'
-      addSpnToEnvironment: true
-  - task: AzureCLI@1
-    name: websiteUrl
-    inputs:
-      azureSubscription: 'Visual Studio Premium mit MSDN'
-      scriptPath: 'deploy/writeoutputtodevops.sh'
-      arguments: WebsiteUrl
-      workingDirectory: 'deploy'
-      addSpnToEnvironment: true
+    env:
+      azurerm_application_insights_web: $(azurerm_application_insights_web)
 - job: container
   dependsOn: deploy
   pool: ${{ parameters.containerPool }}

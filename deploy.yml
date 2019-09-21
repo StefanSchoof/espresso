@@ -76,7 +76,8 @@ jobs:
       scriptPath: 'deploy/deploy.sh'
       workingDirectory: 'deploy'
     env:
-      azurerm_application_insights_web: $(azurerm_application_insights_web)
+      AZURERM_APPLICATION_INSIGHTS_WEB: $(terraformOutput.azurerm_application_insights_web)
+      FUNCTION_APP: $(terraformOutput.function_app)
 - job: container
   dependsOn: deploy
   pool: ${{ parameters.containerPool }}

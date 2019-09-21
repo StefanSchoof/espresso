@@ -64,14 +64,12 @@ jobs:
     env:
       TF_WORKSPACE: ${{ parameters.environment }}
   - bash: printenv | sort
-  - task: AzureCLI@1
-    displayName: 'Infrastructure as Code'
+  - task: PowerShell@2
+    displayName: 'terraform output to devops'
     name: iac
     inputs:
-      azureSubscription: 'Visual Studio Premium mit MSDN'
-      scriptPath: 'deploy/iac.sh'
+      filePath: 'deploy/output.ps1'
       workingDirectory: 'deploy'
-      addSpnToEnvironment: true
   - task: AzureCLI@1
     displayName: 'Deploy'
     inputs:

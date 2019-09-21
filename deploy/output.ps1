@@ -1,6 +1,5 @@
-Get-ChildItem Env:
-Write-Host $env:jsonOutputVariablesPath
-$json=Get-Content $env:jsonOutputVariablesPath | ConvertFrom-Json
+Write-Host $env:TERRAFORMTASKV12_JSONOUTPUTVARIABLESPATH
+$json=Get-Content $env:TERRAFORMTASKV12_JSONOUTPUTVARIABLESPATH | ConvertFrom-Json
 $json `
     | Get-Member -type NoteProperty `
     | ForEach-Object {

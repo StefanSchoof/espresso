@@ -9,8 +9,6 @@ parameters:
 jobs:
 - job: deploy
   pool: Hosted Ubuntu 1604
-  variables:
-    RELEASE_ENVIRONMENTNAME: ${{ parameters.environment }}
   steps:
   - checkout: none
   - task: DownloadPipelineArtifact@2

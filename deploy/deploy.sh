@@ -2,8 +2,6 @@
 set -e
 . ./bashfunctions.sh
 
-printenv | sort
-
 function deployFunc {
   pushd ../func
   res=$(npx -p azure-functions-core-tools \

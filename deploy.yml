@@ -141,9 +141,20 @@ jobs:
       displayName: 'Install Terraform'
       inputs:
         terraformVersion: $(TERRAFORM_VERSION)
-    - task: AzureCLI@1
-      displayName: 'destroy'
+    - task: TerraformTaskV1@0
+      displayName: 'Terraform init'
       inputs:
-        azureSubscription: 'Visual Studio Premium mit MSDN'
-        scriptPath: 'destroy.sh'
-        addSpnToEnvironment: true
+        backendServiceArm: 'Visual Studio Premium mit MSDN'
+        backendAzureRmResourceGroupName: espresso-tfstate
+        backendAzureRmStorageAccountName: espressotfstate
+        backendAzureRmContainerName: tfstate
+        backendAzureRmKey: terraform.tfstate
+    # destroy costly resouces in test
+    - task: TerraformTaskV1@0
+      displayName: 'Terraform destroy'
+      inputs:
+        command: destroy
+        commandOptions: -var-file="test.tfvars" -target azurerm_virtual_machine.dockerhost -target azurerm_iothub.iothub
+        environmentServiceNameAzureRM: 'Visual Studio Premium mit MSDN'
+      env:
+        TF_WORKSPACE: test

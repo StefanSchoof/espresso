@@ -1,12 +1,16 @@
 #!/bin/bash -e
 
 function writeDevopsVar {
-  secret=""
+  options=""
   if [ $3 ]
   then
-    secret=";issecret=true"
+    options=";issecret=true"
   fi
-  echo "##vso[task.setvariable variable=$1$secret]$2"
+  if [ $4 ]
+  then
+    options="$options;isOutput=true"
+  fi
+  echo "##vso[task.setvariable variable=$1$options]$2"
 }
 
 function setTerraformVars {

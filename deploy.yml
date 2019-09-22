@@ -9,9 +9,6 @@ parameters:
 jobs:
 - job: deploy
   pool: Hosted Ubuntu 1604
-  variables:
-    KEYVAULTNAME: 'espresso-global'
-    RELEASE_ENVIRONMENTNAME: ${{ parameters.environment }}
   steps:
   - checkout: none
   - task: DownloadPipelineArtifact@2
@@ -64,34 +61,35 @@ jobs:
       environmentServiceNameAzureRM: 'Visual Studio Premium mit MSDN'
     env:
       TF_WORKSPACE: ${{ parameters.environment }}
-  - task: AzureCLI@1
-    displayName: 'Infrastructure as Code'
+  - task: PowerShell@2
+    displayName: 'terraform output to devops'
+    name: terraformOutput
     inputs:
-      azureSubscription: 'Visual Studio Premium mit MSDN'
-      scriptPath: 'deploy/iac.sh'
+      filePath: 'deploy/output.ps1'
       workingDirectory: 'deploy'
-      addSpnToEnvironment: true
   - task: AzureCLI@1
     displayName: 'Deploy'
     inputs:
       azureSubscription: 'Visual Studio Premium mit MSDN'
       scriptPath: 'deploy/deploy.sh'
       workingDirectory: 'deploy'
-      addSpnToEnvironment: true
+    env:
+      AZURERM_APPLICATION_INSIGHTS_WEB: $(terraformOutput.azurerm_application_insights_web)
+      FUNCTION_APP: $(terraformOutput.function_app)
+      FUNCTION_APP_HOSTNAME: $(terraformOutput.function_app_hostname)
+      STORAGE_ACCOUNT: $(terraformOutput.storage_account)
 - job: container
   dependsOn: deploy
   pool: ${{ parameters.containerPool }}
+  variables:
+    DeviceConnectionString: $[ dependencies.deploy.outputs['terraformOutput.iot_device_connection_string'] ]
+    NodeInstrumentationKey: $[ dependencies.deploy.outputs['terraformOutput.azurerm_application_insights_node'] ]
   steps:
   - checkout: none
   - task: DownloadPipelineArtifact@2
     inputs:
       artifactName: node
       path: .
-  - task: AzureKeyVault@1
-    displayName: 'Azure Key Vault: espresso-global'
-    inputs:
-      azureSubscription: 'Visual Studio Premium mit MSDN'
-      KeyVaultName: 'espresso-global'
   - task: CopyFilesOverSSH@0
     displayName: 'Securely copy files to the remote machine'
     inputs:
@@ -115,11 +113,6 @@ jobs:
       inputs:
         artifactName: e2etest
         path: .
-    - task: AzureKeyVault@1
-      displayName: 'Azure Key Vault: espresso-global'
-      inputs:
-        azureSubscription: 'Visual Studio Premium mit MSDN'
-        KeyVaultName: 'espresso-global'
     - task: Npm@1
       displayName: 'npm ci --production'
       inputs:

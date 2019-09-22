@@ -133,6 +133,10 @@ jobs:
     pool: Hosted Ubuntu 1604
     steps:
     - checkout: none
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        artifactName: deploy
+        path: .
     - task: TerraformInstaller@0
       displayName: 'Install Terraform'
       inputs:
@@ -140,6 +144,7 @@ jobs:
     - task: TerraformTaskV1@0
       displayName: 'Terraform init'
       inputs:
+        workingDirectory: deploy
         backendServiceArm: 'Visual Studio Premium mit MSDN'
         backendAzureRmResourceGroupName: espresso-tfstate
         backendAzureRmStorageAccountName: espressotfstate
@@ -150,6 +155,7 @@ jobs:
       inputs:
         command: destroy
         commandOptions: -var-file="test.tfvars" -target azurerm_virtual_machine.dockerhost -target azurerm_iothub.iothub
+        workingDirectory: deploy
         environmentServiceNameAzureRM: 'Visual Studio Premium mit MSDN'
       env:
         TF_WORKSPACE: test

@@ -54,7 +54,7 @@ resource "null_resource" "iot-device" {
     account = azurerm_iothub.iothub.name
   }
   provisioner "local-exec" {
-    command = "az account show || az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID && az extension add --name azure-cli-iot-ext && az iot hub device-identity create --hub-name ${azurerm_iothub.iothub.name} --device-id espressoPi"
+    command = "az account show || az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID && az extension add --name azure-cli-iot-ext && az iot hub device-identity create --hub-name ${azurerm_iothub.iothub.name} --device-id espressoPi > /dev/null"
   }
 }
 

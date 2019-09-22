@@ -30,4 +30,3 @@ function initTerraform {
   setTerraformVars
   terraform init -lock-timeout=50m -input=false
 }
-

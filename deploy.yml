@@ -149,6 +149,7 @@ jobs:
         backendAzureRmStorageAccountName: espressotfstate
         backendAzureRmContainerName: tfstate
         backendAzureRmKey: terraform.tfstate
+    # destroy costly resouces in test
     - task: TerraformTaskV1@0
       displayName: 'Terraform destroy'
       inputs:

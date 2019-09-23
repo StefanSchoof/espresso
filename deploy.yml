@@ -54,6 +54,7 @@ jobs:
       backendAzureRmKey: terraform.tfstate
   - task: TerraformTaskV1@0
     displayName: 'Terraform apply'
+    name: terrafromApply
     inputs:
       command: apply
       commandOptions: -var-file="${{ parameters.environment }}.tfvars"
@@ -67,6 +68,8 @@ jobs:
     inputs:
       filePath: 'deploy/output.ps1'
       workingDirectory: 'deploy'
+    env:
+      jsonPath: $(terrafromApply.jsonOutputVariablesPath)
   - task: AzureCLI@1
     displayName: 'Deploy'
     inputs:

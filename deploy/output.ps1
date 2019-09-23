@@ -1,6 +1,5 @@
-$jsonPath=(Get-ChildItem env:TERRAFORMTASK*_JSONOUTPUTVARIABLESPATH).Value
-Write-Host "Convert terrafrom output from $jsonPath to devops vars."
-$json=Get-Content $jsonPath | ConvertFrom-Json
+Write-Host "Convert terrafrom output from $env:jsonPath to devops vars."
+$json=Get-Content $env:jsonPath | ConvertFrom-Json
 $json `
     | Get-Member -type NoteProperty `
     | ForEach-Object {

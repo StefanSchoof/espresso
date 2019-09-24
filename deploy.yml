@@ -64,7 +64,7 @@ jobs:
       TF_WORKSPACE: ${{ parameters.environment }}
   - task: PowerShell@2
     displayName: 'terraform output to devops'
-    name: terraformOutput
+    name: terraformOutput${{ parameters.environment }}
     inputs:
       filePath: 'deploy/output.ps1'
       workingDirectory: 'deploy'
@@ -77,16 +77,16 @@ jobs:
       scriptPath: 'deploy/deploy.sh'
       workingDirectory: 'deploy'
     env:
-      AZURERM_APPLICATION_INSIGHTS_WEB: $(terraformOutput.azurerm_application_insights_web)
-      FUNCTION_APP: $(terraformOutput.function_app)
-      FUNCTION_APP_HOSTNAME: $(terraformOutput.function_app_hostname)
-      STORAGE_ACCOUNT: $(terraformOutput.storage_account)
+      AZURERM_APPLICATION_INSIGHTS_WEB: $(terraformOutput${{ parameters.environment }}.azurerm_application_insights_web)
+      FUNCTION_APP: $(terraformOutput${{ parameters.environment }}.function_app)
+      FUNCTION_APP_HOSTNAME: $(terraformOutput${{ parameters.environment }}.function_app_hostname)
+      STORAGE_ACCOUNT: $(terraformOutput${{ parameters.environment }}.storage_account)
 - job: container
   dependsOn: deploy
   pool: ${{ parameters.containerPool }}
   variables:
-    DeviceConnectionString: $[ dependencies.deploy.outputs['terraformOutput.iot_device_connection_string'] ]
-    NodeInstrumentationKey: $[ dependencies.deploy.outputs['terraformOutput.azurerm_application_insights_node'] ]
+    DeviceConnectionString: $[ dependencies.deploy.outputs['terraformOutput${{ parameters.environment }}.iot_device_connection_string'] ]
+    NodeInstrumentationKey: $[ dependencies.deploy.outputs['terraformOutput${{ parameters.environment }}.azurerm_application_insights_node'] ]
   steps:
   - checkout: none
   - task: DownloadPipelineArtifact@2

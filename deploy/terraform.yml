@@ -8,7 +8,7 @@ steps:
     workingDirectory: deploy
     backendServiceArm: 'Visual Studio Premium mit MSDN'
     backendAzureRmResourceGroupName: espresso-tfstate
-    backendAzureRmStorageAccountName: espressotfstate
+    backendAzureRmStorageAccountName: espressotfstate${{ parameters.environment }}
     backendAzureRmContainerName: tfstate
     backendAzureRmKey: terraform.tfstate
     commandOptions: '-reconfigure'

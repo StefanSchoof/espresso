@@ -49,7 +49,7 @@ jobs:
       workingDirectory: deploy
       backendServiceArm: 'Visual Studio Premium mit MSDN'
       backendAzureRmResourceGroupName: espresso-tfstate
-      backendAzureRmStorageAccountName: espressotfstate
+      backendAzureRmStorageAccountName: espressotfstate${{ parameters.environment }}
       backendAzureRmContainerName: tfstate
       backendAzureRmKey: terraform.tfstate
   - task: TerraformTaskV1@0
@@ -57,11 +57,9 @@ jobs:
     name: terrafromApply
     inputs:
       command: apply
-      commandOptions: -var-file="${{ parameters.environment }}.tfvars"
+      commandOptions: -var-file="${{ parameters.environment }}.tfvars  -lock-timeout=10m"
       workingDirectory: deploy
       environmentServiceNameAzureRM: 'Visual Studio Premium mit MSDN'
-    env:
-      TF_WORKSPACE: ${{ parameters.environment }}
   - task: PowerShell@2
     displayName: 'terraform output to devops'
     name: terraformOutput${{ parameters.environment }}

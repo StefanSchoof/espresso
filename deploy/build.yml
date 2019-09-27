@@ -10,10 +10,10 @@ jobs:
       terraformVersion: $(TERRAFORM_VERSION)
   - template: terraform.yml
     parameters:
-      stage: test
+      environment: test
   - template: terraform.yml
     parameters:
-      stage: prod
+      environment: prod
   - task: PublishPipelineArtifact@0
     inputs:
       artifactName: deploy

@@ -147,7 +147,7 @@ jobs:
       inputs:
         backendServiceArm: 'Visual Studio Premium mit MSDN'
         backendAzureRmResourceGroupName: espresso-tfstate
-        backendAzureRmStorageAccountName: espressotfstate
+        backendAzureRmStorageAccountName: espressotfstate${{ parameters.environment }}
         backendAzureRmContainerName: tfstate
         backendAzureRmKey: terraform.tfstate
     # destroy costly resouces in test
@@ -157,5 +157,3 @@ jobs:
         command: destroy
         commandOptions: -var-file="test.tfvars" -target azurerm_virtual_machine.dockerhost -target azurerm_iothub.iothub
         environmentServiceNameAzureRM: 'Visual Studio Premium mit MSDN'
-      env:
-        TF_WORKSPACE: test

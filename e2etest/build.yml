@@ -1,6 +1,6 @@
 jobs:
 - job: e2etest
-  pool: Hosted Ubuntu 1604
+  pool: ubuntu-18.04
 
   steps:
   - bash: |

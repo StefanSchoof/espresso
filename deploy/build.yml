@@ -1,7 +1,7 @@
 jobs:
 - job: deploy
   condition: not(startsWith(variables['Build.SourceBranch'], 'refs/heads/greenkeeper/'))
-  pool: Hosted Ubuntu 1604
+  pool: ubuntu-18.04
 
   steps:
   - task: TerraformInstaller@0

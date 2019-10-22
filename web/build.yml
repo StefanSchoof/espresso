@@ -1,6 +1,6 @@
 jobs:
 - job: web
-  pool: Hosted Ubuntu 1604
+  pool: ubuntu-18.04
 
   steps:
   - bash: |

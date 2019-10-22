@@ -29,7 +29,7 @@
     "copy-webpack-plugin": "^5.0.4",
     "eslint": "^6.5.1",
     "jest": "^24.9.0",
-    "jest-junit": "^8.0.0",
+    "jest-junit": "^9.0.0",
     "typescript": "^3.6.4",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.9"

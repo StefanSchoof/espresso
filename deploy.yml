@@ -2,13 +2,14 @@ parameters:
   environment: test
   sshEndpoint: dockerhost
   test: false
-  containerPool: ubuntu-18.04
+  containerPool: Hosted Ubuntu 1604
   dockerTag: dev
   testingCmd: echo
 
 jobs:
 - job: deploy
-  pool: ubuntu-18.04
+  pool:
+    vmImage: ubuntu-18.04
   steps:
   - checkout: none
   - task: DownloadPipelineArtifact@2
@@ -131,7 +132,8 @@ jobs:
       condition: succeededOrFailed()
   - job: destroy
     dependsOn: e2etest
-    pool: ubuntu-18.04
+    pool:
+      vmImage: ubuntu-18.04
     steps:
     - checkout: none
     - task: DownloadPipelineArtifact@2

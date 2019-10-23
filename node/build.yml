@@ -1,6 +1,7 @@
 jobs:
 - job: node
-  pool: ubuntu-18.04
+  pool:
+    vmImage: ubuntu-18.04
 
   steps:
   - task: Docker@1

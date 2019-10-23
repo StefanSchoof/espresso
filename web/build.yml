@@ -1,6 +1,7 @@
 jobs:
 - job: web
-  pool: ubuntu-18.04
+  pool:
+    vmImage: ubuntu-18.04
 
   steps:
   - bash: |

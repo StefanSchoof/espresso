@@ -1,6 +1,7 @@
 jobs:
 - job: e2etest
-  pool: ubuntu-18.04
+  pool:
+    vmImage: ubuntu-18.04
 
   steps:
   - bash: |

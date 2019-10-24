@@ -2,7 +2,8 @@ parameters:
   environment: test
   sshEndpoint: dockerhost
   test: false
-  containerPool: Hosted Ubuntu 1604
+  containerPoolName: Azure Pipelines
+  containerPoolVmImage:
   dockerTag: dev
   testingCmd: echo
 
@@ -82,7 +83,9 @@ jobs:
       STORAGE_ACCOUNT: $(terraformOutput${{ parameters.environment }}.storage_account)
 - job: container
   dependsOn: deploy
-  pool: ${{ parameters.containerPool }}
+  pool:
+    name: ${{ parameters.containerPoolName }}
+    vmImage: ${{ parameters.containerPoolVmImage }}
   variables:
     DeviceConnectionString: $[ dependencies.deploy.outputs['terraformOutput${{ parameters.environment }}.iot_device_connection_string'] ]
     NodeInstrumentationKey: $[ dependencies.deploy.outputs['terraformOutput${{ parameters.environment }}.azurerm_application_insights_node'] ]

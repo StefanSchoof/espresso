@@ -3,7 +3,7 @@ parameters:
   sshEndpoint: dockerhost
   test: false
   containerPoolName: Azure Pipelines
-  containerPoolVmImage: ''
+  containerPoolVmImage:
   dockerTag: dev
   testingCmd: echo
 

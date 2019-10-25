@@ -25,7 +25,7 @@ stages:
     parameters:
       environment: test
       sshEndpoint: dockerhost
-      containerPoolNameVmImage: ubuntu-1804
+      containerPoolVmImage: ubuntu-1804
       test: true
 
 - stage: prod

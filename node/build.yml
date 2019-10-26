@@ -1,6 +1,7 @@
 jobs:
 - job: node
-  pool: Hosted Ubuntu 1604
+  pool:
+    vmImage: ubuntu-18.04
 
   steps:
   - task: Docker@1

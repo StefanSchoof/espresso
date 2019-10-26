@@ -35,6 +35,7 @@ stages:
       environment: prod
       sshEndpoint: 'pi devops'
       test: false
-      containerPool: Home
+      containerPoolName: Home
+      containerPoolVmImage:
       dockerTag: latest
       testingCmd: ''

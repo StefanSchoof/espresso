@@ -25,7 +25,6 @@ stages:
     parameters:
       environment: test
       sshEndpoint: dockerhost
-      containerPoolVmImage: ubuntu-18.04
       test: true
 
 - stage: prod
@@ -37,5 +36,6 @@ stages:
       sshEndpoint: 'pi devops'
       test: false
       containerPoolName: Home
+      containerPoolVmImage:
       dockerTag: latest
       testingCmd: ''

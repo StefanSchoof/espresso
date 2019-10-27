@@ -1,3 +1,4 @@
+ARG NODE_VERSION=12
 FROM alpine as cppbuilder
 
 WORKDIR /usr/src/app
@@ -9,7 +10,7 @@ COPY steuerung.cpp .
 
 RUN g++ -DRPI 433Utils/rc-switch/RCSwitch.cpp steuerung.cpp -o steuerung -lwiringPi
 
-FROM node:10-alpine as builder
+FROM node:${NODE_VERSION}-alpine as builder
 
 WORKDIR /usr/src/app
 
@@ -30,7 +31,7 @@ FROM scratch as testresult
 COPY --from=builder /usr/src/app/junit.xml .
 COPY --from=builder /usr/src/app/coverage coverage
 
-FROM node:10-alpine as runner
+FROM node:${NODE_VERSION}-alpine as runner
 
 WORKDIR /usr/app
 

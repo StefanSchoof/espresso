@@ -19,6 +19,11 @@ jobs:
     workingDirectory: node
     displayName: 'start buildkitd'
 
+  - task: DockerInstaller@0
+    displayName: Install Docker
+    inputs:
+      dockerVersion: 19.03.4
+
   - bash: ./dockerbuild.sh
     workingDirectory: node
     displayName: 'docker build'

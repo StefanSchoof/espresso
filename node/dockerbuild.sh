@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+echo "try bake"
+DOCKER_CLI_EXPERIMENTAL=enabled docker buildx bake
+echo "finish try bake"
+
 # in azure pipeline git is in detached head so git does not know it brach and we take the env var. But these are in the format /ref/head/master, so we take the basename
 branch=$(basename ${BUILD_SOURCEBRANCH:-$(git rev-parse --abbrev-ref HEAD)})
 image="stefanschoof/espresso"

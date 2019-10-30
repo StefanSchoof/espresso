@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+DOCKER_CLI_EXPERIMENTAL=enabled docker version
 echo "try bake"
 DOCKER_CLI_EXPERIMENTAL=enabled docker buildx bake
 echo "finish try bake"

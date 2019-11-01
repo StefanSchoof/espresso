@@ -1,5 +1,5 @@
 variables:
-  TERRAFORM_VERSION: 0.12.6
+  TERRAFORM_VERSION: 0.12.13
 
 schedules:
 - cron: "0 0 * * THU"

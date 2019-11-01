@@ -90,6 +90,7 @@ resource "azurerm_function_app" "function" {
     cors {
       allowed_origins = [substr(data.azurerm_storage_account.this.primary_web_endpoint, 0, length(data.azurerm_storage_account.this.primary_web_endpoint) - 1)]
     }
+    http2_enabled = true
   }
 
   app_settings = {

@@ -107,7 +107,7 @@ jobs:
       sshEndpoint: ${{ parameters.sshEndpoint }}
       runOptions: script
       scriptPath: 'pideploy.sh'
-      args: '"$(DeviceConnectionString)" "$(NodeInstrumentationKey)" "$(Build.BuildId)" "${{ parameters.testingCmd }}"'
+      args: '"$(DeviceConnectionString)" "$(NodeInstrumentationKey)" "${{ parameters.dockerTag }}" "${{ parameters.testingCmd }}"'
 - ${{ if eq(parameters.test, 'true') }}:
   - job: e2etest
     pool: Hosted VS2017

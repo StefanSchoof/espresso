@@ -35,7 +35,7 @@ data "azurerm_storage_account" "this" {
   name                = azurerm_storage_account.storage.name
   resource_group_name = azurerm_resource_group.group.name
 
-  depends_on = ["null_resource.static-website"]
+  depends_on = [null_resource.static-website]
 }
 
 resource "azurerm_iothub" "iothub" {
@@ -88,7 +88,7 @@ resource "azurerm_function_app" "function" {
 
   site_config {
     cors {
-      allowed_origins = [substr(data.azurerm_storage_account.this.primary_web_endpoint, 0, length(data.azurerm_storage_account.this.primary_web_endpoint) - 1)]
+      allowed_origins = [trimsuffix(data.azurerm_storage_account.this.primary_web_endpoint, "/")]
     }
     http2_enabled = true
   }

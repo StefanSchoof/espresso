@@ -100,7 +100,7 @@ resource "azurerm_function_app" "function" {
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.function.instrumentation_key
     IOTHUB_CONNECTION_STRING       = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.iotHubConnectionString.id})"
   }
-  version = "~2"
+  version = "~3"
 }
 
 resource "azurerm_key_vault" "keyvault" {

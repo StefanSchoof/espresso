@@ -16,7 +16,7 @@ function writeDevopsVar {
 
 function deployFunc {
   pushd ../func
-  res=$(npx -p azure-functions-core-tools \
+  res=$(npx -p azure-functions-core-tools@3 \
     func azure functionapp publish $FUNCTION_APP)
   popd
   FUNCTIONS_CODE=$(echo "$res" | sed 's/^.*code=//;t;d')

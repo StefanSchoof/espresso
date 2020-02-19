@@ -54,48 +54,36 @@ data "template_cloudinit_config" "config" {
   }
 }
 
-resource "azurerm_virtual_machine" "dockerhost" {
-  count                            = var.with_testvm ? 1 : 0
-  name                             = "dockerhost-vm"
-  location                         = azurerm_resource_group.group.location
-  resource_group_name              = azurerm_resource_group.group.name
-  network_interface_ids            = [azurerm_network_interface.nic[0].id]
-  vm_size                          = "Standard_DS1_v2"
-  delete_os_disk_on_termination    = true
-  delete_data_disks_on_termination = true
+resource "azurerm_linux_virtual_machine" "dockerhost" {
+  count                 = var.with_testvm ? 1 : 0
+  name                  = "dockerhost-vm"
+  location              = azurerm_resource_group.group.location
+  resource_group_name   = azurerm_resource_group.group.name
+  network_interface_ids = [azurerm_network_interface.nic[0].id]
+  size                  = "Standard_DS1_v2"
 
-  storage_image_reference {
+  source_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
     sku       = "18.04-LTS"
     version   = "latest"
   }
-  storage_os_disk {
-    name              = "dockerhostosdisk"
-    caching           = "ReadWrite"
-    create_option     = "FromImage"
-    managed_disk_type = "Standard_LRS"
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
   }
-  os_profile {
-    computer_name  = "dockerhost"
-    admin_username = "dockeradmin"
-    custom_data    = data.template_cloudinit_config.config.rendered
-  }
-  os_profile_linux_config {
-    disable_password_authentication = true
-    ssh_keys {
-      path     = "/home/dockeradmin/.ssh/authorized_keys"
-      key_data = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9QKIJL4OygWMvTzvsi9zC03R/t5riw4SfLg3+EqfM79Bex0ChBdqx6i2ddhkmkfGwFXm/Si2cEM2WVcjNWCgbTgKaJDGVANnCz4zlxqsUAEE2izzMLD+vLqSz7OAn/xAiMv0w0mNevmleFLPwgRyXCq7TRzl+b83/DJD6R4YIHeqsnCRkqCmh+FGJL9SF0u+gIdl8/a4L0XLTz2nvWVrFWPfP4bn5f6GCKpKuaHwa9dxyGlQRo1xYviE5nRZjxVfY4cBvahkBJFxc26iRVDgdyqk/iTPVosN2qNDQ3/Yt2106UqRmLi9ssW6hiFr2Ejoq3JJd6Tq8V2QRVU45OQEV sschoof@sdhamw057"
-    }
+  admin_username = "dockeradmin"
+  custom_data    = data.template_cloudinit_config.config.rendered
+  admin_ssh_key {
+    username   = "dockeradmin"
+    public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9QKIJL4OygWMvTzvsi9zC03R/t5riw4SfLg3+EqfM79Bex0ChBdqx6i2ddhkmkfGwFXm/Si2cEM2WVcjNWCgbTgKaJDGVANnCz4zlxqsUAEE2izzMLD+vLqSz7OAn/xAiMv0w0mNevmleFLPwgRyXCq7TRzl+b83/DJD6R4YIHeqsnCRkqCmh+FGJL9SF0u+gIdl8/a4L0XLTz2nvWVrFWPfP4bn5f6GCKpKuaHwa9dxyGlQRo1xYviE5nRZjxVfY4cBvahkBJFxc26iRVDgdyqk/iTPVosN2qNDQ3/Yt2106UqRmLi9ssW6hiFr2Ejoq3JJd6Tq8V2QRVU45OQEV sschoof@sdhamw057"
   }
 }
 
 resource "azurerm_virtual_machine_extension" "cloudinitwait" {
   count                = var.with_testvm ? 1 : 0
   name                 = "cloudinitwait"
-  location             = azurerm_resource_group.group.location
-  resource_group_name  = azurerm_resource_group.group.name
-  virtual_machine_name = azurerm_virtual_machine.dockerhost[0].name
+  virtual_machine_id   = azurerm_linux_virtual_machine.dockerhost[0].id
   publisher            = "Microsoft.Azure.Extensions"
   type                 = "CustomScript"
   type_handler_version = "2.0"

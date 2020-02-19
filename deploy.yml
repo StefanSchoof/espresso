@@ -62,6 +62,8 @@ jobs:
       commandOptions: -var-file="${{ parameters.environment }}.tfvars" -lock-timeout=10m
       workingDirectory: deploy
       environmentServiceNameAzureRM: 'Visual Studio Premium mit MSDN'
+    env:
+      ARM_PROVIDER_TWOPOINTZERO_RESOURCES: true
   - task: PowerShell@2
     displayName: 'terraform output to devops'
     name: terraformOutput${{ parameters.environment }}

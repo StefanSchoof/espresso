@@ -19,3 +19,5 @@ steps:
     commandOptions: '-var-file="${{ parameters.environment }}.tfvars" -lock-timeout=30m'
     workingDirectory: deploy
     environmentServiceNameAzureRM: 'Visual Studio Premium mit MSDN'
+  env:
+    ARM_PROVIDER_TWOPOINTZERO_RESOURCES: true

@@ -16,26 +16,17 @@ resource "azurerm_storage_account" "storage" {
   location                 = azurerm_resource_group.group.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
-  account_kind             = "StorageV2"
+  static_website {
+    index_document = "index.html"
+  }
   lifecycle {
     prevent_destroy = true
-  }
-}
-
-resource "null_resource" "static-website" {
-  triggers = {
-    account = azurerm_storage_account.storage.name
-  }
-  provisioner "local-exec" {
-    command = "az account show || az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID && az storage blob service-properties update --account-name ${azurerm_storage_account.storage.name} --static-website true --index-document index.html --404-document 404.html"
   }
 }
 
 data "azurerm_storage_account" "this" {
   name                = azurerm_storage_account.storage.name
   resource_group_name = azurerm_resource_group.group.name
-
-  depends_on = [null_resource.static-website]
 }
 
 resource "azurerm_iothub" "iothub" {
@@ -44,7 +35,6 @@ resource "azurerm_iothub" "iothub" {
   location            = azurerm_resource_group.group.location
   sku {
     name     = var.stage == "" ? "F1" : "S1"
-    tier     = var.stage == "" ? "Free" : "Standard"
     capacity = "1"
   }
 }
@@ -129,7 +119,7 @@ resource "azurerm_key_vault_access_policy" "service" {
   key_vault_id = azurerm_key_vault.keyvault.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = var.object_id == "" ? data.azurerm_client_config.current.service_principal_object_id : var.object_id
+  object_id = data.azurerm_client_config.current.object_id
 
   key_permissions = [
   ]

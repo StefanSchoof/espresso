@@ -1,8 +1,3 @@
-variable "object_id" {
-  type    = string
-  default = ""
-}
-
 variable "stage" {
   type = string
 }

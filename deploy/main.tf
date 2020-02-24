@@ -27,8 +27,6 @@ resource "azurerm_storage_account" "storage" {
 data "azurerm_storage_account" "this" {
   name                = azurerm_storage_account.storage.name
   resource_group_name = azurerm_resource_group.group.name
-
-  depends_on = [null_resource.static-website]
 }
 
 resource "azurerm_iothub" "iothub" {

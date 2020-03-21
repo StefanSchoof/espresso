@@ -160,5 +160,5 @@ jobs:
       displayName: 'Terraform destroy'
       inputs:
         command: destroy
-        commandOptions: -var-file="test.tfvars" -target azurerm_virtual_machine.dockerhost -target azurerm_iothub.iothub
+        commandOptions: -var-file="test.tfvars" -target azurerm_linux_virtual_machine.dockerhost -target azurerm_iothub.iothub
         environmentServiceNameAzureRM: 'Visual Studio Premium mit MSDN'

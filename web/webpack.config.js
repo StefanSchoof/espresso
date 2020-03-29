@@ -21,9 +21,9 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            inject: false,
             template: require('html-webpack-template'),
             title: 'Espresso',
+            scriptLoading: 'defer',
             window: {
                 instrumentationKey: '<%INSTRUMENTATION_KEY%>',
                 functionsCode: '<%FUNCTIONS_CODE%>',

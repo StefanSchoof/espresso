@@ -19,7 +19,7 @@ stages:
   - template: e2etest/build.yml
 
 - stage: test
-  condition: and(succeeded('build'), not(startsWith(variables['Build.SourceBranch'], 'refs/heads/greenkeeper/')))
+  condition: and(succeeded('build'), not(startsWith(variables['Build.SourceBranch'], 'refs/heads/renovate/')))
   jobs:
   - template: deploy.yml
     parameters:

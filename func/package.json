@@ -16,7 +16,7 @@
     "url": "https://github.com/StefanSchoof/espresso.git"
   },
   "devDependencies": {
-    "@azure/functions": "1.2.0",
+    "@azure/functions": "1.2.2",
     "@babel/preset-env": "7.9.0",
     "@babel/preset-typescript": "7.9.0",
     "@types/jest": "25.2.2",

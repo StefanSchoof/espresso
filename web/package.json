@@ -12,7 +12,7 @@
   "author": "Stefan Schoof",
   "license": "Unlicense",
   "dependencies": {
-    "@microsoft/applicationinsights-web": "2.5.4"
+    "@microsoft/applicationinsights-web": "2.5.5"
   },
   "devDependencies": {
     "@babel/preset-env": "7.9.0",

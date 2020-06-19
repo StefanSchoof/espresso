@@ -15,7 +15,7 @@
     "@microsoft/applicationinsights-web": "2.5.5"
   },
   "devDependencies": {
-    "@babel/preset-env": "7.10.2",
+    "@babel/preset-env": "7.10.3",
     "@babel/preset-typescript": "7.10.1",
     "@types/jest": "26.0.0",
     "@typescript-eslint/eslint-plugin": "3.3.0",

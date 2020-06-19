@@ -9,7 +9,7 @@
     "url": "https://github.com/StefanSchoof/espresso.git"
   },
   "dependencies": {
-    "@babel/preset-env": "7.10.2",
+    "@babel/preset-env": "7.10.3",
     "@babel/preset-typescript": "7.10.1",
     "babel-jest": "26.0.1",
     "jest": "26.0.1",

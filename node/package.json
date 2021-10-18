@@ -19,7 +19,7 @@
     "applicationinsights": "1.8.0",
     "azure-iot-common": "1.12.3",
     "azure-iot-device": "1.16.0",
-    "azure-iot-device-mqtt": "1.14.1",
+    "azure-iot-device-mqtt": "1.15.7",
     "jest-junit": "11.1.0"
   },
   "devDependencies": {

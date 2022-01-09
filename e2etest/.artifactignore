@@ -1,6 +1,0 @@
-.artifactignore
-.eslint*
-tsconfig.json
-node_modules
-junit.xml
-build.yml

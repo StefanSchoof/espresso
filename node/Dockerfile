@@ -49,7 +49,7 @@ COPY . .
 RUN cargo build --release --target=arm-unknown-linux-gnueabi
 
 
-FROM --platform=linux/arm/v6 alpine:3.13
+FROM --platform=linux/arm/v6 debian:11-slim
 WORKDIR /
 #RUN apt-get update && apt-get install -y extra-runtime-dependencies && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /app/target/arm-unknown-linux-gnueabi/release/steckdose .

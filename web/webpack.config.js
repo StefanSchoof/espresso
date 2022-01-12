@@ -24,11 +24,6 @@ module.exports = {
             template: require('html-webpack-template'),
             title: 'Espresso',
             scriptLoading: 'defer',
-            window: {
-                instrumentationKey: '<%INSTRUMENTATION_KEY%>',
-                functionsCode: '<%FUNCTIONS_CODE%>',
-                functionsHostname: '<%FUNCTIONS_HOSTNAME%>'
-            }
         }),
     ]
 };

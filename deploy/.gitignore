@@ -1,6 +1,0 @@
-.terraform
-terraform.tfstate*
-azurerm*.env
-backend.conf
-tfplan
-terraform.tfvars

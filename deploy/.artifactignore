@@ -1,6 +1,0 @@
-**/*
-!*.tf
-!*.tfvars
-!*.sh
-!*.ps1
-!cloud-config.txt

@@ -1,0 +1,11 @@
+node_modules
+npm-debug.log
+dist
+Dockerfile*
+*.sh
+azure-pipelines.yml
+junit.xml
+coverage/
+.dockerignore
+.artifactignore
+build.yml

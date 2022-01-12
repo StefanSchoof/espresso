@@ -1,17 +1,22 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    directory: "/"
+    directory: "/web/"
     schedule:
       interval: "daily"
 
   - package-ecosystem: "docker"
-    directory: "/"
+    directory: "/web/"
     schedule:
       interval: "daily"
 
   - package-ecosystem: "cargo"
-    directory: "/"
+    directory: "/node/"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "docker"
+    directory: "/node/"
     schedule:
       interval: "daily"
 

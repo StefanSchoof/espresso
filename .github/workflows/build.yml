@@ -2,7 +2,13 @@ name: build
 
 on:
   push:
+    branches:
+      - "main"
+      - "feature/*"
   workflow_dispatch:
+  pull_request:
+    branches:
+      - "main"
 
 jobs:
   api:

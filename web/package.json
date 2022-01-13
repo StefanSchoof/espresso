@@ -6,7 +6,7 @@
     "test": "jest",
     "test:ci": "jest --ci --reporters=default --reporters=jest-junit --coverage --colors",
     "start": "webpack-dev-server",
-    "build": "webpack --mode production --colors",
+    "build": "webpack --mode production",
     "lint": "eslint --color --ext .ts,.js ."
   },
   "author": "Stefan Schoof",

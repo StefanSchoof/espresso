@@ -46,11 +46,17 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Convert bake json to hcl
+        # workaround for https://github.com/docker/buildx/issues/756
+        run: |
+          wget https://github.com/kvz/json2hcl/releases/download/v0.0.6/json2hcl_v0.0.6_linux_amd64
+          chmod +x json2hcl_v0.0.6_linux_amd64
+          ./json2hcl_v0.0.6_linux_amd64 < ${{ steps.meta-web.outputs.bake-file }} | sed -E 's/"(target|tags|labels|args)"/\1/' > web.hcl
       - name: Build
         uses: docker/bake-action@v1
         with:
           files: |
             ./docker-bake.hcl
-            ${{ steps.meta-web.outputs.bake-file }}
+            ./web.hcl
             ${{ steps.meta-api.outputs.bake-file }}
           push: ${{ github.event_name != 'pull_request' }}

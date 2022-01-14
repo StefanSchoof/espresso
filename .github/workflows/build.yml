@@ -53,10 +53,11 @@ jobs:
           chmod +x json2hcl_v0.0.6_linux_amd64
           ./json2hcl_v0.0.6_linux_amd64 < ${{ steps.meta-web.outputs.bake-file }} | sed -E 's/"(target|tags|labels|args)"/\1/' > web.hcl
       - name: Build
-        uses: docker/bake-action@v1
+        uses: docker/bake-action@v1.6.0
         with:
           files: |
             ./docker-bake.hcl
             ./web.hcl
             ${{ steps.meta-api.outputs.bake-file }}
           push: ${{ github.event_name != 'pull_request' }}
+          set: "*.cache-to=type=gha,mode=max"

@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # inspired by https://github.com/dani-garcia/vaultwarden/blob/main/docker/armv6/Dockerfile
-FROM rust:1.57 as builder
+FROM rust:1.58.0 as builder
 
 WORKDIR /app
 

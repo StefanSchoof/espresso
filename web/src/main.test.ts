@@ -1,7 +1,10 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { init } from "./main";
 
-declare function setImmediate(cb: () => void): void;
-const immediate = (): Promise<void> => new Promise((resolve) => setImmediate(resolve));
+const immediate = (): Promise<void> => new Promise(process.nextTick);
 
 function getButton(name: string, buttons: HTMLButtonElement[]): HTMLButtonElement {
     const button = buttons.find((e) => e.textContent === name);

@@ -62,4 +62,6 @@ jobs:
             ./web.hcl
             ${{ steps.meta-api.outputs.bake-file }}
           push: ${{ github.event_name != 'pull_request' }}
-          set: "*.cache-to=type=gha,mode=max"
+          set: |
+            "*.cache-from=type=gha"
+            "*.cache-to=type=gha,mode=max"

@@ -10,14 +10,14 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.ts$/,
-                use: 'awesome-typescript-loader?declaration=false',
-                exclude: [/\.(spec|e2e)\.ts$/]
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
             }
         ]
     },
     resolve: {
-        extensions: ['.ts', '.js', '.json']
+        extensions: ['.tsx', '.ts', '.js'],
     },
     plugins: [
         new HtmlWebpackPlugin({

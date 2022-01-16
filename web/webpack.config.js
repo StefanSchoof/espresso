@@ -21,9 +21,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: require('html-webpack-template'),
             title: 'Espresso',
-            scriptLoading: 'defer',
         }),
     ]
 };

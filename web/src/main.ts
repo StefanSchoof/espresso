@@ -13,11 +13,14 @@ export function init(): void {
             status.textContent = `Schalte Maschine ${title.toLocaleLowerCase()}`;
             try {
                 const res = await fetch(`api/${arg}`, { method: "POST" });
-                status.textContent = res.ok ?
-                    `Maschine ${title.toLocaleLowerCase()}` :
-                    `Fehler vom Service: ${await res.text()}`;
+                status.textContent = res.ok
+                    ? `Maschine ${title.toLocaleLowerCase()}`
+                    : `Fehler vom Service: ${await res.text()}`;
             } catch (err) {
-                status.textContent = `Netzwerkfehler: ${err.message}`;
+                status.textContent =
+                    err instanceof Error
+                        ? `Netzwerkfehler: ${err.message}`
+                        : `Unbekannter Fehler: ${JSON.stringify(err)}`;
             }
         });
         return button;

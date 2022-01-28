@@ -67,4 +67,4 @@ jobs:
             "web.cache-from=type=registry,ref=ghcr.io/stefanschoof/espressoweb:latest"
             "api.cache-from=type=registry,ref=ghcr.io/stefanschoof/espressoapi:latest"
             "*.cache-to=type=gha,mode=max"
-            "*.cache-to=type=inline
+            "*.cache-to=type=inline"

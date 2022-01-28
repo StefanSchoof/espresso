@@ -64,4 +64,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           set: |
             "*.cache-from=type=gha"
+            "web.cache-from=type=registry,ref=ghcr.io/stefanschoof/espressoweb:latest"
+            "api.cache-from=type=registry,ref=ghcr.io/stefanschoof/espressoapi:latest"
             "*.cache-to=type=gha,mode=max"
+            "*.cache-to=type=inline

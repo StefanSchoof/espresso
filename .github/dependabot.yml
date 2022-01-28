@@ -5,6 +5,11 @@ updates:
     schedule:
       interval: "daily"
 
+  - package-ecosystem: "npm"
+    directory: "/e2e/"
+    schedule:
+      interval: "daily"
+
   - package-ecosystem: "docker"
     directory: "/web/"
     schedule:

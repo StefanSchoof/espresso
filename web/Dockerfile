@@ -16,3 +16,4 @@ RUN npm run build \
 
 FROM --platform=linux/arm/v7 httpd:2.4-alpine
 COPY --from=builder /usr/src/app/dist/ /usr/local/apache2/htdocs/
+HEALTHCHECK CMD wget --no-verbose --tries=1 --spider http://localhost/ || exit 1

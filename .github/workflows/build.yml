@@ -72,8 +72,10 @@ jobs:
             ${{ steps.meta-api.outputs.bake-file }}
           load: true
           set: |
-            "*.cache-from=type=gha"
-            "*.cache-to=type=gha,mode=max"
+            "api.cache-from=type=gha,scope=api"
+            "web.cache-from=type=gha,scope=web"
+            "api.cache-to=type=gha,mode=max,scope=api"
+            "web.cache-to=type=gha,mode=max,scope=web"
 
       - name: Start web for test
         run: docker run -d -p 80:80 --name web ${{ fromJSON(steps.meta-web.outputs.json).tags[0] }}
@@ -96,6 +98,3 @@ jobs:
             ./web.hcl
             ${{ steps.meta-api.outputs.bake-file }}
           push: ${{ github.event_name != 'pull_request' }}
-          set: |
-            "*.cache-from=type=gha"
-            "*.cache-to=type=gha,mode=max"

@@ -63,7 +63,7 @@ jobs:
           chmod +x json2hcl_v0.0.6_linux_amd64
           ./json2hcl_v0.0.6_linux_amd64 < ${{ steps.meta-web.outputs.bake-file }} | sed -E 's/"(target|tags|labels|args)"/\1/' > web.hcl
 
-      - name: Build web for e2e
+      - name: Build for test
         uses: docker/bake-action@v1.6.0
         with:
           files: |
@@ -77,8 +77,10 @@ jobs:
             "api.cache-to=type=gha,mode=max,scope=api"
             "web.cache-to=type=gha,mode=max,scope=web"
 
-      - name: Start web for test
-        run: docker run -d -p 80:80 --name web ${{ fromJSON(steps.meta-web.outputs.json).tags[0] }}
+      - name: Start container
+        run: |
+          docker run -d -p 80:80 --health-interval=5s --name web ${{ fromJSON(steps.meta-web.outputs.json).tags[0] }}
+          docker run -d -p 8000:8000 --health-interval=5s --name api ${{ fromJSON(steps.meta-api.outputs.json).tags[0] }}
 
       - name: Cypress run
         uses: cypress-io/github-action@v2
@@ -86,9 +88,18 @@ jobs:
           working-directory: e2e
           config: baseUrl=http://localhost
 
+      - name: Check container health
+        run: |
+          docker inspect -f {{.State.Health.Status}} web
+          [ $(docker inspect -f {{.State.Health.Status}} web) == "healthy" ]
+          docker inspect -f {{.State.Health.Status}} api
+          [ $(docker inspect -f {{.State.Health.Status}} api) == "healthy" ]
+
       - name: Docker log
         if: always()
-        run: docker logs web
+        run: |
+          docker logs web
+          docker logs api
 
       - name: Push Build
         uses: docker/bake-action@v1.6.0

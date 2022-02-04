@@ -50,7 +50,9 @@ RUN cargo build --release --target=arm-unknown-linux-gnueabi
 
 
 FROM --platform=linux/arm/v6 debian:11-slim
-WORKDIR /
-#RUN apt-get update && apt-get install -y extra-runtime-dependencies && rm -rf /var/lib/apt/lists/*
+HEALTHCHECK CMD curl -f http://localhost:8000/api/health || exit 1
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y curl && \
+    rm -rf /var/lib/apt/lists/*
 COPY --from=builder /app/target/arm-unknown-linux-gnueabi/release/steckdose .
-CMD ["steckdose"]
+CMD ["/steckdose"]

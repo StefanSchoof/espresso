@@ -15,4 +15,5 @@ RUN npm run build \
     && npm run lint
 
 FROM --platform=linux/arm/v7 httpd:2.4-alpine
+HEALTHCHECK CMD wget --no-verbose --tries=1 --spider http://localhost/ || exit 1
 COPY --from=builder /usr/src/app/dist/ /usr/local/apache2/htdocs/

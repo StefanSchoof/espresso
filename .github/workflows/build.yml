@@ -78,9 +78,7 @@ jobs:
             "web.cache-to=type=gha,mode=max,scope=web"
 
       - name: Start container
-        run: |
-          docker run -d -p 80:80 --health-interval=5s --name web ${{ fromJSON(steps.meta-web.outputs.json).tags[0] }}
-          docker run -d -p 8000:8000 --health-interval=5s --name api ${{ fromJSON(steps.meta-api.outputs.json).tags[0] }}
+        run: docker run -d -p 80:80 --health-interval=5s --name web ${{ fromJSON(steps.meta-web.outputs.json).tags[0] }}
 
       - name: Cypress run
         uses: cypress-io/github-action@v2
@@ -92,14 +90,10 @@ jobs:
         run: |
           docker inspect -f {{.State.Health.Status}} web
           [ $(docker inspect -f {{.State.Health.Status}} web) == "healthy" ]
-          docker inspect -f {{.State.Health.Status}} api
-          [ $(docker inspect -f {{.State.Health.Status}} api) == "healthy" ]
-
+        
       - name: Docker log
         if: always()
-        run: |
-          docker logs web
-          docker logs api
+        run: docker logs web
 
       - name: Push Build
         uses: docker/bake-action@v1.6.0

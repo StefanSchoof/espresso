@@ -10,24 +10,22 @@ extern crate rocket;
 
 type MyFunk = Funksteckdose<GpioPin, MyEncoding, Protocol1>;
 
-fn send(state: &State) {
-    let pin = GpioPin::new(17).expect("Failed to setup");
-    let steckdose = MyFunk::new(pin);
+fn send(steckdose: &MyFunk, state: &State) {
     steckdose
         .send("11001", &Device::A, state)
         .expect("Failed to send");
 }
 
 #[post("/on")]
-fn on() {
+fn on(steckdose: &rocket::State<MyFunk>) {
     println!("on");
-    send(&State::On)
+    send(&steckdose, &State::On)
 }
 
 #[post("/off")]
-fn off() {
+fn off(steckdose: &rocket::State<MyFunk>) {
     println!("off");
-    send(&State::Off)
+    send(&steckdose, &State::Off)
 }
 
 #[get("/health")]
@@ -37,6 +35,9 @@ fn health() -> &'static str {
 
 #[launch]
 fn rocket() -> _ {
-    rocket::build().mount("/api", routes![on, off, health])
+    let pin = GpioPin::new(17).expect("Failed to setup gpio pin");
+    let steckdose = MyFunk::new(pin);
+    rocket::build()
+        .manage(steckdose)
+        .mount("/api", routes![on, off, health])
 }
-

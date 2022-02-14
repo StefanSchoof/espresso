@@ -64,7 +64,7 @@ jobs:
           ./json2hcl_v0.0.6_linux_amd64 < ${{ steps.meta-web.outputs.bake-file }} | sed -E 's/"(target|tags|labels|args)"/\1/' > web.hcl
 
       - name: Build for test
-        uses: docker/bake-action@v1.6.0
+        uses: docker/bake-action@v1.7.0
         with:
           files: |
             ./docker-bake.hcl
@@ -96,7 +96,7 @@ jobs:
         run: docker logs web
 
       - name: Push Build
-        uses: docker/bake-action@v1.6.0
+        uses: docker/bake-action@v1.7.0
         with:
           files: |
             ./docker-bake.hcl

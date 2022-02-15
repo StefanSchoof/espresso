@@ -56,20 +56,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Convert bake json to hcl
+      - name: Merge bake json into single file
         # workaround for https://github.com/docker/buildx/issues/756
-        run: |
-          wget https://github.com/kvz/json2hcl/releases/download/v0.0.6/json2hcl_v0.0.6_linux_amd64
-          chmod +x json2hcl_v0.0.6_linux_amd64
-          ./json2hcl_v0.0.6_linux_amd64 < ${{ steps.meta-web.outputs.bake-file }} | sed -E 's/"(target|tags|labels|args)"/\1/' > web.hcl
+        # and https://github.com/docker/metadata-action/issues/124
+        run: jq --slurp '.[0] * .[1]' ${{ steps.meta-web.outputs.bake-file }} ${{ steps.meta-api.outputs.bake-file }} > bake.json
 
       - name: Build for test
         uses: docker/bake-action@v1.7.0
         with:
           files: |
             ./docker-bake.hcl
-            ./web.hcl
-            ${{ steps.meta-api.outputs.bake-file }}
+            ./bake.json
           load: true
           set: |
             "api.cache-from=type=gha,scope=api"
@@ -90,7 +87,7 @@ jobs:
         run: |
           docker inspect -f {{.State.Health.Status}} web
           [ $(docker inspect -f {{.State.Health.Status}} web) == "healthy" ]
-        
+
       - name: Docker log
         if: always()
         run: docker logs web
@@ -100,6 +97,5 @@ jobs:
         with:
           files: |
             ./docker-bake.hcl
-            ./web.hcl
-            ${{ steps.meta-api.outputs.bake-file }}
+            ./bake.json
           push: ${{ github.event_name != 'pull_request' }}

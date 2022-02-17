@@ -1,7 +1,8 @@
 # syntax=docker/dockerfile:1
 
 # inspired by https://github.com/dani-garcia/vaultwarden/blob/main/docker/armv6/Dockerfile
-FROM rust:1.58.1 as builder
+# hadolint ignore=DL3029, see https://github.com/hadolint/hadolint/issues/772
+FROM --platform=$BUILDPLATFORM rust:1.58.1 as builder
 
 WORKDIR /app
 
@@ -43,16 +44,13 @@ RUN rustup target add arm-unknown-linux-gnueabi
 
 COPY . .
 
-# Builds again, this time it'll just be
-# your actual source files being built
-# hadolint ignore=DL3059
 RUN cargo build --release --target=arm-unknown-linux-gnueabi
 
 
-FROM --platform=linux/arm/v6 debian:11-slim
+FROM debian:11-slim
 HEALTHCHECK CMD curl -f http://localhost:8000/api/health || exit 1
 RUN apt-get update && \
     apt-get install --no-install-recommends -y curl && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=builder /app/target/arm-unknown-linux-gnueabi/release/steckdose .
+COPY --from=builder /app/target/arm-unknown-linux-gnueabi/release/steckdose /
 CMD ["/steckdose"]

@@ -1,0 +1,3 @@
+ignored:
+  - DL3008 # pin dependencies does not provide benfist for this project
+  - DL3018 # pin dependencies does not provide benfist for this project

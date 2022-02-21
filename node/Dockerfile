@@ -1,58 +1,31 @@
-# syntax=docker/dockerfile:1
+# syntax=docker.io/docker/dockerfile-upstream:1.4.0-rc1
 
-# inspired by https://github.com/dani-garcia/vaultwarden/blob/main/docker/armv6/Dockerfile
-FROM rust:1.58.1 as builder
-
+# see https://github.com/hadolint/hadolint/issues/772
+# hadolint ignore=DL3029
+FROM --platform=$BUILDPLATFORM rust:1.58.1 as builder
+ENV CARGO_TARGET_DIR=/target
 WORKDIR /app
-
-# Build time options to avoid dpkg warnings and help with reproducible builds.
-ENV DEBIAN_FRONTEND=noninteractive \
-    LANG=C.UTF-8 \
-    TZ=UTC \
-    TERM=xterm-256color \
-    CARGO_HOME="/root/.cargo" \
-    USER="root"
-
-# Create CARGO_HOME folder and don't download rust docs
-RUN mkdir -pv "${CARGO_HOME}" \
-    && rustup set profile minimal
 
 RUN dpkg --add-architecture armel \
     && apt-get update \
     && apt-get install -y \
     --no-install-recommends \
-    libssl-dev:armel \
     libc6-dev:armel \
-    libpq5:armel \
-    libpq-dev:armel \
-    libmariadb3:armel \
-    libmariadb-dev:armel \
-    libmariadb-dev-compat:armel \
-    gcc-arm-linux-gnueabi \
-    #
-    # Make sure cargo has the right target config
-    && echo '[target.arm-unknown-linux-gnueabi]' >> "${CARGO_HOME}/config" \
-    && echo 'linker = "arm-linux-gnueabi-gcc"' >> "${CARGO_HOME}/config" \
-    && echo 'rustflags = ["-L/usr/lib/arm-linux-gnueabi"]' >> "${CARGO_HOME}/config"
-
-# Set arm specific environment values
-ENV CC_arm_unknown_linux_gnueabi="/usr/bin/arm-linux-gnueabi-gcc" \
-    CROSS_COMPILE="1"
+    gcc-arm-linux-gnueabi
 
 RUN rustup target add arm-unknown-linux-gnueabi
 
-COPY . .
+RUN --mount=target=. \
+    --mount=type=cache,target=/usr/local/cargo/registry \
+    --mount=type=cache,target=/target \
+    cargo build --release --target=arm-unknown-linux-gnueabi && \
+    # copy the result out of the cache to be available without cache mount
+    cp /target/arm-unknown-linux-gnueabi/release/steckdose /
 
-# Builds again, this time it'll just be
-# your actual source files being built
-# hadolint ignore=DL3059
-RUN cargo build --release --target=arm-unknown-linux-gnueabi
-
-
-FROM --platform=linux/arm/v6 debian:11-slim
+FROM debian:11-slim
 HEALTHCHECK CMD curl -f http://localhost:8000/api/health || exit 1
 RUN apt-get update && \
     apt-get install --no-install-recommends -y curl && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=builder /app/target/arm-unknown-linux-gnueabi/release/steckdose .
+COPY --link --from=builder /steckdose /
 CMD ["/steckdose"]

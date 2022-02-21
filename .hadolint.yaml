@@ -1,0 +1,4 @@
+ignored:
+  # maintain dependencies version is more effort for this project
+  - DL3008
+  - DL3018

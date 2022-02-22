@@ -15,8 +15,7 @@ RUN --mount=type=cache,target=/usr/src/.npm \
 COPY . .
 
 RUN npm run build \
-    && npm run test:ci \
-    && npm run lint
+    && npm run test:ci
 
 FROM httpd:2.4-alpine
 HEALTHCHECK CMD wget --no-verbose --tries=1 --spider http://localhost/ || exit 1

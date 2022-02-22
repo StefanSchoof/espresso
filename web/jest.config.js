@@ -1,5 +1,5 @@
 module.exports = {
-    coverageReporters: [
-        "cobertura",
-    ],
-};
+  coverageReporters: [
+    'cobertura'
+  ]
+}

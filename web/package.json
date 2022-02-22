@@ -7,7 +7,7 @@
     "test:ci": "jest --ci --coverage --colors",
     "start": "webpack-dev-server",
     "build": "webpack --mode production",
-    "lint": "eslint --color --ext .ts,.js ."
+    "lint": "ts-standard"
   },
   "author": "Stefan Schoof",
   "license": "Unlicense",
@@ -15,12 +15,10 @@
     "@babel/preset-env": "7.16.11",
     "@babel/preset-typescript": "7.16",
     "@types/jest": "27.4.0",
-    "@typescript-eslint/eslint-plugin": "^5.12.0",
-    "@typescript-eslint/parser": "^5.12.0",
-    "eslint": "8.9.0",
     "html-webpack-plugin": "^5.5.0",
     "jest": "27.5.1",
     "ts-loader": "^9.2.6",
+    "ts-standard": "^11.0.0",
     "typescript": "4.5.5",
     "webpack": "5.69.1",
     "webpack-cli": "4.9.2",

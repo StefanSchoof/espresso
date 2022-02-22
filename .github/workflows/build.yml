@@ -33,6 +33,8 @@ jobs:
             "web.cache-from=type=gha,scope=web"
             "api.cache-to=type=gha,mode=max,scope=api"
             "web.cache-to=type=gha,mode=max,scope=web"
+            "web.tags=espressoweb"
+            "api.tags=espressoapi"
 
       - name: Start container
         run: docker run -d -p 80:80 --health-interval=5s --name web espressoweb

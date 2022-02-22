@@ -50,6 +50,8 @@ jobs:
       - name: Lint Code Base
         uses: github/super-linter@v4
         env:
-          # Change to 'master' if your main branch differs
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LINTER_RULES_PATH: /
+          # workaround for https://github.com/github/super-linter/issues/2537
+          VALIDATE_TERRAGRUNT: false

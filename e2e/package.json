@@ -1,5 +1,18 @@
 {
   "devDependencies": {
-    "cypress": "^9.5.0"
+    "cypress": "^9.5.0",
+    "standard": "^16.0.4"
+  },
+  "standard": {
+    "globals": [
+      "after",
+      "afterEach",
+      "assert",
+      "before",
+      "beforeEach",
+      "cy",
+      "describe",
+      "it"
+    ]
   }
 }

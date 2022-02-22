@@ -1,3 +1,4 @@
+/* global describe, beforeEach, cy, it */
 /// <reference types="cypress" />
 
 describe('esprsso', () => {

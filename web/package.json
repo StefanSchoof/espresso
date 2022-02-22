@@ -7,7 +7,7 @@
     "test:ci": "jest --ci --coverage --colors",
     "start": "webpack-dev-server",
     "build": "webpack --mode production",
-    "lint": "eslint --color --ext .ts,.js ."
+    "lint": "ts-standard"
   },
   "author": "Stefan Schoof",
   "license": "Unlicense",

@@ -19,13 +19,13 @@ fn send(steckdose: &MyFunk, state: &State) {
 #[post("/on")]
 fn on(steckdose: &rocket::State<MyFunk>) {
     println!("on");
-    send(&steckdose, &State::On)
+    send(steckdose, &State::On)
 }
 
 #[post("/off")]
 fn off(steckdose: &rocket::State<MyFunk>) {
     println!("off");
-    send(&steckdose, &State::Off)
+    send(steckdose, &State::Off)
 }
 
 #[get("/health")]

@@ -6,7 +6,7 @@ FROM --platform=$BUILDPLATFORM rust:1.58.1-alpine as builder
 ENV CARGO_TARGET_DIR=/target
 WORKDIR /app
 ARG GCC_VARIANT=arm-none-eabi
-ARG RUST_TARGET=arm-unknown-linux-musleabihf
+ARG RUST_TARGET=arm-unknown-linux-musleabi
 RUN apk add --no-cache gcc-${GCC_VARIANT} musl-dev && \
     rustup target add ${RUST_TARGET}
 

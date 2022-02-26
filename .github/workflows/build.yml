@@ -47,8 +47,8 @@ jobs:
 
       - name: Check container health
         run: |
-          docker inspect -f {{.State.Health.Status}} web
-          [ $(docker inspect -f {{.State.Health.Status}} web) == "healthy" ]
+          docker inspect -f '{{.State.Health.Status}}' web
+          [ "$(docker inspect -f '{{.State.Health.Status}}' web)" == "healthy" ]
 
       - name: Docker log
         if: always()

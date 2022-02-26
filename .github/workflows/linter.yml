@@ -55,3 +55,5 @@ jobs:
           LINTER_RULES_PATH: /
           # workaround for https://github.com/github/super-linter/issues/2537
           VALIDATE_TERRAGRUNT: false
+          # todo: find a way to allow comments in tsconfig.json
+          VALIDATE_JSON: false

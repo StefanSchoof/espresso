@@ -1,4 +1,4 @@
-use funksteckdose::{Device, Funksteckdose, Protocol1, State};
+use funksteckdose::{error::Error, Device, Funksteckdose, Protocol1, State};
 
 use crate::{encoding::MyEncoding, gpio_pin::GpioPin};
 
@@ -9,21 +9,21 @@ mod gpio_pin;
 extern crate rocket;
 
 type MyFunk = Funksteckdose<GpioPin, MyEncoding, Protocol1>;
+type Result = std::result::Result<(), rocket::response::Debug<Error>>;
 
-fn send(steckdose: &MyFunk, state: &State) {
-    steckdose
-        .send("11001", &Device::A, state)
-        .expect("Failed to send");
+fn send(steckdose: &MyFunk, state: &State) -> Result {
+    steckdose.send("11001", &Device::A, state)?;
+    Ok(())
 }
 
 #[post("/on")]
-fn on(steckdose: &rocket::State<MyFunk>) {
+fn on(steckdose: &rocket::State<MyFunk>) -> Result {
     println!("on");
     send(steckdose, &State::On)
 }
 
 #[post("/off")]
-fn off(steckdose: &rocket::State<MyFunk>) {
+fn off(steckdose: &rocket::State<MyFunk>) -> Result {
     println!("off");
     send(steckdose, &State::Off)
 }

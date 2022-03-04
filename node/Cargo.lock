@@ -280,9 +280,8 @@ checksum = "3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1"
 
 [[package]]
 name = "funksteckdose"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "065ebe1df09566ad40a166ee403e2f9f622fab9db7f1285db1405c1b89415ff4"
+version = "0.1.1-alpha0"
+source = "git+https://github.com/StefanSchoof/funksteckdose?branch=addError#4f53c9d7259251dcdc24d822f8e6c35dfdb974cc"
 dependencies = [
  "failure",
  "log",

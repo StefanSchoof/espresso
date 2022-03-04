@@ -7,5 +7,5 @@ edition = "2018"
 
 [dependencies]
 gpio-cdev = "0.5"
-funksteckdose = "0.1.0"
+funksteckdose = { git = "https://github.com/StefanSchoof/funksteckdose", branch = "addError" }
 rocket = "0.5.0-rc.1"

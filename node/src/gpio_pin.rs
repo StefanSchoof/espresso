@@ -16,10 +16,13 @@ impl GpioPin {
 
 impl Pin for GpioPin {
     fn set(&self, value: &Value) -> Result<(), Error> {
-        match value {
+        let res = match value {
             Value::High => self.handle.set_value(1),
             Value::Low => self.handle.set_value(0),
         };
-        Ok(())
+        match res {
+            Ok(()) => Ok(()),
+            Err(error) => Err(Error::SetError(error.to_string())),
+        }
     }
 }

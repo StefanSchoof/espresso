@@ -50,6 +50,7 @@ jobs:
       - name: Lint Code Base
         uses: github/super-linter@v4
         env:
+          VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LINTER_RULES_PATH: /
@@ -57,3 +58,4 @@ jobs:
           VALIDATE_TERRAGRUNT: false
           # todo: find a way to allow comments in tsconfig.json
           VALIDATE_JSON: false
+          TYPESCRIPT_STANDARD_TSCONFIG_FILE: /web/tsconfig.json

@@ -2,7 +2,7 @@
 
 # see https://github.com/hadolint/hadolint/issues/772
 # hadolint ignore=DL3029
-FROM --platform=$BUILDPLATFORM rust:1.59.0 as builder
+FROM --platform=$BUILDPLATFORM rust:1.60.0 as builder
 ENV CARGO_TARGET_DIR=/target
 WORKDIR /app
 

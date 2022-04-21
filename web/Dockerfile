@@ -2,7 +2,7 @@
 
 # see https://github.com/hadolint/hadolint/issues/772
 # hadolint ignore=DL3029
-FROM --platform=$BUILDPLATFORM node:17-alpine as builder
+FROM --platform=$BUILDPLATFORM node:18-alpine as builder
 
 WORKDIR /usr/src/app
 

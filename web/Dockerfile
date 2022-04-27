@@ -1,7 +1,5 @@
-# syntax=docker.io/docker/dockerfile-upstream:1.4.0-rc1
+# syntax=docker/dockerfile:1
 
-# see https://github.com/hadolint/hadolint/issues/772
-# hadolint ignore=DL3029
 FROM --platform=$BUILDPLATFORM node:18-alpine as builder
 
 WORKDIR /usr/src/app

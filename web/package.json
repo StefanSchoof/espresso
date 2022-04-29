@@ -16,7 +16,7 @@
     "@babel/preset-typescript": "7.16",
     "@types/jest": "27.4.1",
     "html-webpack-plugin": "^5.5.0",
-    "jest": "28.0.2",
+    "jest": "28.0.3",
     "jest-environment-jsdom": "^28.0.2",
     "ts-loader": "^9.2.9",
     "ts-standard": "^11.0.0",

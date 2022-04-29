@@ -10,6 +10,6 @@ target "web" {
 }
 target "api" {
     inherits = ["docker-metadata-action-api"]
-    context = "./node"
+    context = "./api"
     platforms = ["linux/arm/v6"]
 }

@@ -16,12 +16,12 @@ updates:
       interval: "daily"
 
   - package-ecosystem: "cargo"
-    directory: "/node/"
+    directory: "/api/"
     schedule:
       interval: "daily"
 
   - package-ecosystem: "docker"
-    directory: "/node/"
+    directory: "/api/"
     schedule:
       interval: "daily"
 

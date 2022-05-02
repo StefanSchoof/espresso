@@ -12,7 +12,7 @@
   "author": "Stefan Schoof",
   "license": "Unlicense",
   "devDependencies": {
-    "@babel/preset-env": "7.16.11",
+    "@babel/preset-env": "7.17.10",
     "@babel/preset-typescript": "7.16",
     "@types/jest": "27.4.1",
     "html-webpack-plugin": "^5.5.0",

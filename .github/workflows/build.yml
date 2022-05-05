@@ -56,7 +56,7 @@ jobs:
 
       - name: Docker meta api
         id: meta-api
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: ghcr.io/stefanschoof/espressoapi
           tags: |
@@ -69,7 +69,7 @@ jobs:
 
       - name: Docker meta web
         id: meta-web
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: ghcr.io/stefanschoof/espressoweb
           tags: |

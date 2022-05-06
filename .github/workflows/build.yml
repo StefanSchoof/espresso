@@ -86,7 +86,7 @@ jobs:
         run: jq --slurp '.[0] * .[1]' ${{ steps.meta-web.outputs.bake-file }} ${{ steps.meta-api.outputs.bake-file }} > docker-bake.json
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}

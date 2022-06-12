@@ -6,4 +6,4 @@ edition = "2021"
 [dependencies]
 gpio-cdev = "0.5"
 funksteckdose = { git = "https://github.com/StefanSchoof/funksteckdose", branch = "main" }
-rocket = "0.5.0-rc.2"
+rocket = { version = "0.5.0-rc.2", default-features = false }

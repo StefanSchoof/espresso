@@ -310,7 +310,7 @@ checksum = "3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1"
 [[package]]
 name = "funksteckdose"
 version = "0.1.1-alpha0"
-source = "git+https://github.com/StefanSchoof/funksteckdose?branch=main#ed64b6242d7a22ffb9673fd9d0b213ca0d88f8db"
+source = "git+https://github.com/StefanSchoof/funksteckdose?branch=main#6b5d5226defb55e202219f566a43a0f822d407f6"
 dependencies = [
  "log",
  "structopt",
@@ -598,9 +598,9 @@ dependencies = [
 
 [[package]]
 name = "log"
-version = "0.4.16"
+version = "0.4.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6389c490849ff5bc16be905ae24bc913a9c8892e19b2341dbc175e14c341c2b8"
+checksum = "abb12e687cfb44aa40f41fc3978ef76448f9b6038cad6aef4259d3c095a2382e"
 dependencies = [
  "cfg-if",
 ]

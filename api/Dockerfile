@@ -20,7 +20,7 @@ RUN --mount=target=. \
     # copy the result out of the cache to be available without cache mount
     cp /target/arm-unknown-linux-gnueabi/release/steckdose /
 
-FROM debian:11-slim
+FROM debian:12-slim
 HEALTHCHECK CMD curl -f http://localhost:8000/api/health || exit 1
 RUN apt-get update && \
     apt-get install --no-install-recommends -y curl && \

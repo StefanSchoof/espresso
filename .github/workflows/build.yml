@@ -40,7 +40,7 @@ jobs:
         run: docker run -d -p 80:80 --health-interval=5s --name web espressoweb
 
       - name: Cypress run
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           working-directory: e2e
           config: baseUrl=http://localhost

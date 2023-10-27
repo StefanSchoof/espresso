@@ -206,7 +206,7 @@ checksum = "3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1"
 [[package]]
 name = "funksteckdose"
 version = "0.1.1-alpha0"
-source = "git+https://github.com/StefanSchoof/funksteckdose?branch=main#0a042693218fd2e47c9ed79fd037bbc614681cba"
+source = "git+https://github.com/StefanSchoof/funksteckdose?branch=main#5bd3c1c40ec6ac5ade8a03f17761c38b3635b5cc"
 dependencies = [
  "log",
  "thiserror",

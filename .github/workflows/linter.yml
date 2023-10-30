@@ -58,4 +58,4 @@ jobs:
           VALIDATE_TERRAGRUNT: false
           # todo: find a way to allow comments in tsconfig.json
           VALIDATE_JSON: false
-          TYPESCRIPT_STANDARD_TSCONFIG_FILE: /web/tsconfig.json
+          TYPESCRIPT_DEFAULT_STYLE: prettier

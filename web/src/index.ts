@@ -1,2 +1,2 @@
-import { init } from './main'
-init()
+import { init } from "./main";
+init();

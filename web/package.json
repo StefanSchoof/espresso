@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "ts-standard"
+    "lint": "prettier . --check"
   },
   "author": "Stefan Schoof",
   "license": "Unlicense",
@@ -18,7 +18,7 @@
     "@types/jest": "29.5.6",
     "jest": "29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "ts-standard": "^12.0.2",
+    "prettier": "^3.0.3",
     "typescript": "5.2.2",
     "vite": "^4.5.0"
   }

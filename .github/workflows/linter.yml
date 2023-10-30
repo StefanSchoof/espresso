@@ -59,3 +59,4 @@ jobs:
           # todo: find a way to allow comments in tsconfig.json
           VALIDATE_JSON: false
           TYPESCRIPT_DEFAULT_STYLE: prettier
+          JAVASCRIPT_DEFAULT_STYLE: prettier

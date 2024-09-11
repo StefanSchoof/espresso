@@ -36,7 +36,7 @@ fn health() -> &'static str {
 #[launch]
 fn rocket() -> _ {
     let pin = GpioPin::new(17).expect("Failed to setup gpio pin");
-    let steckdose = MyFunk::with_repeat_transmit(pin, 20);
+    let steckdose = MyFunk::with_repeat_transmit(pin, 100);
     rocket::build()
         .manage(steckdose)
         .mount("/api", routes![on, off, health])

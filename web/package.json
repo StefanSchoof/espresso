@@ -15,7 +15,7 @@
   "devDependencies": {
     "@babel/preset-env": "7.27.2",
     "@babel/preset-typescript": "7.27",
-    "@types/jest": "29.5.14",
+    "@types/jest": "30.0.0",
     "jest": "30.0.0",
     "jest-environment-jsdom": "^30.0.0",
     "prettier": "^3.5.3",

@@ -13,7 +13,7 @@
   "author": "Stefan Schoof",
   "license": "Unlicense",
   "devDependencies": {
-    "@babel/preset-env": "7.28.0",
+    "@babel/preset-env": "7.28.3",
     "@babel/preset-typescript": "7.27",
     "@types/jest": "30.0.0",
     "jest": "30.0.5",

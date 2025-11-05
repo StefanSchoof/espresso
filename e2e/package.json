@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "cypress": "^15.5.0",
+    "cypress": "^15.6.0",
     "standard": "^17.1.2"
   }
 }

@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM --platform=$BUILDPLATFORM rust:1.91.1 as builder
+FROM --platform=$BUILDPLATFORM rust:1.92.0 as builder
 ENV CARGO_TARGET_DIR=/target
 WORKDIR /app
 

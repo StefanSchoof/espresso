@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM --platform=$BUILDPLATFORM node:25-alpine as builder
+FROM --platform=$BUILDPLATFORM node:26-alpine as builder
 
 WORKDIR /usr/src/app
 
